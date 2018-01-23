@@ -1,9 +1,20 @@
 package Parkeersimulator;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+/**
+ *
+ */
 public class SimulatorView extends JFrame {
+
     private CarParkView carParkView;
     private int numberOfFloors;
     private int numberOfRows;
@@ -15,80 +26,112 @@ public class SimulatorView extends JFrame {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
-        this.numberOfOpenSpots =numberOfFloors*numberOfRows*numberOfPlaces;
+        this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
+
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
-        
+
         carParkView = new CarParkView();
 
-        Container contentPane = getContentPane();
+        Container contentPane = this.getContentPane();
         contentPane.add(carParkView, BorderLayout.CENTER);
-        pack();
-        setVisible(true);
+        this.pack();
+        this.setVisible(true);
 
-        updateView();
+        this.updateView();
     }
 
     public void updateView() {
-        carParkView.updateView();
+        this.carParkView.updateView();
     }
-    
+
 	public int getNumberOfFloors() {
-        return numberOfFloors;
+        return this.numberOfFloors;
     }
 
     public int getNumberOfRows() {
-        return numberOfRows;
+        return this.numberOfRows;
     }
 
     public int getNumberOfPlaces() {
-        return numberOfPlaces;
+        return this.numberOfPlaces;
     }
 
     public int getNumberOfOpenSpots(){
-    	return numberOfOpenSpots;
-    }
-    
-    public Car getCarAt(Location location) {
-        if (!locationIsValid(location)) {
-            return null;
-        }
-        return cars[location.getFloor()][location.getRow()][location.getPlace()];
+    	return this.numberOfOpenSpots;
     }
 
+    /**
+     * Get the car from the given parking spot location.
+     *
+     * @param location
+     * @return the car on the location. Null if empty spot.
+     */
+    public Car getCarAt(Location location) {
+        if (!this.locationIsValid(location)) {
+            return null;
+        }
+
+        return this.cars[location.getFloor()][location.getRow()][location.getPlace()];
+    }
+
+    /**
+     * Put the given car at the given spot location. Only if the spot isn't already taken.
+     *
+     * @param location
+     * @param car
+     * @return false if invalid location or taken location.
+     */
     public boolean setCarAt(Location location, Car car) {
-        if (!locationIsValid(location)) {
+        if (!this.locationIsValid(location)) {
             return false;
         }
+
         Car oldCar = getCarAt(location);
-        if (oldCar == null) {
-            cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
-            car.setLocation(location);
-            numberOfOpenSpots--;
-            return true;
+        if (oldCar != null) {
+        	return false;
         }
-        return false;
+
+        this.cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
+        car.setLocation(location);
+        this.numberOfOpenSpots--;
+
+        return true;
     }
 
+    /**
+     * Remove the car on the given spot location. Only if there is actually a car there.
+     *
+     * @param location
+     * @return the removed car. Null if invalid location or still/already empty spot.
+     */
     public Car removeCarAt(Location location) {
-        if (!locationIsValid(location)) {
+        if (!this.locationIsValid(location)) {
             return null;
         }
+
         Car car = getCarAt(location);
         if (car == null) {
             return null;
         }
-        cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
+
+        this.cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
         car.setLocation(null);
-        numberOfOpenSpots++;
+        this.numberOfOpenSpots++;
+
         return car;
     }
 
+    /**
+     * Determine the first free parking spot location.
+     *
+     * @return The free spot. Null if no free spot.
+     */
     public Location getFirstFreeLocation() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
+        for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
+            for (int row = 0; row < this.getNumberOfRows(); row++) {
+                for (int place = 0; place < this.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null) {
+                    if (this.getCarAt(location) == null) {
                         return location;
                     }
                 }
@@ -97,12 +140,17 @@ public class SimulatorView extends JFrame {
         return null;
     }
 
+    /**
+     * Determine the first car in the parking space that wants to leave and is not paying.
+     *
+     * @return Car that wants to leave.
+     */
     public Car getFirstLeavingCar() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
+        for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
+            for (int row = 0; row < this.getNumberOfRows(); row++) {
+                for (int place = 0; place < this.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
+                    Car car = this.getCarAt(location);
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
                         return car;
                     }
@@ -112,12 +160,15 @@ public class SimulatorView extends JFrame {
         return null;
     }
 
+    /**
+     * Tell every car in the parking space to tick.
+     */
     public void tick() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
+        for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
+            for (int row = 0; row < this.getNumberOfRows(); row++) {
+                for (int place = 0; place < this.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
+                    Car car = this.getCarAt(location);
                     if (car != null) {
                         car.tick();
                     }
@@ -126,44 +177,51 @@ public class SimulatorView extends JFrame {
         }
     }
 
+    /**
+     * Check if a location exists; is not outside our parking space.
+     *
+     * @return false is location is invalid
+     */
     private boolean locationIsValid(Location location) {
         int floor = location.getFloor();
         int row = location.getRow();
         int place = location.getPlace();
-        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
+        if (floor < 0 || floor >= this.numberOfFloors || row < 0 || row > this.numberOfRows || place < 0 || place > this.numberOfPlaces) {
             return false;
         }
         return true;
     }
-    
+
     private class CarParkView extends JPanel {
-        
+
         private Dimension size;
-        private Image carParkImage;    
-    
+        private Image carParkImage;
+
         /**
          * Constructor for objects of class CarPark
          */
         public CarParkView() {
-            size = new Dimension(0, 0);
+            this.size = new Dimension(0, 0);
         }
-    
+
         /**
          * Overridden. Tell the GUI manager how big we would like to be.
          */
-        public Dimension getPreferredSize() {
+        @Override
+		public Dimension getPreferredSize() {
             return new Dimension(800, 500);
         }
-    
+
         /**
          * Overriden. The car park view component needs to be redisplayed. Copy the
          * internal image to screen.
          */
-        public void paintComponent(Graphics g) {
+        @Override
+		public void paintComponent(Graphics g) {
             if (carParkImage == null) {
                 return;
             }
-    
+
             Dimension currentSize = getSize();
             if (size.equals(currentSize)) {
                 g.drawImage(carParkImage, 0, 0, null);
@@ -173,27 +231,29 @@ public class SimulatorView extends JFrame {
                 g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
             }
         }
-    
+
         public void updateView() {
             // Create a new car park image if the size has changed.
-            if (!size.equals(getSize())) {
+            if (!this.size.equals(this.getSize())) {
                 size = getSize();
-                carParkImage = createImage(size.width, size.height);
+                this.carParkImage = this.createImage(size.width, size.height);
             }
-            Graphics graphics = carParkImage.getGraphics();
+
+            // Draw the squares on the image.
+            Graphics graphics = this.carParkImage.getGraphics();
             for(int floor = 0; floor < getNumberOfFloors(); floor++) {
                 for(int row = 0; row < getNumberOfRows(); row++) {
                     for(int place = 0; place < getNumberOfPlaces(); place++) {
                         Location location = new Location(floor, row, place);
                         Car car = getCarAt(location);
                         Color color = car == null ? Color.white : car.getColor();
-                        drawPlace(graphics, location, color);
+                        this.drawPlace(graphics, location, color);
                     }
                 }
             }
-            repaint();
+            this.repaint();
         }
-    
+
         /**
          * Paint a place on this car park view in a given color.
          */
