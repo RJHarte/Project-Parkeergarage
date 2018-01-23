@@ -1,6 +1,6 @@
 package Parkeersimulator;
 
-import java.awt.*;
+import java.awt.Color;
 
 public abstract class Car {
 
@@ -31,9 +31,9 @@ public abstract class Car {
     public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;
     }
-    
+
     public boolean getIsPaying() {
-        return isPaying;
+        return this.isPaying;
     }
 
     public void setIsPaying(boolean isPaying) {
@@ -41,16 +41,19 @@ public abstract class Car {
     }
 
     public boolean getHasToPay() {
-        return hasToPay;
+        return this.hasToPay;
     }
 
     public void setHasToPay(boolean hasToPay) {
         this.hasToPay = hasToPay;
     }
 
+    /**
+     * Tick increases the time until cars likes to leave.
+     */
     public void tick() {
-        minutesLeft--;
+        this.minutesLeft--;
     }
-    
+
     public abstract Color getColor();
 }

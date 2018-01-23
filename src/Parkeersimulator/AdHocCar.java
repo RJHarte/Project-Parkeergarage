@@ -1,19 +1,24 @@
 package Parkeersimulator;
 
+import java.awt.Color;
 import java.util.Random;
-import java.awt.*;
 
+/**
+ * Ad Hoc cars.
+ */
 public class AdHocCar extends Car {
 	private static final Color COLOR=Color.red;
-	
+
     public AdHocCar() {
     	Random random = new Random();
-    	int stayMinutes = (int) (15 + random.nextFloat() * 3 * 60);
+    	// Stay there between 15m and 3h15m
+    	int stayMinutes = (int) (15 + (random.nextFloat() * 3*60));
         this.setMinutesLeft(stayMinutes);
         this.setHasToPay(true);
     }
-    
-    public Color getColor(){
+
+    @Override
+	public Color getColor(){
     	return COLOR;
     }
 }

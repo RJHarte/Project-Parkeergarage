@@ -46,11 +46,11 @@ public class Simulator {
      * Simulator constructor, initializes queues and view
      */
     public Simulator() {
-        entranceCarQueue = new CarQueue();
-        entrancePassQueue = new CarQueue();
-        paymentCarQueue = new CarQueue();
-        exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(3, 6, 30);
+        this.entranceCarQueue = new CarQueue();
+        this.entrancePassQueue = new CarQueue();
+        this.paymentCarQueue = new CarQueue();
+        this.exitCarQueue = new CarQueue();
+        this.simulatorView = new SimulatorView(3, 6, 30);
     }
 
     /**
@@ -63,6 +63,13 @@ public class Simulator {
 
     	}
         for (int i = 0; i < times; i++) {
+        	if (i%5 == 0) {
+	            System.out.printf("Cur: %d %d:%d; Entrance queue: %d; Payment queue: %d; Exit queue: %d\n",
+	            		this.day, this.hour, this.minute,
+	            		this.entranceCarQueue.carsInQueue(),
+	            		this.paymentCarQueue.carsInQueue(),
+	            		this.exitCarQueue.carsInQueue());
+        	}
             tick();
         }
     }
@@ -82,6 +89,8 @@ public class Simulator {
             e.printStackTrace();
         }
         this.handleEntrance();
+
+
     }
 
     /**
