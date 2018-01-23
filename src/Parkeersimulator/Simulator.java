@@ -13,6 +13,10 @@ public class Simulator {
     private CarQueue entrancePassQueue; // Subscription holders have their own entrance.
     private CarQueue paymentCarQueue; // Queue where regular people pay.
     private CarQueue exitCarQueue; // Exit queue.
+
+    /**
+     * Simulation view
+     */
     private SimulatorView simulatorView;
 
     // The current time.
@@ -38,6 +42,9 @@ public class Simulator {
     int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast)
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    /**
+     * Simulator constructor, initializes queues and view
+     */
     public Simulator() {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
@@ -46,35 +53,39 @@ public class Simulator {
         simulatorView = new SimulatorView(3, 6, 30);
     }
 
-    public void run() {
-        for (int i = 0; i < 10000; i++) {
+    /**
+     * Runs the simulation for certain amount of ticks
+     * @param number of ticks to run the simulation, defaults to 10k if 0
+     */
+    public void run(int times) {
+    	if (times <= 0) {
+    		times = 10000;
+
+    	}
+        for (int i = 0; i < times; i++) {
             tick();
         }
     }
 
     /**
      * tick represents one time period in the simulation.
-     * The tick triggers and handlers events in this world.
-     *
-     * @return null
+     * The tick triggers and handles events in this world.
      */
     private void tick() {
-    	advanceTime();
-    	handleExit();
-    	updateViews();
+    	this.advanceTime();
+    	this.handleExit();
+    	this.updateViews();
     	// Pause.
         try {
-            Thread.sleep(tickPause);
+            Thread.sleep(this.tickPause);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    	handleEntrance();
+        this.handleEntrance();
     }
 
     /**
      * advanceTime increases the current time in the simulation by one minute.
-     *
-     * @return null
      */
     private void advanceTime(){
         // Advance the time by one minute.
@@ -95,94 +106,119 @@ public class Simulator {
 
     /**
      * handleEntrance triggers and handles events for the entrance queues.
-     *
-     * @return null
      */
     private void handleEntrance(){
-    	carsArriving();
-    	carsEntering(entrancePassQueue);
-    	carsEntering(entranceCarQueue);
+    	this.carsArriving();
+    	this.carsEntering(entrancePassQueue);
+    	this.carsEntering(entranceCarQueue);
     }
 
     /**
      * handleExit triggers and handles events for the exit queue.
-     *
-     * @return null
      */
     private void handleExit(){
-        carsReadyToLeave();
-        carsPaying();
-        carsLeaving();
+    	this.carsReadyToLeave();
+    	this.carsPaying();
+    	this.carsLeaving();
     }
 
+    /**
+     * Advances simulation view by one tick
+     */
     private void updateViews(){
-    	simulatorView.tick();
+    	this.simulatorView.tick();
         // Update the car park view.
-        simulatorView.updateView();
+    	this.simulatorView.updateView();
     }
 
+    /**
+     * Generates arriving cars and adds them to the queues
+     */
     private void carsArriving(){
-    	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
-        addArrivingCars(numberOfCars, AD_HOC);
-    	numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);
+    	int numberOfCars = this.getNumberOfCars(weekDayArrivals, weekendArrivals);
+    	this.addArrivingCars(numberOfCars, AD_HOC);
+
+    	numberOfCars = this.getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
+    	this.addArrivingCars(numberOfCars, PASS);
     }
 
+    /**
+     * Removes cars from queues and places them into empty spots
+     *
+     * @param queue
+     */
     private void carsEntering(CarQueue queue){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
-    	while (queue.carsInQueue()>0 &&
-    			simulatorView.getNumberOfOpenSpots()>0 &&
-    			i<enterSpeed) {
+    	while (queue.carsInQueue()>0 &&	// Checks if any cars are in queue
+    			this.simulatorView.getNumberOfOpenSpots()>0 && // Checks if spots are available
+    			i<this.enterSpeed) {	// Checks if enterspeed is not reached
             Car car = queue.removeCar();
-            Location freeLocation = simulatorView.getFirstFreeLocation();
-            simulatorView.setCarAt(freeLocation, car);
+            Location freeLocation = this.simulatorView.getFirstFreeLocation();
+            this.simulatorView.setCarAt(freeLocation, car);
             i++;
         }
     }
 
+    /**
+     * Adds paying cars to the payment queue.
+     * Makes car leave parking spot.
+     */
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
-        Car car = simulatorView.getFirstLeavingCar();
-        while (car!=null) {
+    	Car car;
+        while ((car = this.simulatorView.getFirstLeavingCar()) != null) {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
-	            paymentCarQueue.addCar(car);
+	            this.paymentCarQueue.addCar(car);
         	}
         	else {
-        		carLeavesSpot(car);
+        		this.carLeavesSpot(car);
         	}
-            car = simulatorView.getFirstLeavingCar();
         }
     }
 
+    /**
+     * Handles cars from the payment queue
+     */
     private void carsPaying(){
         // Let cars pay.
-    	int i=0;
-    	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
-            Car car = paymentCarQueue.removeCar();
+    	int i = 0;
+    	while (this.paymentCarQueue.carsInQueue() > 0 && // Checks if any cars are in queue
+			i < this.paymentSpeed){ // Checks if enterspeed is not reached
+            Car car = this.paymentCarQueue.removeCar();
             // TODO Handle payment.
-            carLeavesSpot(car);
+            this.carLeavesSpot(car);
             i++;
     	}
     }
 
+    /**
+     * Removes first cars from exit queue.
+     */
     private void carsLeaving(){
         // Let cars leave.
     	int i=0;
-    	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
-            exitCarQueue.removeCar();
+    	while (this.exitCarQueue.carsInQueue()>0 && i < this.exitSpeed){
+    		this.exitCarQueue.removeCar();
             i++;
     	}
     }
 
+    /**
+     * Generates a random amount of cars depending on the current day o' the week.
+     *
+     * @param weekDay
+     * @param weekend
+     * @return amount of cars
+     */
     private int getNumberOfCars(int weekDay, int weekend){
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5
-                ? weekDay
-                : weekend;
+        int averageNumberOfCarsPerHour = this.day < 5 // Checks if day is weekday
+                ? weekDay	// return weekday
+                : weekend;	// return weekend
 
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
@@ -190,25 +226,34 @@ public class Simulator {
         return (int)Math.round(numberOfCarsPerHour / 60);
     }
 
+    /**
+     * Creates given amount of cars and adds them to the correct queue, depending on the car type.
+     * @param numberOfCars
+     * @param car type
+     */
     private void addArrivingCars(int numberOfCars, String type){
         // Add the cars to the back of the queue.
     	switch(type) {
     	case AD_HOC:
             for (int i = 0; i < numberOfCars; i++) {
-            	entranceCarQueue.addCar(new AdHocCar());
+            	this.entranceCarQueue.addCar(new AdHocCar());
             }
             break;
     	case PASS:
             for (int i = 0; i < numberOfCars; i++) {
-            	entrancePassQueue.addCar(new ParkingPassCar());
+            	this.entrancePassQueue.addCar(new ParkingPassCar());
             }
             break;
     	}
     }
 
+    /**
+     * Removes car from location/spot and adss it to the exit queue
+     * @param car
+     */
     private void carLeavesSpot(Car car){
-    	simulatorView.removeCarAt(car.getLocation());
-        exitCarQueue.addCar(car);
+    	this.simulatorView.removeCarAt(car.getLocation());
+        this.exitCarQueue.addCar(car);
     }
 
 }
