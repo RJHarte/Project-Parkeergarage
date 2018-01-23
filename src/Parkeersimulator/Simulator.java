@@ -4,29 +4,38 @@ import java.util.Random;
 
 public class Simulator {
 
+	// Easy names for regular people and subscription holders.
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
-	
-	
-	private CarQueue entranceCarQueue;
-    private CarQueue entrancePassQueue;
-    private CarQueue paymentCarQueue;
-    private CarQueue exitCarQueue;
+
+	// The difference queues.
+	private CarQueue entranceCarQueue; // Entrance queue for regular people.
+    private CarQueue entrancePassQueue; // Subscription holders have their own entrance.
+    private CarQueue paymentCarQueue; // Queue where regular people pay.
+    private CarQueue exitCarQueue; // Exit queue.
     private SimulatorView simulatorView;
 
+    // The current time.
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
 
+    // Milliseconds between ticks. Change this to make the simulation go faster.
     private int tickPause = 100;
 
-    int weekDayArrivals= 100; // average number of arriving cars per hour
+    // Average number of arriving cars per hour
+
+    // For regular people (AD_HOC)
+    int weekDayArrivals = 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
-    int weekDayPassArrivals= 50; // average number of arriving cars per hour
+
+    // For pass (subscription people) people (PASS).
+    int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
 
+    // Amount of cars the different types of queue can handle per minute.
     int enterSpeed = 3; // number of cars that can enter per minute
-    int paymentSpeed = 7; // number of cars that can pay per minute
+    int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast)
     int exitSpeed = 5; // number of cars that can leave per minute
 
     public Simulator() {
@@ -43,6 +52,12 @@ public class Simulator {
         }
     }
 
+    /**
+     * tick represents one time period in the simulation.
+     * The tick triggers and handlers events in this world.
+     *
+     * @return null
+     */
     private void tick() {
     	advanceTime();
     	handleExit();
@@ -56,6 +71,11 @@ public class Simulator {
     	handleEntrance();
     }
 
+    /**
+     * advanceTime increases the current time in the simulation by one minute.
+     *
+     * @return null
+     */
     private void advanceTime(){
         // Advance the time by one minute.
         minute++;
@@ -73,36 +93,46 @@ public class Simulator {
 
     }
 
+    /**
+     * handleEntrance triggers and handles events for the entrance queues.
+     *
+     * @return null
+     */
     private void handleEntrance(){
     	carsArriving();
     	carsEntering(entrancePassQueue);
-    	carsEntering(entranceCarQueue);  	
+    	carsEntering(entranceCarQueue);
     }
-    
+
+    /**
+     * handleExit triggers and handles events for the exit queue.
+     *
+     * @return null
+     */
     private void handleExit(){
         carsReadyToLeave();
         carsPaying();
         carsLeaving();
     }
-    
+
     private void updateViews(){
     	simulatorView.tick();
         // Update the car park view.
-        simulatorView.updateView();	
+        simulatorView.updateView();
     }
-    
+
     private void carsArriving(){
     	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
-        addArrivingCars(numberOfCars, AD_HOC);    	
+        addArrivingCars(numberOfCars, AD_HOC);
     	numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);    	
+        addArrivingCars(numberOfCars, PASS);
     }
 
     private void carsEntering(CarQueue queue){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
-    	while (queue.carsInQueue()>0 && 
-    			simulatorView.getNumberOfOpenSpots()>0 && 
+    	while (queue.carsInQueue()>0 &&
+    			simulatorView.getNumberOfOpenSpots()>0 &&
     			i<enterSpeed) {
             Car car = queue.removeCar();
             Location freeLocation = simulatorView.getFirstFreeLocation();
@@ -110,7 +140,7 @@ public class Simulator {
             i++;
         }
     }
-    
+
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
         Car car = simulatorView.getFirstLeavingCar();
@@ -136,16 +166,16 @@ public class Simulator {
             i++;
     	}
     }
-    
+
     private void carsLeaving(){
         // Let cars leave.
     	int i=0;
     	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
             exitCarQueue.removeCar();
             i++;
-    	}	
+    	}
     }
-    
+
     private int getNumberOfCars(int weekDay, int weekend){
         Random random = new Random();
 
@@ -157,13 +187,13 @@ public class Simulator {
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
         double numberOfCarsPerHour = averageNumberOfCarsPerHour + random.nextGaussian() * standardDeviation;
-        return (int)Math.round(numberOfCarsPerHour / 60);	
+        return (int)Math.round(numberOfCarsPerHour / 60);
     }
-    
+
     private void addArrivingCars(int numberOfCars, String type){
         // Add the cars to the back of the queue.
     	switch(type) {
-    	case AD_HOC: 
+    	case AD_HOC:
             for (int i = 0; i < numberOfCars; i++) {
             	entranceCarQueue.addCar(new AdHocCar());
             }
@@ -172,10 +202,10 @@ public class Simulator {
             for (int i = 0; i < numberOfCars; i++) {
             	entrancePassQueue.addCar(new ParkingPassCar());
             }
-            break;	            
+            break;
     	}
     }
-    
+
     private void carLeavesSpot(Car car){
     	simulatorView.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
