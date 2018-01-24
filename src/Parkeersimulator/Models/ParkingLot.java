@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import Parkeersimulator.view.CarParkView;
 
 /**
- *
+ * Hoi dit is een comment
  */
 public class ParkingLot extends JFrame {
 
