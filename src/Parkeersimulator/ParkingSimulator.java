@@ -1,11 +1,11 @@
 package Parkeersimulator;
 
-import Parkeersimulator.Models.Simulator;
-
 import java.awt.Color;
 
 import javax.swing.JFrame;
 
+import Parkeersimulator.Models.ParkingLot;
+import Parkeersimulator.Models.Simulator;
 //import Parkeersimulator.Models.AdHocCar;
 //import Parkeersimulator.Models.Car;
 //import Parkeersimulator.Models.CarQueue;
@@ -25,8 +25,12 @@ public class ParkingSimulator {
 	 */
 	public ParkingSimulator() {
 		// Create components.
-		Simulator = new Simulator();
-		//carParkView = new CarParkView(xxxxxx, 800, 400);
+		ParkingLot parkingLot = new ParkingLot(3, 6, 30);
+
+		Simulator model = new Simulator(parkingLot);
+
+		CarParkView carParkView = new CarParkView(parkingLot/*, 800, 400*/);
+
 
 		// Setup the screen.
 		screen = new JFrame("Parking Simulator");
@@ -36,18 +40,16 @@ public class ParkingSimulator {
 		screen.getContentPane().setBackground(new Color(0xee, 0xee, 0xee));
 		screen.getContentPane().add(carParkView);
 
+		System.out.printf("in Constructor: %d %d\n", carParkView.getWidth(), carParkView.getHeight());
+
+		System.out.println(carParkView.getWidth());
+		System.out.println(carParkView.getHeight());
+
 		carParkView.setBounds(10, 0, carParkView.getWidth(), carParkView.getHeight());
 
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		screen.setVisible(true);
-		
-	//public static void main(String[] args) {
-		//System.out.println("Simulator Initiated");
-		//Simulator sim = new Simulator();
-		//sim.run(0);
-	}
-	
 
-		// Start the simulation.
-		// model.start();
+		model.run(0);
+	}
 }

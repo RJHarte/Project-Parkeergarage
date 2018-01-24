@@ -44,12 +44,12 @@ public class Simulator {
     /**
      * Simulator constructor, initializes queues and view
      */
-    public Simulator() {
+    public Simulator(ParkingLot parkingLot) {
         this.entranceCarQueue = new CarQueue();
         this.entrancePassQueue = new CarQueue();
         this.paymentCarQueue = new CarQueue();
         this.exitCarQueue = new CarQueue();
-        this.parkingLot = new ParkingLot(3, 6, 30);
+        this.parkingLot = parkingLot;
     }
 
     /**
@@ -247,7 +247,7 @@ public class Simulator {
 
     /**
      * Creates given amount of cars and adds them to the correct queue, depending on the car type.
-     * @param numberOfCars
+     * @param  numberOfCars
      * @param car type
      */
     private void addArrivingCars(int numberOfCars, String type){
