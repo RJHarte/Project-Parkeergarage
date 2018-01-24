@@ -1,20 +1,13 @@
 package Parkeersimulator;
 
-
-package Parkeersimulator;
-
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import Parkeersimulator.Models.Car;
 import Parkeersimulator.Models.Location;
+import Parkeersimulator.view.CarParkView;
 
 /**
  *
@@ -22,6 +15,7 @@ import Parkeersimulator.Models.Location;
 public class ParkingLot extends JFrame {
 
     private CarParkView carParkView;
+
     private int numberOfFloors;
     private int numberOfRows;
     private int numberOfPlaces;
@@ -34,9 +28,9 @@ public class ParkingLot extends JFrame {
         this.numberOfPlaces = numberOfPlaces;
         this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
 
-        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+        this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
 
-        carParkView = new CarParkView();
+        this.carParkView = new CarParkView(this);
 
         Container contentPane = this.getContentPane();
         contentPane.add(carParkView, BorderLayout.CENTER);
@@ -197,3 +191,4 @@ public class ParkingLot extends JFrame {
         }
         return true;
     }
+}

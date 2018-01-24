@@ -1,17 +1,15 @@
-package view;
+package Parkeersimulator.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import javax.swing.JPanel;
-
+import Parkeersimulator.ParkingLot;
 import Parkeersimulator.Models.Car;
 import Parkeersimulator.Models.Location;
-import Parkeersimulator.ParkingLot;
 
-public class CarParkView extends JPanel {
+public class CarParkView extends AbstractView {
 
     private Dimension size;
     private Image carParkImage;
@@ -19,7 +17,8 @@ public class CarParkView extends JPanel {
     /**
      * Constructor for objects of class CarPark
      */
-    public CarParkView() {
+    public CarParkView(ParkingLot parkingLot) {
+    	super(parkingLot);
         this.size = new Dimension(0, 0);
     }
 
@@ -51,7 +50,8 @@ public class CarParkView extends JPanel {
         }
     }
 
-    public void updateView() {
+    @Override
+	public void updateView() {
         // Create a new car park image if the size has changed.
         if (!this.size.equals(this.getSize())) {
             size = getSize();
@@ -60,11 +60,11 @@ public class CarParkView extends JPanel {
 
         // Draw the squares on the image.
         Graphics graphics = this.carParkImage.getGraphics();
-        for(int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for(int row = 0; row < getNumberOfRows(); row++) {
-                for(int place = 0; place < getNumberOfPlaces(); place++) {
+        for(int floor = 0; floor < this.parkingLot.getNumberOfFloors(); floor++) {
+            for(int row = 0; row < this.parkingLot.getNumberOfRows(); row++) {
+                for(int place = 0; place < this.parkingLot.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
+                    Car car = this.parkingLot.getCarAt(location);
                     Color color = car == null ? Color.white : car.getColor();
                     this.drawPlace(graphics, location, color);
                 }

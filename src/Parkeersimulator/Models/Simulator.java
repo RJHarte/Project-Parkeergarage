@@ -2,7 +2,9 @@ package Parkeersimulator.Models;
 
 import java.util.Random;
 
-import Parkeersimulator.SimulatorView;
+import Parkeersimulator.ParkingLot;
+
+//import Parkeersimulator.SimulatorView;
 
 public class Simulator {
 
@@ -16,10 +18,7 @@ public class Simulator {
     private CarQueue paymentCarQueue; // Queue where regular people pay.
     private CarQueue exitCarQueue; // Exit queue.
 
-    /**
-     * Simulation view
-     */
-    private SimulatorView simulatorView;
+    private ParkingLot parkingLot;
 
     // The current time.
     private int day = 0;
@@ -52,7 +51,7 @@ public class Simulator {
         this.entrancePassQueue = new CarQueue();
         this.paymentCarQueue = new CarQueue();
         this.exitCarQueue = new CarQueue();
-        this.simulatorView = new SimulatorView(3, 6, 30);
+        this.parkingLot = new ParkingLot(3, 6, 30);
     }
 
     /**
@@ -94,8 +93,6 @@ public class Simulator {
         long timeTickTook = endTime-startTime; // How long this tick took to calculate
 
         long timeToSleep = this.tickDuration - timeTickTook;
-
-        System.out.println(timeToSleep);
 
         if (timeToSleep > 0) {
 	        // Pause.
@@ -149,9 +146,9 @@ public class Simulator {
      * Advances simulation view by one tick
      */
     private void updateViews(){
-    	this.simulatorView.tick();
+    	this.parkingLot.tick();
         // Update the car park view.
-    	this.simulatorView.updateView();
+    	this.parkingLot.updateView();
     }
 
     /**
@@ -174,11 +171,11 @@ public class Simulator {
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
     	while (queue.carsInQueue()>0 &&	// Checks if any cars are in queue
-    			this.simulatorView.getNumberOfOpenSpots()>0 && // Checks if spots are available
+    			this.parkingLot.getNumberOfOpenSpots()>0 && // Checks if spots are available
     			i<this.enterSpeed) {	// Checks if enterspeed is not reached
             Car car = queue.removeCar();
-            Location freeLocation = this.simulatorView.getFirstFreeLocation();
-            this.simulatorView.setCarAt(freeLocation, car);
+            Location freeLocation = this.parkingLot.getFirstFreeLocation();
+            this.parkingLot.setCarAt(freeLocation, car);
             i++;
         }
     }
@@ -190,7 +187,7 @@ public class Simulator {
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
     	Car car;
-        while ((car = this.simulatorView.getFirstLeavingCar()) != null) {
+        while ((car = this.parkingLot.getFirstLeavingCar()) != null) {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            this.paymentCarQueue.addCar(car);
@@ -275,7 +272,7 @@ public class Simulator {
      * @param car
      */
     private void carLeavesSpot(Car car){
-    	this.simulatorView.removeCarAt(car.getLocation());
+    //	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
     }
 
