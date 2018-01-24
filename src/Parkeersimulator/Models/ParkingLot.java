@@ -1,12 +1,10 @@
-package Parkeersimulator;
+package Parkeersimulator.Models;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
 
 import javax.swing.JFrame;
 
-import Parkeersimulator.Models.Car;
-import Parkeersimulator.Models.Location;
 import Parkeersimulator.view.CarParkView;
 
 /**

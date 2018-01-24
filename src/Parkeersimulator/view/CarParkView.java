@@ -5,9 +5,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import Parkeersimulator.ParkingLot;
 import Parkeersimulator.Models.Car;
 import Parkeersimulator.Models.Location;
+import Parkeersimulator.Models.ParkingLot;
 
 public class CarParkView extends AbstractView {
 
@@ -58,11 +58,15 @@ public class CarParkView extends AbstractView {
             this.carParkImage = this.createImage(size.width, size.height);
         }
 
+        int floors = this.parkingLot.getNumberOfFloors();
+        int rows = this.parkingLot.getNumberOfRows();
+        int places = this.parkingLot.getNumberOfPlaces();
+
         // Draw the squares on the image.
         Graphics graphics = this.carParkImage.getGraphics();
-        for(int floor = 0; floor < this.parkingLot.getNumberOfFloors(); floor++) {
-            for(int row = 0; row < this.parkingLot.getNumberOfRows(); row++) {
-                for(int place = 0; place < this.parkingLot.getNumberOfPlaces(); place++) {
+        for(int floor = 0; floor < floors; floor++) {
+            for(int row = 0; row < rows; row++) {
+                for(int place = 0; place < places; place++) {
                     Location location = new Location(floor, row, place);
                     Car car = this.parkingLot.getCarAt(location);
                     Color color = car == null ? Color.white : car.getColor();

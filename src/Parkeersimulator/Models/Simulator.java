@@ -2,8 +2,6 @@ package Parkeersimulator.Models;
 
 import java.util.Random;
 
-import Parkeersimulator.ParkingLot;
-
 //import Parkeersimulator.SimulatorView;
 
 public class Simulator {
@@ -84,9 +82,6 @@ public class Simulator {
 
     	this.advanceTime();
     	this.handleExit();
-    	this.updateViews();
-
-        this.handleEntrance();
 
         long endTime = System.currentTimeMillis(); // Time in milliseconds.
 
@@ -102,6 +97,10 @@ public class Simulator {
 	            e.printStackTrace();
 	        }
         }
+
+        this.handleEntrance();
+
+        this.updateViews();
     }
 
     /**
@@ -272,8 +271,7 @@ public class Simulator {
      * @param car
      */
     private void carLeavesSpot(Car car){
-    //	this.parkingLot.removeCarAt(car.getLocation());
+    	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
     }
-
 }
