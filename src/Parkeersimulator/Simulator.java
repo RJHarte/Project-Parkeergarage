@@ -2,6 +2,12 @@ package Parkeersimulator;
 
 import java.util.Random;
 
+import Parkeersimulator.Models.AdHocCar;
+import Parkeersimulator.Models.Car;
+import Parkeersimulator.Models.CarQueue;
+import Parkeersimulator.Models.Location;
+import Parkeersimulator.Models.ParkingPassCar;
+
 public class Simulator {
 
 	// Easy names for regular people and subscription holders.

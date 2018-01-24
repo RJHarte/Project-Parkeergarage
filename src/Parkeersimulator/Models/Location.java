@@ -1,4 +1,4 @@
-package Parkeersimulator;
+package Parkeersimulator.Models;
 
 public class Location {
 

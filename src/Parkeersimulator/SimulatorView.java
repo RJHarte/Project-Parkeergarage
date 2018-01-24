@@ -10,6 +10,9 @@ import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Parkeersimulator.Models.Car;
+import Parkeersimulator.Models.Location;
+
 /**
  *
  */

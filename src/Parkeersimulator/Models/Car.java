@@ -1,4 +1,4 @@
-package Parkeersimulator;
+package Parkeersimulator.Models;
 
 import java.awt.Color;
 
