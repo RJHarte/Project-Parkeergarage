@@ -27,7 +27,7 @@ public class Simulator {
     private int minute = 0;
 
     // Milliseconds between ticks. Change this to make the simulation go faster.
-    private int tickPause = 100;
+    private int tickDuration = 100;
 
     // Average number of arriving cars per hour
 
@@ -81,18 +81,30 @@ public class Simulator {
      * The tick triggers and handles events in this world.
      */
     private void tick() {
+    	long startTime = System.currentTimeMillis(); // Time in milliseconds.
+
     	this.advanceTime();
     	this.handleExit();
     	this.updateViews();
-    	// Pause.
-        try {
-            Thread.sleep(this.tickPause);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         this.handleEntrance();
 
+        long endTime = System.currentTimeMillis(); // Time in milliseconds.
 
+        long timeTickTook = endTime-startTime; // How long this tick took to calculate
+
+        long timeToSleep = this.tickDuration - timeTickTook;
+
+        System.out.println(timeToSleep);
+
+        if (timeToSleep > 0) {
+	        // Pause.
+	        try {
+	            Thread.sleep(timeToSleep);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+        }
     }
 
     /**
