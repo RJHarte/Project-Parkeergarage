@@ -1,5 +1,6 @@
 package Parkeersimulator.Models;
 
+import java.text.NumberFormat;
 import java.util.Random;
 
 //import Parkeersimulator.SimulatorView;
@@ -198,6 +199,9 @@ public class Simulator {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            this.paymentCarQueue.addCar(car);
+	            // print payments (remove later!)
+	            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+	            System.out.println(""+car.getClass().getName()+" Paid fee: "+currencyFormatter.format(car.getTotalFee()));
         	}
         	else {
         		this.carLeavesSpot(car);
