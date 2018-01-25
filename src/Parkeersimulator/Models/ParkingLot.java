@@ -1,16 +1,11 @@
 package Parkeersimulator.Models;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-
-import javax.swing.JFrame;
-
 import Parkeersimulator.view.CarParkView;
 
 /**
  * Hoi dit is een comment
  */
-public class ParkingLot extends JFrame {
+public class ParkingLot {
 
     private CarParkView carParkView;
 
@@ -27,15 +22,11 @@ public class ParkingLot extends JFrame {
         this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
 
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+    }
 
-        this.carParkView = new CarParkView(this);
-
-        Container contentPane = this.getContentPane();
-        contentPane.add(carParkView, BorderLayout.CENTER);
-        this.pack();
-        this.setVisible(true);
-
-        this.updateView();
+    public void setCarParkView(CarParkView carParkView)
+    {
+    	this.carParkView = carParkView;
     }
 
     public void updateView() {

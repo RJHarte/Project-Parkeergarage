@@ -20,6 +20,7 @@ public class CarParkView extends AbstractView {
     public CarParkView(ParkingLot parkingLot) {
     	super(parkingLot);
         this.size = new Dimension(0, 0);
+        parkingLot.setCarParkView(this);
     }
 
     /**
@@ -36,27 +37,30 @@ public class CarParkView extends AbstractView {
      */
     @Override
 	public void paintComponent(Graphics g) {
-        if (carParkImage == null) {
-            return;
+ /*       if (this.carParkImage == null) {
+        	return;
         }
 
         Dimension currentSize = getSize();
         if (size.equals(currentSize)) {
-            g.drawImage(carParkImage, 0, 0, null);
+            g.drawImage(this.carParkImage, 0, 0, null);
         }
         else {
             // Rescale the previous image.
-            g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
+            g.drawImage(this.carParkImage, 0, 0, currentSize.width, currentSize.height, null);
         }
     }
 
     @Override
-	public void updateView() {
+	public void updateView() {*/
         // Create a new car park image if the size has changed.
         if (!this.size.equals(this.getSize())) {
-            size = getSize();
+            this.size = this.getSize();
             this.carParkImage = this.createImage(size.width, size.height);
         }
+
+System.out.println("in paintComponent");
+        System.out.println(carParkImage);
 
         int floors = this.parkingLot.getNumberOfFloors();
         int rows = this.parkingLot.getNumberOfRows();
@@ -74,7 +78,7 @@ public class CarParkView extends AbstractView {
                 }
             }
         }
-        this.repaint();
+        //this.repaint();
     }
 
     /**
