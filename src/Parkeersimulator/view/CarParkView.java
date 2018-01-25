@@ -20,9 +20,10 @@ public class CarParkView extends AbstractView {
      */
     public CarParkView(ParkingLot parkingLot) {
         super(parkingLot);
-        this.size = new Dimension(0, 0);
+        this.size = new Dimension(500, 800);
         this.parkingLot = parkingLot;
         this.parkingLot.setCarParkView(this);
+        //this.carParkImage = createImage(500, 800);
     }
 
     /**
@@ -58,10 +59,12 @@ public class CarParkView extends AbstractView {
     @Override
 	public void updateView() {
         // Create a new car park image if the size has changed.
-        if (!size.equals(getSize())) {
+        if (!this.size.equals(getSize())) {
             this.size = this.getSize();
             this.carParkImage = createImage(size.width, size.height);
         }
+
+        System.out.printf("Size in CarParkView: %f %f\n", this.size.getWidth(), this.size.getHeight());
 
         int floors = this.parkingLot.getNumberOfFloors();
         int rows = this.parkingLot.getNumberOfRows();
