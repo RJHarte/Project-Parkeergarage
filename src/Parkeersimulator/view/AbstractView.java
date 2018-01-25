@@ -1,5 +1,7 @@
 package Parkeersimulator.view;
 
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 
 import Parkeersimulator.Models.ParkingLot;
@@ -10,6 +12,7 @@ public abstract class AbstractView extends JPanel {
 
 	public AbstractView(ParkingLot model) {
 		this.parkingLot = model;
+		this.setPreferredSize(new Dimension(500, 800));
 		//model.addView(this);
 	}
 
