@@ -9,6 +9,7 @@ public class Simulator {
 	// Easy names for regular people and subscription holders.
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
+	private static final String RESERVE = "3";
 
 	// The difference queues.
 	private CarQueue entranceCarQueue; // Entrance queue for regular people.
@@ -29,16 +30,20 @@ public class Simulator {
     // Average number of arriving cars per hour
 
     // For regular people (AD_HOC)
-    int weekDayArrivals = 100; // average number of arriving cars per hour
+	int weekDayArrivals = 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
 
     // For pass (subscription people) people (PASS).
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
-
+    
+    // For reservees (RESERVE)
+    int weekDayReservationArrivals = 75; // average number of arriving cars per hour
+    int weekendReservationArrivals = 10; // average number of arriving cars per hour
+    
     // Amount of cars the different types of queue can handle per minute.
     int enterSpeed = 3; // number of cars that can enter per minute
-    int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast)
+    int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast) (easy on the sass boii)
     int exitSpeed = 5; // number of cars that can leave per minute
 
     /**
@@ -159,6 +164,9 @@ public class Simulator {
 
     	numberOfCars = this.getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
     	this.addArrivingCars(numberOfCars, PASS);
+    	
+    	numberOfCars = this.getNumberOfCars(weekDayReservationArrivals, weekendReservationArrivals);
+    	this.addArrivingCars(numberOfCars, RESERVE);
     }
 
     /**
@@ -261,6 +269,11 @@ public class Simulator {
     	case PASS:
             for (int i = 0; i < numberOfCars; i++) {
             	this.entrancePassQueue.addCar(new ParkingPassCar());
+            }
+            break;
+    	case RESERVE:
+            for (int i = 0; i < numberOfCars; i++) {
+            	this.entrancePassQueue.addCar(new ReservedCar());
             }
             break;
     	}
