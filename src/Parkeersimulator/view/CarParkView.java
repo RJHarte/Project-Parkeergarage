@@ -63,8 +63,6 @@ public class CarParkView extends AbstractView {
             this.carParkImage = createImage(size.width, size.height);
         }
 
-        System.out.printf("Size in CarParkView: %f %f\n", this.size.getWidth(), this.size.getHeight());
-
         int floors = this.parkingLot.getNumberOfFloors();
         int rows = this.parkingLot.getNumberOfRows();
         int places = this.parkingLot.getNumberOfPlaces();

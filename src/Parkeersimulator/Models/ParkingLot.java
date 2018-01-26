@@ -203,8 +203,6 @@ public class ParkingLot implements Iterable<Car> {
 			} else if (c instanceof ParkingPassCar) {
 				amounts[2].amount++;
 			}
-
-			System.out.println("Car: " + ((c == null) ? "null" :c.getLocation()));
 		}
 
 		return amounts;

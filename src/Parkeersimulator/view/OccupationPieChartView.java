@@ -63,12 +63,7 @@ public class OccupationPieChartView extends AbstractView {
             this.image = createImage(size.width, size.height);
         }
 
-        System.out.printf("Size in CarParkView: %f %f\n", this.size.getWidth(), this.size.getHeight());
-
         Graphics graphics = this.image.getGraphics();
-        graphics.setColor(Color.pink);
-        graphics.fillRect(0, 0, 50, 50);
-
 		this.drawPie(graphics);
 
         repaint();

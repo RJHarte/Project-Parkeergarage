@@ -18,7 +18,6 @@ public abstract class AbstractView extends JPanel {
 		this.height = height;
 		this.width = width;
 
-		System.out.println("Setting size");
 		this.setSize(width, height);
 
 		this.setPreferredSize(new Dimension(this.width, this.height));
@@ -31,7 +30,6 @@ public abstract class AbstractView extends JPanel {
 	}
 
 	public void updateView() {
-		System.out.println("In AbstractView.updateView");
 		this.repaint();
 	}
 }
