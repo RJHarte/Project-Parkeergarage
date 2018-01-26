@@ -6,3 +6,6 @@
 /Simulator.class
 /ParkingLot.class
 /ReservedCar.class
+/ParkingLot$CarAmount.class
+/ParkingLot$ParkingLotSpotItator.class
+/ParkingLot$ParkingLotSpotIterator.class
