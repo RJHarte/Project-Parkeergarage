@@ -190,13 +190,17 @@ public class ParkingLot implements Iterable<Car> {
     	parkingPassCar.carName = "Pass";
     	parkingPassCar.carColor = (new ParkingPassCar()).getColor();
 
+		CarAmount none = new CarAmount();
+
     	CarAmount[] amounts = new CarAmount[]{
-    		adHoc, reservedCar, parkingPassCar
+    		adHoc, reservedCar, parkingPassCar, none,
     	};
 
     	// TODO: Loop over cars.
 		for (Car c : this) {
-			if (c instanceof AdHocCar) {
+			if (c == null) {
+				amounts[3].amount++;
+			} else if (c instanceof AdHocCar) {
 				amounts[0].amount++;
 			} else if (c instanceof ReservedCar) {
 				amounts[1].amount++;
@@ -230,11 +234,19 @@ public class ParkingLot implements Iterable<Car> {
 		@Override
 		public boolean hasNext()
 		{
-			int amount = numberOfFloors*numberOfRows*numberOfPlaces;
+			if (this.curFloor+1 < numberOfFloors) {
+				return true;
+			}
 
-			int val = this.curFloor*this.curRow*this.curSpot;
+			if (this.curRow+1 < numberOfRows) {
+				return true;
+			}
 
-			return amount > val;
+			if (this.curSpot+1 < numberOfPlaces) {
+				return true;
+			}
+
+			return false;
 		}
 
 		@Override
@@ -252,7 +264,7 @@ public class ParkingLot implements Iterable<Car> {
 			}
 
 			if (this.curFloor >= numberOfFloors) {
-				return null;
+				throw new RuntimeException("No");
 			}
 
 			return cars[this.curFloor][this.curRow][this.curSpot];

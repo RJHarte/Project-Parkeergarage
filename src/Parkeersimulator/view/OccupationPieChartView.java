@@ -84,7 +84,11 @@ public class OccupationPieChartView extends AbstractView {
 			startAngle = (int) (curValue * 360 / total);
 			int arcAngle = (int) (amounts[i].amount * 360 / total);
 
-			graphics.setColor(amounts[i].carColor);
+			if (amounts[i].carColor == null) {
+				graphics.setColor(Color.white);
+			} else{
+				graphics.setColor(amounts[i].carColor);
+			}
 			graphics.fillArc(0, 0, (int)this.getSize().getWidth(), (int)this.getSize().getHeight(), startAngle, arcAngle);
 			curValue += amounts[i].amount;
 		}
