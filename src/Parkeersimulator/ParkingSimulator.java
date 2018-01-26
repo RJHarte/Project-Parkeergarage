@@ -14,6 +14,7 @@ import Parkeersimulator.Models.Simulator;
 //import Parkeersimulator.Models.ParkingPassCar;
 //import Parkeersimulator.view.AbstractView;
 import Parkeersimulator.view.CarParkView;
+import Parkeersimulator.view.OccupationPieChartView;
 
 public class ParkingSimulator {
 	private JFrame screen;
@@ -30,9 +31,8 @@ public class ParkingSimulator {
 		Simulator model = new Simulator(parkingLot);
 
 		CarParkView carParkView = new CarParkView(parkingLot, 800, 400);
-		//carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
 
-		//OccupationPieChartView occupationPieChartView = new OccupationPieChartView(parkingLot, 500, 500);
+		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(parkingLot, 500, 500);
 
 		// Setup the screen.
 		screen = new JFrame("Parking Simulator");
@@ -43,10 +43,10 @@ public class ParkingSimulator {
 		screen.getContentPane().setBackground(new Color(0xee, 0xee, 0xee));
 
 		screen.getContentPane().add(carParkView);
-		//screen.getContentPane().add(occupationPieChartView);
+		screen.getContentPane().add(occupationPieChartView);
 
 		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
-		//occupationPieChartView.setBounds(0, carParkView.getHeight(), 250, 250);
+		occupationPieChartView.setBounds(0, carParkView.getHeight(), 250, 250);
 
 
 		System.out.printf("in Constructor: %d %d\n", carParkView.getWidth(), carParkView.getHeight());
