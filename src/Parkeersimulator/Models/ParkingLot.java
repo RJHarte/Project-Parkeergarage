@@ -1,5 +1,9 @@
 package Parkeersimulator.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Parkeersimulator.view.AbstractView;
 import Parkeersimulator.view.CarParkView;
 
 /**
@@ -7,6 +11,7 @@ import Parkeersimulator.view.CarParkView;
  */
 public class ParkingLot {
 
+	private List<AbstractView> views;
     private CarParkView carParkView;
 
     private int numberOfFloors;
@@ -22,15 +27,18 @@ public class ParkingLot {
         this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
 
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+        this.views = new ArrayList<AbstractView>();
     }
 
-    public void setCarParkView(CarParkView carParkView)
-    {
-    	this.carParkView = carParkView;
-    }
+	public void addView(AbstractView view)
+	{
+		this.views.add(view);
+	}
 
     public void updateView() {
-        this.carParkView.updateView();
+		for (AbstractView v : this.views) {
+        	v.updateView();
+		}
     }
 
 	public int getNumberOfFloors() {

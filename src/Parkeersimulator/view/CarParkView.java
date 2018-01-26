@@ -18,11 +18,10 @@ public class CarParkView extends AbstractView {
     /**
      * Constructor for objects of class CarPark
      */
-    public CarParkView(ParkingLot parkingLot) {
-        super(parkingLot);
+    public CarParkView(ParkingLot parkingLot, int width, int height) {
+        super(parkingLot, width, height);
         this.size = new Dimension(500, 800);
         this.parkingLot = parkingLot;
-        this.parkingLot.setCarParkView(this);
         //this.carParkImage = createImage(500, 800);
     }
 

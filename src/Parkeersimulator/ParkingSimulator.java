@@ -29,17 +29,25 @@ public class ParkingSimulator {
 
 		Simulator model = new Simulator(parkingLot);
 
-		CarParkView carParkView = new CarParkView(parkingLot/*, 800, 400*/);
+		CarParkView carParkView = new CarParkView(parkingLot, 800, 400);
 		//carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
+
+		//OccupationPieChartView occupationPieChartView = new OccupationPieChartView(parkingLot, 500, 500);
 
 		// Setup the screen.
 		screen = new JFrame("Parking Simulator");
 		screen.setSize(1000, 825);
-		//screen.setResizable(false);
-		//screen.setLayout(null);
+		screen.setResizable(true);
+		screen.setLayout(null);
+		screen.setVisible(true);
 		screen.getContentPane().setBackground(new Color(0xee, 0xee, 0xee));
 
 		screen.getContentPane().add(carParkView);
+		//screen.getContentPane().add(occupationPieChartView);
+
+		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
+		//occupationPieChartView.setBounds(0, carParkView.getHeight(), 250, 250);
+
 
 		System.out.printf("in Constructor: %d %d\n", carParkView.getWidth(), carParkView.getHeight());
 
@@ -47,7 +55,7 @@ public class ParkingSimulator {
 		System.out.println(carParkView.getHeight());
 
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		screen.setVisible(true);
+
 
 		model.run(0);
 	}

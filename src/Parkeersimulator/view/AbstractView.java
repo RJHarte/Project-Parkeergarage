@@ -10,10 +10,20 @@ public abstract class AbstractView extends JPanel {
 	private static final long serialVersionUID = -2767764579227738552L;
 	protected ParkingLot parkingLot;
 
-	public AbstractView(ParkingLot model) {
+	protected int width;
+	protected int height;
+
+	public AbstractView(ParkingLot model, int width, int height) {
 		this.parkingLot = model;
-		this.setPreferredSize(new Dimension(500, 800));
-		//model.addView(this);
+		this.height = height;
+		this.width = width;
+
+		System.out.println("Setting size");
+		this.setSize(width, height);
+
+		this.setPreferredSize(new Dimension(this.width, this.height));
+
+		this.parkingLot.addView(this);
 	}
 
 	public ParkingLot getParkingLot() {
