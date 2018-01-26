@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 import Parkeersimulator.Models.ParkingLot;
+import Parkeersimulator.Models.ParkingLot.CarAmount;
 
 public class OccupationPieChartView extends AbstractView {
     private static final long serialVersionUID = 1337L;
@@ -68,6 +69,29 @@ public class OccupationPieChartView extends AbstractView {
         graphics.setColor(Color.pink);
         graphics.fillRect(0, 0, 50, 50);
 
+		this.drawPie(graphics);
+
         repaint();
-    }                                                                                    // or consta
+    }
+
+    private void drawPie(Graphics graphics)
+    {
+		CarAmount[] amounts = this.parkingLot.calculateAmountOfCars();
+
+		double total = 0;
+		for (int i = 0; i < amounts.length; i++) {
+			total += amounts[i].amount;
+		}
+
+		double curValue = 0;
+		int startAngle = 0;
+		for (int i = 0; i < amounts.length; i++) {
+			startAngle = (int) (curValue * 360 / total);
+			int arcAngle = (int) (amounts[i].amount * 360 / total);
+
+			graphics.setColor(amounts[i].carColor);
+			graphics.fillArc(0, 0, (int)this.getSize().getWidth(), (int)this.getSize().getHeight(), startAngle, arcAngle);
+			curValue += amounts[i].amount;
+		}
+    }
 }
