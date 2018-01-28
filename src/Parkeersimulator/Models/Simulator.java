@@ -2,8 +2,8 @@ package Parkeersimulator.Models;
 
 import java.util.Random;
 
-import Parkeersimulator.Datastore;
-import Parkeersimulator.Datastore.StorageItem;
+import Parkeersimulator.DataStore;
+import Parkeersimulator.DataStore.StorageItem;
 
 //import Parkeersimulator.SimulatorView;
 
@@ -22,7 +22,7 @@ public class Simulator {
 
     private ParkingLot parkingLot;
 
-	private Datastore datastore;
+	private DataStore datastore;
 
     // The current time.
     private int day = 0;
@@ -60,7 +60,7 @@ public class Simulator {
         this.paymentCarQueue = new CarQueue();
         this.exitCarQueue = new CarQueue();
         this.parkingLot = parkingLot;
-        this.datastore = Datastore.createInstance();
+        this.datastore = DataStore.createInstance();
     }
 
     /**
