@@ -88,7 +88,7 @@ public class Simulator {
 					System.out.println("\t" + item);
 				}
 
-				return;
+				//return;
 			}
         }
     }
