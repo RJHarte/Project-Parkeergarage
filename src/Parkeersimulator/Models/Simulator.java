@@ -1,6 +1,5 @@
 package Parkeersimulator.Models;
 
-import java.text.NumberFormat;
 import java.util.Random;
 
 import Parkeersimulator.DataStore;
@@ -54,7 +53,7 @@ public class Simulator {
 
     // Earnings
     private int totalEarnings = 0;
-    
+
     /**
      * Simulator constructor, initializes queues and view
      */
@@ -101,7 +100,7 @@ public class Simulator {
      * tick represents one time period in the simulation.
      * The tick triggers and handles events in this world.
      */
-    private void tick() {
+    public void tick() {
     	long startTime = System.currentTimeMillis(); // Time in milliseconds.
 
     	this.advanceTime();
@@ -227,9 +226,9 @@ public class Simulator {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            this.paymentCarQueue.addCar(car);
-	            
+
 	            this.totalEarnings += this.paymentCarQueue.carPays(car);
-	           
+
         	}
         	else {
         		this.carLeavesSpot(car);
