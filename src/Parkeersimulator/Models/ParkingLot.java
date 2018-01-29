@@ -20,7 +20,6 @@ public class ParkingLot {
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
         this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
-
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
     }
 

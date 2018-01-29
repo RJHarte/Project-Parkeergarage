@@ -47,6 +47,9 @@ public class Simulator {
     int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast) (easy on the sass boii)
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    // Earnings
+    private int totalEarnings = 0;
+    
     /**
      * Simulator constructor, initializes queues and view
      */
@@ -199,9 +202,9 @@ public class Simulator {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            this.paymentCarQueue.addCar(car);
-	            // print payments (remove later!)
-	            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
-	            System.out.println(""+car.getClass().getName()+" Paid fee: "+currencyFormatter.format(car.getTotalFee()));
+	            
+	            this.totalEarnings += this.paymentCarQueue.carPays(car);
+	           
         	}
         	else {
         		this.carLeavesSpot(car);
@@ -290,5 +293,6 @@ public class Simulator {
     private void carLeavesSpot(Car car){
     	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
+        //System.out.println(this.totalEarnings);
     }
 }
