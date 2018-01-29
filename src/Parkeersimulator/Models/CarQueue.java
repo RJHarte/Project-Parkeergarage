@@ -36,4 +36,10 @@ public class CarQueue {
     public int carsInQueue(){
     	return queue.size();
     }
+    
+    public int carPays(Car car) {
+    	
+    	return car.getTotalFee();
+    }
+
 }

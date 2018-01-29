@@ -1,5 +1,6 @@
 package Parkeersimulator.Models;
 
+import java.text.NumberFormat;
 import java.util.Random;
 
 //import Parkeersimulator.SimulatorView;
@@ -46,6 +47,9 @@ public class Simulator {
     int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast) (easy on the sass boii)
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    // Earnings
+    private int totalEarnings = 0;
+    
     /**
      * Simulator constructor, initializes queues and view
      */
@@ -66,7 +70,7 @@ public class Simulator {
     		times = 10000;
 
     	}
-    		for (int i = 0; i < times; i++) {
+        for (int i = 0; i < times; i++) {
         	if (i%5 == 0) {
 	            System.out.printf("Cur: %d %d:%d; Entrance queue: %d; Payment queue: %d; Exit queue: %d\n",
 	            		this.day, this.hour, this.minute,
@@ -75,7 +79,6 @@ public class Simulator {
 	            		this.exitCarQueue.carsInQueue());
         	}
             tick();
-            
         }
     }
 
@@ -83,7 +86,7 @@ public class Simulator {
      * tick represents one time period in the simulation.
      * The tick triggers and handles events in this world.
      */
-    public void tick() {
+    private void tick() {
     	long startTime = System.currentTimeMillis(); // Time in milliseconds.
 
     	this.advanceTime();
@@ -199,6 +202,9 @@ public class Simulator {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            this.paymentCarQueue.addCar(car);
+	            
+	            this.totalEarnings += this.paymentCarQueue.carPays(car);
+	           
         	}
         	else {
         		this.carLeavesSpot(car);
@@ -287,5 +293,6 @@ public class Simulator {
     private void carLeavesSpot(Car car){
     	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
+        System.out.println(this.totalEarnings*.01);
     }
 }

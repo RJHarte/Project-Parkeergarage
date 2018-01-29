@@ -6,6 +6,9 @@ public abstract class Car {
 
     private Location location;
     private int minutesLeft;
+    private static final int basicFee = 250;
+    private static final int reservationFee = 150;
+    private int totalFee;
     private boolean isPaying;
     private boolean hasToPay;
 
@@ -31,7 +34,26 @@ public abstract class Car {
     public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;
     }
-
+    
+    // sets fee to pay
+    public void setTotalFee(int totalFee) {
+    	this.totalFee = totalFee;
+    }
+    
+    //returns total fee
+    public int getTotalFee() {
+    	return this.totalFee;
+    }
+    
+    // returns basic fee
+    public int getBasicFee() {
+    	return basicFee;
+    }
+    
+    public int getReservationFee() {
+    	return reservationFee;
+    }
+    
     public boolean getIsPaying() {
         return this.isPaying;
     }
