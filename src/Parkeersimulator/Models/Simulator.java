@@ -7,7 +7,7 @@ import Parkeersimulator.DataStore.StorageItem;
 
 //import Parkeersimulator.SimulatorView;
 
-public class Simulator {
+public class Simulator implements Runnable{
 
 	// Easy names for regular people and subscription holders.
 	private static final String AD_HOC = "1";
@@ -30,7 +30,7 @@ public class Simulator {
     private int minute = 0;
 
     // Milliseconds between ticks. Change this to make the simulation go faster.
-    private int tickDuration = 10;
+    private int tickDuration = 100;
 
     // Average number of arriving cars per hour
 
@@ -54,6 +54,8 @@ public class Simulator {
     // Earnings
     private int totalEarnings = 0;
 
+    private boolean running;
+
     /**
      * Simulator constructor, initializes queues and view
      */
@@ -66,16 +68,13 @@ public class Simulator {
         this.datastore = DataStore.createInstance();
     }
 
-    /**
-     * Runs the simulation for certain amount of ticks
-     * @param number of ticks to run the simulation, defaults to 10k if 0
-     */
-    public void run(int times) {
-    	if (times <= 0) {
-    		times = 10000;
 
-    	}
-        for (int i = 0; i < times; i++) {
+    @Override
+    public void run() {
+    	int i = 0;
+    	while (running) {
+    		long startTime = System.currentTimeMillis(); // Time in milliseconds.
+
         	if (i%5 == 0) {
 	            System.out.printf("Cur: %d %d:%d; Entrance queue: %d; Payment queue: %d; Exit queue: %d\n",
 	            		this.day, this.hour, this.minute,
@@ -83,45 +82,61 @@ public class Simulator {
 	            		this.paymentCarQueue.carsInQueue(),
 	            		this.exitCarQueue.carsInQueue());
         	}
+
             tick();
 
-			if (i == 20) {
-				System.out.println("Storage items:");
-				for (StorageItem item : this.datastore.getItems()) {
-					System.out.println("\t" + item);
-				}
+            long endTime = System.currentTimeMillis(); // Time in milliseconds.
 
-				//return;
-			}
+            long timeTickTook = endTime-startTime; // How long this tick took to calculate
+
+            long timeToSleep = this.tickDuration - timeTickTook;
+
+    		// TODO: This sleep should not be done in tick, but in the method that continuely runs tick (which is run()).
+
+            if (timeToSleep > 0) {
+    	        // Pause.
+    	        try {
+    	            Thread.sleep(timeToSleep);
+    	        } catch (InterruptedException e) {
+    	            e.printStackTrace();
+    	        }
+            }
+
+            i++;
         }
+    }
+
+    public void start()
+    {
+    	if (this.running) {
+    		return;
+    	}
+
+    	this.running = true;
+
+    	new Thread(this).start();
+    }
+
+    public void stop()
+    {
+    	this.running = false;
+    }
+
+
+    private void tick()
+    {
+    	this.tick(true);
     }
 
     /**
      * tick represents one time period in the simulation.
      * The tick triggers and handles events in this world.
      */
-    public void tick() {
-    	long startTime = System.currentTimeMillis(); // Time in milliseconds.
-
+    private void tick(boolean updateViews)
+    {
     	this.advanceTime();
+
     	this.handleExit();
-
-        long endTime = System.currentTimeMillis(); // Time in milliseconds.
-
-        long timeTickTook = endTime-startTime; // How long this tick took to calculate
-
-        long timeToSleep = this.tickDuration - timeTickTook;
-
-		// TODO: This sleep should not be done in tick, but in the method that continuely runs tick (which is run()).
-
-        if (timeToSleep > 0) {
-	        // Pause.
-	        try {
-	            Thread.sleep(timeToSleep);
-	        } catch (InterruptedException e) {
-	            e.printStackTrace();
-	        }
-        }
 
         this.handleEntrance();
 
@@ -134,6 +149,19 @@ public class Simulator {
 		this.datastore.addItem(storageItem);
 
         this.updateViews();
+    }
+
+    /**
+     * Execute given amount of ticks manually, as fast as possible.
+     *
+     * @param amount
+     * @param Whether to update views every tick.
+     */
+    public void manualTick(int amount, boolean updateViewsEveryTick)
+    {
+    	for (int i = 0; i < amount; i++) {
+    		tick(updateViewsEveryTick);
+    	}
     }
 
     /**
@@ -317,6 +345,6 @@ public class Simulator {
     private void carLeavesSpot(Car car){
     	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
-        System.out.println(this.totalEarnings*.01);
+        //System.out.println(this.totalEarnings*.01);
     }
 }

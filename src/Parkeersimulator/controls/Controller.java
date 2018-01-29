@@ -1,16 +1,17 @@
 package Parkeersimulator.controls;
 
-import Parkeersimulator.Models.*;
-
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import Parkeersimulator.Models.Simulator;
+
 public class Controller extends AbstractController implements ActionListener, ChangeListener {
-	
+
 	public Controller(Simulator sim) {
 		super(sim);
 	}
@@ -20,7 +21,7 @@ public class Controller extends AbstractController implements ActionListener, Ch
 	public JButton stop;
 	public JButton start;
 	public JSlider ticksPerSecond;
-	
+
 	public void makeControl() {
 		// Doe eem "this."
 		eenStap = new JButton("1 stap");
@@ -30,13 +31,13 @@ public class Controller extends AbstractController implements ActionListener, Ch
 
 		honderdStappen = new JButton("100 stappen");
 		honderdStappen.addActionListener(this);
-		
+
 		start = new JButton("start");
 		start.addActionListener(this);
-		
+
 		stop = new JButton("stop");
 		stop.addActionListener(this);
-		
+
 		ticksPerSecond = new JSlider(JSlider.HORIZONTAL, 0, 1000, 100);
 		ticksPerSecond.addChangeListener(this);
 
@@ -46,26 +47,24 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		ticksPerSecond.setPaintTicks(true);
 		ticksPerSecond.setPaintLabels(true);
 	}
-	
+
+	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if(e.getSource() == this.eenStap) { 
-			this.simulator.tick();
+
+		if(e.getSource() == this.eenStap) {
+			this.simulator.manualTick(1, true);
 		}
-	
+
 		if(e.getSource() == this.honderdStappen) {
-			for(int i = 0; i<=100; i++) {
-				this.simulator.tick();
-			}
+			this.simulator.manualTick(100,  false);
 		}
-		
+
 		if(e.getSource() == this.start) {
-			System.out.println("Sorry deze button is under construction");
+			this.simulator.start();
 		}
-		
+
 		if(e.getSource() == this.stop) {
-			System.out.println("Sorry deze button is under construction");
-			
+			this.simulator.stop();
 		}
 	}
 
@@ -78,7 +77,7 @@ public class Controller extends AbstractController implements ActionListener, Ch
 	            }
 
 	}
-	
+
 
 
 }
