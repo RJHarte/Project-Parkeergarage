@@ -66,7 +66,7 @@ public class Simulator {
     		times = 10000;
 
     	}
-        for (int i = 0; i < times; i++) {
+    		for (int i = 0; i < times; i++) {
         	if (i%5 == 0) {
 	            System.out.printf("Cur: %d %d:%d; Entrance queue: %d; Payment queue: %d; Exit queue: %d\n",
 	            		this.day, this.hour, this.minute,
@@ -75,6 +75,7 @@ public class Simulator {
 	            		this.exitCarQueue.carsInQueue());
         	}
             tick();
+            
         }
     }
 
@@ -82,7 +83,7 @@ public class Simulator {
      * tick represents one time period in the simulation.
      * The tick triggers and handles events in this world.
      */
-    private void tick() {
+    public void tick() {
     	long startTime = System.currentTimeMillis(); // Time in milliseconds.
 
     	this.advanceTime();

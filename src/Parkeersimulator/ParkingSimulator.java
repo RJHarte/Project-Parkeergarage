@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import Parkeersimulator.Models.ParkingLot;
 import Parkeersimulator.Models.Simulator;
+import Parkeersimulator.controls.Controller;
 //import Parkeersimulator.Models.AdHocCar;
 //import Parkeersimulator.Models.Car;
 //import Parkeersimulator.Models.CarQueue;
@@ -47,6 +48,10 @@ public class ParkingSimulator {
 
 		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
 		occupationPieChartView.setBounds(0, carParkView.getHeight(), 250, 250);
+		
+		Controller controller = new Controller(model);
+		controller.makeControl();
+		screen.getContentPane().add(controller.eenStap);
 
 
 		System.out.printf("in Constructor: %d %d\n", carParkView.getWidth(), carParkView.getHeight());
