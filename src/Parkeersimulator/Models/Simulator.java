@@ -3,6 +3,9 @@ package Parkeersimulator.Models;
 import java.text.NumberFormat;
 import java.util.Random;
 
+import Parkeersimulator.DataStore;
+import Parkeersimulator.DataStore.StorageItem;
+
 //import Parkeersimulator.SimulatorView;
 
 public class Simulator {
@@ -20,13 +23,15 @@ public class Simulator {
 
     private ParkingLot parkingLot;
 
+	private DataStore datastore;
+
     // The current time.
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
 
     // Milliseconds between ticks. Change this to make the simulation go faster.
-    private int tickDuration = 100;
+    private int tickDuration = 10;
 
     // Average number of arriving cars per hour
 
@@ -37,11 +42,11 @@ public class Simulator {
     // For pass (subscription people) people (PASS).
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
-    
+
     // For reservees (RESERVE)
     int weekDayReservationArrivals = 75; // average number of arriving cars per hour
     int weekendReservationArrivals = 10; // average number of arriving cars per hour
-    
+
     // Amount of cars the different types of queue can handle per minute.
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast) (easy on the sass boii)
@@ -59,6 +64,7 @@ public class Simulator {
         this.paymentCarQueue = new CarQueue();
         this.exitCarQueue = new CarQueue();
         this.parkingLot = parkingLot;
+        this.datastore = DataStore.createInstance();
     }
 
     /**
@@ -79,6 +85,15 @@ public class Simulator {
 	            		this.exitCarQueue.carsInQueue());
         	}
             tick();
+
+			if (i == 20) {
+				System.out.println("Storage items:");
+				for (StorageItem item : this.datastore.getItems()) {
+					System.out.println("\t" + item);
+				}
+
+				//return;
+			}
         }
     }
 
@@ -98,6 +113,8 @@ public class Simulator {
 
         long timeToSleep = this.tickDuration - timeTickTook;
 
+		// TODO: This sleep should not be done in tick, but in the method that continuely runs tick (which is run()).
+
         if (timeToSleep > 0) {
 	        // Pause.
 	        try {
@@ -108,6 +125,14 @@ public class Simulator {
         }
 
         this.handleEntrance();
+
+		StorageItem storageItem = this.datastore.new StorageItem();
+		storageItem.minute = this.minute;
+		storageItem.hour = this.hour;
+		storageItem.day = this.day;
+		storageItem.carTypeAmount = this.parkingLot.calculateAmountOfCars();
+
+		this.datastore.addItem(storageItem);
 
         this.updateViews();
     }
@@ -168,7 +193,7 @@ public class Simulator {
 
     	numberOfCars = this.getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
     	this.addArrivingCars(numberOfCars, PASS);
-    	
+
     	numberOfCars = this.getNumberOfCars(weekDayReservationArrivals, weekendReservationArrivals);
     	this.addArrivingCars(numberOfCars, RESERVE);
     }
