@@ -49,11 +49,21 @@ public class ParkingSimulator {
 		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
 		occupationPieChartView.setBounds(0, carParkView.getHeight(), 250, 250);
 		
+		//opmaak van de buttons
 		Controller controller = new Controller(model);
 		controller.makeControl();
 		screen.getContentPane().add(controller.eenStap);
-
-
+		screen.getContentPane().add(controller.honderdStappen);
+		screen.getContentPane().add(controller.start);
+		screen.getContentPane().add(controller.stop);
+		screen.getContentPane().add(controller.ticksPerSecond);
+		
+		controller.eenStap.setBounds(occupationPieChartView.getWidth(), carParkView.getHeight(), 100, 25);
+		controller.honderdStappen.setBounds(occupationPieChartView.getWidth(), carParkView.getHeight()+25, 100, 25);
+		controller.start.setBounds(occupationPieChartView.getWidth()+100, carParkView.getHeight(), 100, 25);
+		controller.stop.setBounds(occupationPieChartView.getWidth()+100, carParkView.getHeight()+25, 100, 25);
+		controller.ticksPerSecond.setBounds(occupationPieChartView.getWidth(), carParkView.getHeight()+50, 200, 40);
+		
 		System.out.printf("in Constructor: %d %d\n", carParkView.getWidth(), carParkView.getHeight());
 
 		System.out.println(carParkView.getWidth());
