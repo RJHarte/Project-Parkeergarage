@@ -60,7 +60,11 @@ public class Simulator {
         this.exitCarQueue = new CarQueue();
         this.parkingLot = parkingLot;
     }
-
+    
+    public int getTotalEarnings() {
+    	return this.totalEarnings;
+    }
+    
     /**
      * Runs the simulation for certain amount of ticks
      * @param number of ticks to run the simulation, defaults to 10k if 0
@@ -303,8 +307,6 @@ public class Simulator {
     	//print spot type when car leaving
     	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
-        //System.out.println(this.totalEarnings);
-        
-    	
+        //System.out.println("Euroteken "+this.totalEarnings/100);
     }
 }

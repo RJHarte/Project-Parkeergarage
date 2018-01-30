@@ -12,14 +12,19 @@ public class ParkingLot {
     private int numberOfFloors;
     private int numberOfRows;
     private int numberOfPlaces;
+    private int numberOfReservePlaces;
     private int numberOfOpenSpots;
+    private int numberOfOpenReserves;
+    
     private Car[][][] cars;
 
-    public ParkingLot(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+    public ParkingLot(int numberOfFloors, int numberOfRows, int numberOfPlaces, int numberOfReservePlaces) {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
+        this.numberOfReservePlaces = numberOfReservePlaces;
         this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
+        this.numberOfOpenReserves = this.numberOfReservePlaces;
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
     }
 
@@ -47,7 +52,10 @@ public class ParkingLot {
     public int getNumberOfOpenSpots(){
     	return this.numberOfOpenSpots;
     }
-
+    
+    public int getNumberOfReservePlaces() {
+    	return this.numberOfReservePlaces;
+    }
     /**
      * Get the car from the given parking spot location.
      *
@@ -58,7 +66,6 @@ public class ParkingLot {
         if (!this.locationIsValid(location)) {
             return null;
         }
-
         return this.cars[location.getFloor()][location.getRow()][location.getPlace()];
     }
 
@@ -78,7 +85,6 @@ public class ParkingLot {
         if (oldCar != null) {
         	return false;
         }
-
         this.cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
         car.setLocation(location);
         this.numberOfOpenSpots--;
@@ -101,7 +107,7 @@ public class ParkingLot {
         if (car == null) {
             return null;
         }
-
+        
         this.cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
         car.setLocation(null);
         this.numberOfOpenSpots++;
@@ -115,10 +121,12 @@ public class ParkingLot {
      * @return The free spot. Null if no free spot.
      */
     public Location getFirstFreeLocation() {
+    	
         for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
             for (int row = 0; row < this.getNumberOfRows(); row++) {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
+                    
+                	Location location = new Location(floor, row, place, placeIsPassPlace(place));
                     if (this.getCarAt(location) == null) {
                         return location;
                     }
@@ -137,7 +145,8 @@ public class ParkingLot {
         for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
             for (int row = 0; row < this.getNumberOfRows(); row++) {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
+
+                    Location location = new Location(floor, row, place, placeIsPassPlace(place));
                     Car car = this.getCarAt(location);
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
                         return car;
@@ -155,7 +164,8 @@ public class ParkingLot {
         for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
             for (int row = 0; row < this.getNumberOfRows(); row++) {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
+                	
+                	Location location = new Location(floor, row, place, placeIsPassPlace(place));
                     Car car = this.getCarAt(location);
                     if (car != null) {
                         car.tick();
@@ -179,4 +189,19 @@ public class ParkingLot {
         }
         return true;
     }
+    
+    public boolean placeIsPassPlace(int place) {
+    	boolean passPlace = false;
+    	if (place % 2 == 0) {
+    		passPlace = true;
+    	}
+    	/*
+    	for (int thisSpot=place ; thisSpot<this.getNumberOfReservePlaces() ; thisSpot++) {
+    		passPlace = true;
+    	}
+    	*/
+    	return passPlace;
+    }
+    
+    
 }
