@@ -75,7 +75,7 @@ public class OccupationLineGraphView extends AbstractView
     @Override
 	public void updateView()
     {
-        // Create a new car park image if the size has changed.
+        // Create a new image if the size has changed.
         if (!this.size.equals(getSize())) {
             this.size = this.getSize();
             this.image = createImage(size.width, size.height);
@@ -90,6 +90,7 @@ public class OccupationLineGraphView extends AbstractView
 
         ArrayList<StorageItem> items = store.getItems();
 
+        // Determine highest value of StorageItem.carAmount.
         int highest = 0;
         int amount = items.size();
         int amountCars = 0;
@@ -109,9 +110,6 @@ public class OccupationLineGraphView extends AbstractView
         	}
         }
 
-        //System.out.println("In OccupationLineGraphView: " + amount);
-        //System.out.println("Size: " + this.getSize().getWidth() + " - " + this.getSize().getHeight());
-
         class Coords {
         	int x = 0;
         	int y = 0;
@@ -122,9 +120,9 @@ public class OccupationLineGraphView extends AbstractView
         int w = (int)this.getSize().getWidth();
         int h = (int)this.getSize().getHeight();
 
+        // Draw range labels on the Y-axis.
         int itemsY = 10;
         double amountPerItemY = (double)highest / itemsY;
-        //System.out.println("AMount per item: " + amountPerItemY);
         graphics.setColor(Color.black);
         for (int i = 0; i < itemsY; i++) {
         	int y = (int)(h - (h * ((double)i / itemsY)));
@@ -135,13 +133,12 @@ public class OccupationLineGraphView extends AbstractView
         int totalMinutes = 0;
         if (store.getItems().size() > 0) {
         	StorageItem lastItem = store.getItems().get(store.getItems().size()-1);
-        	System.out.println(lastItem);
         	totalMinutes = lastItem.minute + (lastItem.hour*60) + (lastItem.day*60*24);
         }
 
+        // Draw range labels on the X-axis.
         int itemsX = 15;
         double amountPerItemX = (double)totalMinutes / itemsX;
-        //System.out.println("AMount per item: " + amountPerItemX);
         graphics.setColor(Color.black);
         for (int i = 0; i < itemsX; i++) {
         	int x = (int) ((double)i / itemsX * w);
@@ -152,12 +149,21 @@ public class OccupationLineGraphView extends AbstractView
         	} else if (val / 60 / 24 < 1) {
         		graphics.drawString(val/60 + "h" + val%60 + "m", x, h);
         	} else {
-        		graphics.drawString(val/60/24 + "d" + val/60 + "h", x, h);
+        		graphics.drawString(val/60/24 + "d" + (val/60)%24 + "h", x, h);
         	}
         }
 
+        int maxPointsDraw = 300;
+        int showEveryPoint = (int)((double)amount/maxPointsDraw);
+
+        // Draw the lines and points.
         int i = 0;
         for (StorageItem item : items) {
+        	if (showEveryPoint > 0 && i%showEveryPoint > 0) {
+        		i++;
+        		continue;
+        	}
+
         	int j = 0;
         	for (CarAmount am : item.carTypeAmount) {
         		if (am.carColor == null) {
@@ -166,9 +172,7 @@ public class OccupationLineGraphView extends AbstractView
 
         		int x = (int) ((this.getSize().getWidth() / amount) * i);
         		int y = (int)(this.getSize().getHeight() - (this.getSize().getHeight() * (am.amount / (double)highest)));
-        		//int y = (int)this.getSize().getHeight()-(int)(am.amount / highest * this.getSize().getHeight());
-        		//int x = (int)(i / amount * this.getSize().getWidth());
-        		//System.out.println(x + " - " + y);
+
         		if (am.carColor != null) {
         			graphics.setColor(am.carColor);
         		} else {
@@ -180,7 +184,7 @@ public class OccupationLineGraphView extends AbstractView
         			lastPos = new Coords();
         		}
 
-        		graphics.fillRect(x-1, y-1, 1, 1);
+        		graphics.fillRect(x-1, y-2, 2, 4);
         		graphics.drawLine(lastPos.x, lastPos.y, x, y);
 
         		lastPos.x = x;
