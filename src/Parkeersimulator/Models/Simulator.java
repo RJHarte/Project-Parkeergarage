@@ -161,10 +161,6 @@ public class Simulator implements Runnable{
      */
     public void manualTick(int amount, boolean updateViewsEveryTick)
     {
-    	if (this.running) {
-    		updateViewsEveryTick = false;
-    		// (To help against data race conditions (=a view being updated at the same time).)
-    	}
     	for (int i = 0; i < amount; i++) {
     		tick(updateViewsEveryTick);
     	}
