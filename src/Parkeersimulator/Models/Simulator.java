@@ -56,7 +56,7 @@ public class Simulator implements Runnable{
     // Earnings
     private int totalEarnings = 0;
 
-    private boolean running;
+    public boolean running;
 
     /**
      * Simulator constructor, initializes queues and view
