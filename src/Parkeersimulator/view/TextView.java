@@ -97,7 +97,7 @@ public class TextView extends AbstractView {
     	String adhoc = "Ad-Hoc: " + this.simulator.getParkingLot().calculateAmountOfCars()[0].amount;
     	String reserv = "Reserved: " + this.simulator.getParkingLot().calculateAmountOfCars()[1].amount; 
     	String abbo = "Pass: " + this.simulator.getParkingLot().calculateAmountOfCars()[2].amount; 
-    	String money = "Total money earned: " ;
+    	String money = "Total money earned: " + simulator.getTotalEarnings() + "$";
     	String enter = "Entrance Queue: " + simulator.getQueues().get(0).carsInQueue();
     	String passenter = "Passholders EQueue: " + simulator.getQueues().get(1).carsInQueue();;
     	String pay = "Payment Queue: " + simulator.getQueues().get(2).carsInQueue();
