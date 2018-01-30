@@ -365,7 +365,7 @@ public class Simulator implements Runnable{
             break;
     	case RESERVE:
             for (int i = 0; i < numberOfCars; i++) {
-            	this.entrancePassQueue.addCar(new ReservedCar());
+            	this.entranceCarQueue.addCar(new ReservedCar());
             }
             break;
     	}
