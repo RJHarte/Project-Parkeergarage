@@ -13,7 +13,7 @@ import Parkeersimulator.controls.Controller;
 //import Parkeersimulator.Models.Location;
 //import Parkeersimulator.Models.ParkingLot;
 //import Parkeersimulator.Models.ParkingPassCar;
-//import Parkeersimulator.view.AbstractView;
+import Parkeersimulator.view.AbstractView;
 import Parkeersimulator.view.CarParkView;
 import Parkeersimulator.view.OccupationPieChartView;
 import Parkeersimulator.view.TextView;
@@ -30,13 +30,13 @@ public class ParkingSimulator {
 		// Create components.
 		ParkingLot parkingLot = new ParkingLot(3, 6, 30);
 
-		Simulator model = new Simulator(parkingLot);
+		Simulator simulator = new Simulator(parkingLot);
 
-		CarParkView carParkView = new CarParkView(parkingLot, 800, 400);
+		CarParkView carParkView = new CarParkView(simulator, 800, 400);
 
-		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(parkingLot, 500, 500);
+		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(simulator, 500, 500);
 		
-		TextView TextView = new TextView(parkingLot, 200, 100);
+		TextView TextView = new TextView(simulator, 200, 100);
 
 		// Setup the screen.
 		screen = new JFrame("Parking Simulator");
@@ -55,7 +55,7 @@ public class ParkingSimulator {
 		TextView.setBounds(500, carParkView.getHeight(), 200, 100);
 
 		//opmaak van de buttons
-		Controller controller = new Controller(model);
+		Controller controller = new Controller(simulator);
 		controller.makeControl();
 		screen.getContentPane().add(controller.eenStap);
 		screen.getContentPane().add(controller.honderdStappen);
@@ -76,6 +76,6 @@ public class ParkingSimulator {
 
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		model.start();
+		simulator.start();
 	}
 }

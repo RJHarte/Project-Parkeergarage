@@ -19,6 +19,7 @@ public class TextView extends AbstractView {
     private Dimension size;
     private Image image;
     private ParkingLot parkingLot;
+    private Simulator simulator;
     
 	private JLabel timeL;
 	private JLabel carL;
@@ -26,11 +27,11 @@ public class TextView extends AbstractView {
 	private JLabel reserveL;
 	private JLabel abboL;
 
-    public TextView(ParkingLot parkingLot, int width, int height) {
-        super(parkingLot, width, height);
+    public TextView(Simulator simulator, int width, int height) {
+        super(simulator, width, height);
 
         this.size = new Dimension(200, 100);
-        this.parkingLot = parkingLot;
+        this.simulator = simulator;
         
 		timeL = new JLabel("");
 		carL = new JLabel("");
@@ -48,8 +49,6 @@ public class TextView extends AbstractView {
 		add(reserveL);
 		add(abboL);
 		updateLabels();
-        
-   
     }
 
     /**
@@ -59,10 +58,6 @@ public class TextView extends AbstractView {
 	public Dimension getPreferredSize() {
         return new Dimension(200, 100);
     }
-    
-    
-    
- 
 
     	 //Repaint the component, changes the label-contents
     	
@@ -73,12 +68,12 @@ public class TextView extends AbstractView {
     }
 
     public void updateLabels() {
-    	int week = 1; //parkingLot.getWeek();
-    	int day = 2;	//iets.getDay();
-    	int hour = 3;	//iets.getHour();
-    	int min = 4;	//iets.getMinute();
+    	int week = this.simulator.getWeek();
+    	int day = this.simulator.getDay();
+    	int hour = this.simulator.getHour();
+    	int min = this.simulator.getMinute();
     	String time = "Week: " + week + ", Day: " + day + ", Time: " + hour + ":" + (min < 10 ? ("0" + min) : min);
-    	String cars = "Cars: " + this.parkingLot.getAmountOfCars() + " / 540";
+    	String cars = "Cars: " + this.simulator.getParkingLot().getAmountOfCars() + " / 540";
     	String adhoc = "Ad-Hoc: "; 
     	String reserv = "Reserved: "; 
     	String abbo = "Pass: "; 

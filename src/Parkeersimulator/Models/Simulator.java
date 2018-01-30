@@ -23,7 +23,7 @@ public class Simulator implements Runnable{
     private ParkingLot parkingLot;
 	private DataStore datastore;
 	
-	private ParkingLot parkinglot;
+	//private ParkingLot parkinglot;
 
     // The current time.
     private int day = 0;
@@ -68,6 +68,7 @@ public class Simulator implements Runnable{
         this.exitCarQueue = new CarQueue();
         this.parkingLot = parkingLot;
         this.datastore = DataStore.createInstance(); 
+        //System.out.println("ik ben de constructor van SImulator: " + this.parkingLot);
     }
 
 
@@ -368,7 +369,8 @@ public class Simulator implements Runnable{
     }
     
 	public ParkingLot getParkingLot() {
-		return parkinglot;
+		//System.out.println("getParkingLot hier: " + this.parkingLot);
+		return this.parkingLot;
 	}
     
 }

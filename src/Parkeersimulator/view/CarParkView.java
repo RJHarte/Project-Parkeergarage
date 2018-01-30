@@ -8,20 +8,24 @@ import java.awt.Image;
 import Parkeersimulator.Models.Car;
 import Parkeersimulator.Models.Location;
 import Parkeersimulator.Models.ParkingLot;
+import Parkeersimulator.Models.Simulator;
 
 public class CarParkView extends AbstractView {
     private static final long serialVersionUID = 1L;
     private Dimension size;
     private Image carParkImage;
-    private ParkingLot parkingLot;
+  //  private ParkingLot parkingLot;
+  //  private Simulator simulator;
 
     /**
      * Constructor for objects of class CarPark
      */
-    public CarParkView(ParkingLot parkingLot, int width, int height) {
-        super(parkingLot, width, height);
+    public CarParkView(Simulator simulator, int width, int height) {
+        super(simulator, width, height);
+    	System.out.println("hey hier Carparkview: " + simulator);
+
         this.size = new Dimension(500, 800);
-        this.parkingLot = parkingLot;
+      //  this.simulator = simulator;
         //this.carParkImage = createImage(500, 800);
     }
 
@@ -63,9 +67,9 @@ public class CarParkView extends AbstractView {
             this.carParkImage = createImage(size.width, size.height);
         }
 
-        int floors = this.parkingLot.getNumberOfFloors();
-        int rows = this.parkingLot.getNumberOfRows();
-        int places = this.parkingLot.getNumberOfPlaces();
+        int floors = this.simulator.getParkingLot().getNumberOfFloors();
+        int rows = this.simulator.getParkingLot().getNumberOfRows();
+        int places = this.simulator.getParkingLot().getNumberOfPlaces();
 
         Graphics graphics = this.carParkImage.getGraphics();
         graphics.setColor(new Color(0xee, 0xee, 0xee));
@@ -75,7 +79,7 @@ public class CarParkView extends AbstractView {
                 for (int spot = 0; spot < places; spot++) {
                 	Location location = new Location(floor, row, spot);
 
-                    Car car = this.parkingLot.getCarAt(location);
+                    Car car = this.simulator.getParkingLot().getCarAt(location);
                     Color color = car == null ? Color.white : car.getColor();
                     drawPlace(graphics, floor, row, spot, color);
                 }

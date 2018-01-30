@@ -7,6 +7,7 @@ import java.awt.Image;
 
 import Parkeersimulator.Models.ParkingLot;
 import Parkeersimulator.Models.ParkingLot.CarAmount;
+import Parkeersimulator.Models.Simulator;
 
 public class OccupationPieChartView extends AbstractView {
     private static final long serialVersionUID = 1337L;
@@ -14,15 +15,16 @@ public class OccupationPieChartView extends AbstractView {
     private Dimension size;
     private Image image;
     private ParkingLot parkingLot;
+    private Simulator simulator;
 
     /**
      * Constructor for objects of class CarPark
      */
-    public OccupationPieChartView(ParkingLot parkingLot, int width, int height) {
-        super(parkingLot, width, height);
+    public OccupationPieChartView(Simulator simulator, int width, int height) {
+        super(simulator, width, height);
 
         this.size = new Dimension(500, 800);
-        this.parkingLot = parkingLot;
+        this.simulator = simulator;
     }
 
     /**
@@ -71,7 +73,7 @@ public class OccupationPieChartView extends AbstractView {
 
     private void drawPie(Graphics graphics)
     {
-		CarAmount[] amounts = this.parkingLot.calculateAmountOfCars();
+		CarAmount[] amounts = this.simulator.getParkingLot().calculateAmountOfCars();
 
 		double total = 0;
 		for (int i = 0; i < amounts.length; i++) {
