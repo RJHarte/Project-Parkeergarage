@@ -26,6 +26,11 @@ public class TextView extends AbstractView {
 	private JLabel adhocL;
 	private JLabel reserveL;
 	private JLabel abboL;
+	private JLabel moneyL;
+	private JLabel entranceL;
+	private JLabel passentranceL;
+	private JLabel paymentL;
+	private JLabel exitL;
 
     public TextView(Simulator simulator, int width, int height) {
         super(simulator, width, height);
@@ -38,16 +43,31 @@ public class TextView extends AbstractView {
 		adhocL = new JLabel("");
 		reserveL = new JLabel("");
 		abboL = new JLabel("");
+		moneyL = new JLabel("");
+		entranceL = new JLabel("");
+		passentranceL = new JLabel("");
+		paymentL = new JLabel("");
+		exitL = new JLabel("");
 		timeL.setPreferredSize(new Dimension(width, 13));
 		carL.setPreferredSize(new Dimension(width, 13));
 		adhocL.setPreferredSize(new Dimension(width, 13));
 		reserveL.setPreferredSize(new Dimension(width, 13));
 		abboL.setPreferredSize(new Dimension(width, 13));
+		moneyL.setPreferredSize(new Dimension(width, 13));
+		entranceL.setPreferredSize(new Dimension(width, 13));
+		passentranceL.setPreferredSize(new Dimension(width, 13));
+		paymentL.setPreferredSize(new Dimension(width, 13));
+		exitL.setPreferredSize(new Dimension(width, 13));
 		add(timeL);
 		add(carL);
 		add(adhocL);
 		add(reserveL);
 		add(abboL);
+		add(moneyL);
+		add(entranceL);
+		add(passentranceL);
+		add(paymentL);
+		add(exitL);
 		updateLabels();
     }
 
@@ -74,15 +94,25 @@ public class TextView extends AbstractView {
     	int min = this.simulator.getMinute();
     	String time = "Week: " + week + ", Day: " + day + ", Time: " + hour + ":" + (min < 10 ? ("0" + min) : min);
     	String cars = "Cars: " + this.simulator.getParkingLot().getAmountOfCars() + " / 540";
-    	String adhoc = "Ad-Hoc: "; 
-    	String reserv = "Reserved: "; 
-    	String abbo = "Pass: "; 
-
+    	String adhoc = "Ad-Hoc: " + this.simulator.getParkingLot().calculateAmountOfCars()[0].amount;
+    	String reserv = "Reserved: " + this.simulator.getParkingLot().calculateAmountOfCars()[1].amount; 
+    	String abbo = "Pass: " + this.simulator.getParkingLot().calculateAmountOfCars()[2].amount; 
+    	String money = "Total money earned: " ;
+    	String enter = "Entrance Queue: " + simulator.getQueues().get(0).carsInQueue();
+    	String passenter = "Passholders EQueue: " + simulator.getQueues().get(1).carsInQueue();;
+    	String pay = "Payment Queue: " + simulator.getQueues().get(2).carsInQueue();
+    	String exit = "Exit Queue: " + simulator.getQueues().get(3).carsInQueue();
+    	
     	timeL.setText(time);
     	carL.setText(cars);
     	adhocL.setText(adhoc);
     	reserveL.setText(reserv);
     	abboL.setText(abbo);	
+    	moneyL.setText(money);
+    	entranceL.setText(enter);
+    	passentranceL.setText(passenter);
+    	paymentL.setText(pay);
+    	exitL.setText(exit);
     	}
 
 

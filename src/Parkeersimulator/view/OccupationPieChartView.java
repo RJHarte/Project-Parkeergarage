@@ -95,4 +95,6 @@ public class OccupationPieChartView extends AbstractView {
 			curValue += amounts[i].amount;
 		}
     }
+    
+    
 }
