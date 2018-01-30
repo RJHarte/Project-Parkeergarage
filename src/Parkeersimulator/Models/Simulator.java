@@ -70,7 +70,11 @@ public class Simulator implements Runnable{
         this.datastore = DataStore.createInstance(); 
         //System.out.println("ik ben de constructor van SImulator: " + this.parkingLot);
     }
-
+    
+    public int newTickDuration(int milliSec){
+    	this.tickDuration = milliSec;
+    	return tickDuration;
+    }
 
     @Override
     public void run() {
@@ -285,8 +289,8 @@ public class Simulator implements Runnable{
     }
 
     /**
-     * Handles cars from the payment queue
-     */
+    * Handles cars from the payment queue
+    */
     private void carsPaying(){
         // Let cars pay.
     	int i = 0;

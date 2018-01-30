@@ -1,5 +1,6 @@
 package Parkeersimulator.controls;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,7 +27,7 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		// Doe eem "this."
 		eenStap = new JButton("1 stap");
 		eenStap.addActionListener(this);
-		//eenStap.setBackground(Color.GRAY);
+		//eenStap.setBackground(Color.LIGHT_GRAY);
 		//eenStap.setOpaque(true);
 
 		honderdStappen = new JButton("100 stappen");
@@ -70,14 +71,9 @@ public class Controller extends AbstractController implements ActionListener, Ch
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
 	      JSlider source = (JSlider)e.getSource();
 	        if (!source.getValueIsAdjusting()) {
-	            System.out.println("Test "+ source.getValue());
+	            this.simulator.newTickDuration(source.getValue());
 	            }
-
 	}
-
-
-
 }
