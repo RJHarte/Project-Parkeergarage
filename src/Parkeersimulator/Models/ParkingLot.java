@@ -19,20 +19,31 @@ public class ParkingLot implements Iterable<Car> {
 
     private int numberOfFloors;
     private int numberOfRows;
+    
     private int numberOfPlaces;
-    private int numberOfReservePlaces;
     private int numberOfOpenSpots;
-    private int numberOfOpenReserves;
+    
+    private int numberOfReservePlaces;
+    private int numberOfOpenReserveSpots;
+    
+    private int numberOfPassPlaces;
+    private int numberOfOpenPassSpots;
     
     private Car[][][] cars;
 
-    public ParkingLot(int numberOfFloors, int numberOfRows, int numberOfPlaces, int numberOfReservePlaces) {
+    public ParkingLot(int numberOfFloors, int numberOfRows, int numberOfPlaces, int numberOfPassPlaces, int numberOfReservePlaces) {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
+        
         this.numberOfPlaces = numberOfPlaces;
-        this.numberOfReservePlaces = numberOfReservePlaces;
         this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
-        this.numberOfOpenReserves = this.numberOfReservePlaces;
+        
+        this.numberOfReservePlaces = numberOfReservePlaces;
+        this.numberOfOpenReserveSpots = this.numberOfPassPlaces;
+        
+        this.numberOfPassPlaces = numberOfPassPlaces;
+        this.numberOfOpenPassSpots = this.numberOfPassPlaces;
+        
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
         this.views = new ArrayList<AbstractView>();
     }
@@ -138,12 +149,29 @@ public class ParkingLot implements Iterable<Car> {
         for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
             for (int row = 0; row < this.getNumberOfRows(); row++) {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
-                	// hier checken welk type auto
+                	
                 	Location location = new Location(floor, row, place, placeIsPassPlace(place));
-                	// if there's not car at location return location
-                    if (this.getCarAt(location) == null) {
-                        return location;
-                    }
+                	if(car instanceof ParkingPassCar) {
+                		if (placeIsPassPlace(place)) {
+                			if (this.getCarAt(location) == null) {
+                                return location;
+                            }
+                		}
+                	}
+                	else if(car instanceof ReservedCar) {
+                		if (!placeIsPassPlace(place)) {
+                			if (this.getCarAt(location) == null) {
+                                return location;
+                            }
+                		}
+                	}
+                	else if(car instanceof AdHocCar) {
+                		if (!placeIsPassPlace(place)) {
+                			if (this.getCarAt(location) == null) {
+                                return location;
+                            }
+                		}
+                	}
                 }
             }
         }
