@@ -132,7 +132,7 @@ public class OccupationLineGraphView extends AbstractView
         int totalMinutes = 0;
         if (store.getItems().size() > 0) {
         	StorageItem lastItem = store.getItems().get(store.getItems().size()-1);
-        	totalMinutes = lastItem.minute + (lastItem.hour*60) + (lastItem.day*60*24);
+        	totalMinutes = lastItem.minute + (lastItem.hour*60) + (lastItem.day*60*24) + (lastItem.week*60*24*7);
         }
 
         // Draw range labels on the X-axis.
@@ -143,12 +143,14 @@ public class OccupationLineGraphView extends AbstractView
         	int x = (int) ((double)i / itemsX * w);
 
         	int val = (int)(i*amountPerItemX);
-        	if (val / 60 < 1) {
+        	if (val/60 < 1) {
         		graphics.drawString(val + "m", x, h);
-        	} else if (val / 60 / 24 < 1) {
+        	} else if (val/60/24 < 1) {
         		graphics.drawString(val/60 + "h" + val%60 + "m", x, h);
-        	} else {
+        	} else if (val/60/24/7 < 1) {
         		graphics.drawString(val/60/24 + "d" + (val/60)%24 + "h", x, h);
+        	} else {
+        		graphics.drawString(val/60/24/7 + "w" + (val/60/24)%7 + "d", x, h);
         	}
         }
 
