@@ -423,7 +423,6 @@ public class Simulator implements Runnable{
 		//System.out.println("getParkingLot hier: " + this.parkingLot);
 		return this.parkingLot;
 	}
-<<<<<<< HEAD
 	
 	/**
 	 * adds the different queues to an array that can be returned. 
@@ -438,7 +437,4 @@ public class Simulator implements Runnable{
 		r.add(exitCarQueue);
 		return r;
 	}
-=======
-
->>>>>>> parent of c1cfab3... Revert "Merge branch 'dev' into Prutszone-Ruben"
 }
