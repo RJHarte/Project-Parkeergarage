@@ -190,7 +190,7 @@ public class Simulator {
     			this.parkingLot.getNumberOfOpenSpots()>0 && // Checks if spots are available
     			i<this.enterSpeed) {	// Checks if enterspeed is not reached
             Car car = queue.removeCar();
-            Location freeLocation = this.parkingLot.getFirstFreeLocation();
+            Location freeLocation = this.parkingLot.getFirstFreeLocation(car);
             this.parkingLot.setCarAt(freeLocation, car);
             i++;
         }
@@ -299,6 +299,7 @@ public class Simulator {
     	
     	Location carLocation = car.getLocation();
     	int carPlace = carLocation.getPlace();
+    	
         if (this.parkingLot.placeIsPassPlace(carPlace)) {
         	System.out.println("left from pass spot");
         }

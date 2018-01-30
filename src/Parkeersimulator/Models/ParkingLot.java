@@ -108,10 +108,12 @@ public class ParkingLot {
             return null;
         }
         
+        
+        
         this.cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
         car.setLocation(null);
         this.numberOfOpenSpots++;
-
+        
         return car;
     }
 
@@ -120,13 +122,14 @@ public class ParkingLot {
      *
      * @return The free spot. Null if no free spot.
      */
-    public Location getFirstFreeLocation() {
+    public Location getFirstFreeLocation(Car car) {
     	
         for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
             for (int row = 0; row < this.getNumberOfRows(); row++) {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
-                    
+                	// hier checken welk type auto
                 	Location location = new Location(floor, row, place, placeIsPassPlace(place));
+                	// if there's not car at location return location
                     if (this.getCarAt(location) == null) {
                         return location;
                     }
@@ -192,14 +195,9 @@ public class ParkingLot {
     
     public boolean placeIsPassPlace(int place) {
     	boolean passPlace = false;
-    	if (place % 2 == 0) {
-    		passPlace = true;
-    	}
-    	/*
     	for (int thisSpot=place ; thisSpot<this.getNumberOfReservePlaces() ; thisSpot++) {
     		passPlace = true;
     	}
-    	*/
     	return passPlace;
     }
     
