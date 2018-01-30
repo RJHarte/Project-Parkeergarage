@@ -12,6 +12,7 @@ public abstract class AbstractView extends JPanel {
 	protected ParkingLot parkingLot;
 	protected int width;
 	protected int height;
+	protected Simulator simulator;
 
 	public AbstractView(ParkingLot model, int width, int height) {
 		this.parkingLot = model;

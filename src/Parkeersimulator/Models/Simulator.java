@@ -21,11 +21,10 @@ public class Simulator implements Runnable{
     private CarQueue exitCarQueue; // Exit queue.
 
     private ParkingLot parkingLot;
-
 	private DataStore datastore;
-
-	private ParkingLot parkinglot;
 	
+	private ParkingLot parkinglot;
+
     // The current time.
     private int day = 0;
     private int hour = 0;
@@ -68,7 +67,7 @@ public class Simulator implements Runnable{
         this.paymentCarQueue = new CarQueue();
         this.exitCarQueue = new CarQueue();
         this.parkingLot = parkingLot;
-        this.datastore = DataStore.createInstance();
+        this.datastore = DataStore.createInstance(); 
     }
 
 

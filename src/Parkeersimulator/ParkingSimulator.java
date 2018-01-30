@@ -52,7 +52,7 @@ public class ParkingSimulator {
 
 		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
 		occupationPieChartView.setBounds(0, carParkView.getHeight(), 250, 250);
-		TextView.setBounds(600, carParkView.getHeight(), 250, 250);
+		TextView.setBounds(500, carParkView.getHeight(), 200, 100);
 
 		//opmaak van de buttons
 		Controller controller = new Controller(model);

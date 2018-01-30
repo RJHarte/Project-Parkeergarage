@@ -18,7 +18,7 @@ public class TextView extends AbstractView {
 
     private Dimension size;
     private Image image;
-    private ParkingLot iets;
+    private ParkingLot parkingLot;
     
 	private JLabel timeL;
 	private JLabel carL;
@@ -30,7 +30,7 @@ public class TextView extends AbstractView {
         super(parkingLot, width, height);
 
         this.size = new Dimension(200, 100);
-        this.iets = parkingLot;
+        this.parkingLot = parkingLot;
         
 		timeL = new JLabel("");
 		carL = new JLabel("");
@@ -73,15 +73,15 @@ public class TextView extends AbstractView {
     }
 
     public void updateLabels() {
-    	int week = 1;	//iets.getWeek();
+    	int week = 1; //parkingLot.getWeek();
     	int day = 2;	//iets.getDay();
     	int hour = 3;	//iets.getHour();
     	int min = 4;	//iets.getMinute();
     	String time = "Week: " + week + ", Day: " + day + ", Time: " + hour + ":" + (min < 10 ? ("0" + min) : min);
     	String cars = "Cars: " + this.parkingLot.getAmountOfCars() + " / 540";
-    	String adhoc = "Ad-Hoc: " + iets;//getCarData()[0];
-    	String reserv = "Reserved: " + iets;//getCarPark().getCarData()[1];
-    	String abbo = "Pass: " + iets;//getCarPark().getCarData()[2];
+    	String adhoc = "Ad-Hoc: "; 
+    	String reserv = "Reserved: "; 
+    	String abbo = "Pass: "; 
 
     	timeL.setText(time);
     	carL.setText(cars);
@@ -89,4 +89,6 @@ public class TextView extends AbstractView {
     	reserveL.setText(reserv);
     	abboL.setText(abbo);	
     	}
+
+
 }

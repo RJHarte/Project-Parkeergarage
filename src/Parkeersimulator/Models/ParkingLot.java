@@ -7,6 +7,7 @@ import java.util.List;
 
 import Parkeersimulator.view.AbstractView;
 import Parkeersimulator.view.CarParkView;
+import Parkeersimulator.Models.Simulator;
 
 /**
  * Hoi dit is een comment
