@@ -7,22 +7,24 @@ import java.awt.Image;
 
 import Parkeersimulator.Models.Car;
 import Parkeersimulator.Models.Location;
-import Parkeersimulator.Models.ParkingLot;
+import Parkeersimulator.Models.Simulator;
 
 public class CarParkView extends AbstractView {
     private static final long serialVersionUID = 1L;
-    private Dimension size;
+    //private Dimension size;
     private Image carParkImage;
-    private ParkingLot parkingLot;
+  //  private ParkingLot parkingLot;
+  //  private Simulator simulator;
 
     /**
      * Constructor for objects of class CarPark
      */
-    public CarParkView(ParkingLot parkingLot) {
-        super(parkingLot);
-        this.size = new Dimension(500, 800);
-        this.parkingLot = parkingLot;
-        this.parkingLot.setCarParkView(this);
+    public CarParkView(Simulator simulator, int width, int height) {
+        super(simulator, width, height);
+    	System.out.println("hey hier Carparkview: " + simulator);
+
+        //this.size = new Dimension(500, 800);
+      //  this.simulator = simulator;
         //this.carParkImage = createImage(500, 800);
     }
 
@@ -45,7 +47,7 @@ public class CarParkView extends AbstractView {
         }
 
         Dimension currentSize = getSize();
-        if (size.equals(currentSize)) {
+        if (this.size.equals(currentSize)) {
             g.drawImage(carParkImage, 0, 0, null);
         } else {
             // Rescale the previous image.
@@ -59,21 +61,18 @@ public class CarParkView extends AbstractView {
     @Override
 	public void updateView() {
         // Create a new car park image if the size has changed.
-        if (!this.size.equals(getSize())) {
+        if (!this.size.equals(getSize()) || this.carParkImage == null) {
             this.size = this.getSize();
             this.carParkImage = createImage(size.width, size.height);
         }
 
-        //System.out.printf("Size in CarParkView: %f %f\n", this.size.getWidth(), this.size.getHeight());
+        int floors = this.simulator.getParkingLot().getNumberOfFloors();
+        int rows = this.simulator.getParkingLot().getNumberOfRows();
+        int places = this.simulator.getParkingLot().getNumberOfPlaces();
+        int reservePlaced = this.simulator.getParkingLot().getNumberOfReservePlaces();
 
-        int floors = this.parkingLot.getNumberOfFloors();
-        int rows = this.parkingLot.getNumberOfRows();
-        int places = this.parkingLot.getNumberOfPlaces();
-        int reservePlaced = this.parkingLot.getNumberOfReservePlaces();
-        
-        
         Graphics graphics = this.carParkImage.getGraphics();
-        graphics.setColor(new Color(0xee, 0xee, 0xee));
+        graphics.setColor(Color.pink);
         graphics.fillRect(0, 0, size.width, size.height);
         for (int floor = 0; floor < floors; floor++) {
             for (int row = 0; row < rows; row++) {
@@ -81,10 +80,10 @@ public class CarParkView extends AbstractView {
                 	
                 	// set passPlace if row meets right conditions
                 	boolean passPlace = false;
-                	passPlace = this.parkingLot.placeIsPassPlace(spot);
+                	passPlace = this.simulator.getParkingLot().placeIsPassPlace(spot);
                 	
                 	Location location = new Location(floor, row, spot, passPlace);
-                    Car car = this.parkingLot.getCarAt(location);
+                    Car car = this.simulator.getParkingLot().getCarAt(location);
                     //Color color = car == null ? Color.white : car.getColor();
                     Color color;
                     if (car == null && passPlace ) {
@@ -109,8 +108,10 @@ public class CarParkView extends AbstractView {
      */
     private void drawPlace(Graphics graphics, int floor, int row, int spot, Color color) {
         graphics.setColor(color);
-        graphics.fillRect(floor * 260 + (1 + (int) Math.floor(row * 0.5)) * 75
-                + (row % 2) * 20, 60 + spot * 10, 20 - 1, 10 - 1); // TODO use dynamic size
-                                                                                                // or constants
+        int x = (floor*260) + ((int) Math.floor(row * 0.5)) * 50 + (row % 2) * 20;
+        int y = spot * 10;
+        int xSize = 20 - 1;
+        int ySize = 10 - 1;
+        graphics.fillRect(x+10, y+10, xSize, ySize);
     }
 }

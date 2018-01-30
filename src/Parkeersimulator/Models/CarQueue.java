@@ -20,7 +20,7 @@ public class CarQueue {
     }
 
     /**
-     * Remove the longest first car in the queue from the queue.
+     * Remove the longest waiting car in the queue from the queue.
      *
      * @return the removed car
      */

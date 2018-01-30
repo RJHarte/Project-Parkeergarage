@@ -1,12 +1,20 @@
 package Parkeersimulator.Models;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import Parkeersimulator.view.AbstractView;
 import Parkeersimulator.view.CarParkView;
+import Parkeersimulator.Models.Simulator;
 
 /**
  * Hoi dit is een comment
  */
-public class ParkingLot {
+public class ParkingLot implements Iterable<Car> {
 
+	private List<AbstractView> views;
     private CarParkView carParkView;
 
     private int numberOfFloors;
@@ -26,15 +34,18 @@ public class ParkingLot {
         this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
         this.numberOfOpenReserves = this.numberOfReservePlaces;
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+        this.views = new ArrayList<AbstractView>();
     }
 
-    public void setCarParkView(CarParkView carParkView)
-    {
-    	this.carParkView = carParkView;
-    }
+	public void addView(AbstractView view)
+	{
+		this.views.add(view);
+	}
 
     public void updateView() {
-        this.carParkView.updateView();
+		for (AbstractView v : this.views) {
+        	v.updateView();
+		}
     }
 
 	public int getNumberOfFloors() {
@@ -178,6 +189,101 @@ public class ParkingLot {
         }
     }
 
+    public CarAmount[] calculateAmountOfCars()
+    {
+    	CarAmount adHoc = new CarAmount();
+    	adHoc.carName = "AdHoc";
+    	adHoc.carColor = (new AdHocCar()).getColor();
+
+    	CarAmount reservedCar = new CarAmount();
+    	reservedCar.carName = "Reserved";
+    	reservedCar.carColor = (new ReservedCar()).getColor();
+
+    	CarAmount parkingPassCar = new CarAmount();
+    	parkingPassCar.carName = "Pass";
+    	parkingPassCar.carColor = (new ParkingPassCar()).getColor();
+
+		CarAmount none = new CarAmount();
+
+    	CarAmount[] amounts = new CarAmount[]{
+    		adHoc, reservedCar, parkingPassCar, none,
+    	};
+
+    	// TODO: Loop over cars.
+		for (Car c : this) {
+			if (c == null) {
+				amounts[3].amount++;
+			} else if (c instanceof AdHocCar) {
+				amounts[0].amount++;
+			} else if (c instanceof ReservedCar) {
+				amounts[1].amount++;
+			} else if (c instanceof ParkingPassCar) {
+				amounts[2].amount++;
+			}
+		}
+
+		return amounts;
+    }
+
+	@Override
+	public Iterator<Car> iterator()
+	{
+		return new ParkingLotSpotIterator();
+	}
+
+    public class CarAmount
+    {
+    	public String carName;
+    	public Color carColor;
+    	public int amount;
+    }
+
+	public class ParkingLotSpotIterator implements Iterator<Car>
+	{
+		private int curFloor = 0;
+		private int curRow = 0;
+		private int curSpot = 0;
+
+		@Override
+		public boolean hasNext()
+		{
+			if (this.curFloor+1 < numberOfFloors) {
+				return true;
+			}
+
+			if (this.curRow+1 < numberOfRows) {
+				return true;
+			}
+
+			if (this.curSpot+1 < numberOfPlaces) {
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public Car next()
+		{
+			this.curSpot++;
+			if (this.curSpot >= numberOfPlaces) {
+				this.curSpot = 0;
+				this.curRow++;
+			}
+
+			if (this.curRow >= numberOfRows) {
+				this.curRow = 0;
+				this.curFloor++;
+			}
+
+			if (this.curFloor >= numberOfFloors) {
+				throw new RuntimeException("No");
+			}
+
+			return cars[this.curFloor][this.curRow][this.curSpot];
+		}
+	}
+
     /**
      * Check if a location exists; is not outside our parking space.
      *
@@ -193,6 +299,7 @@ public class ParkingLot {
         return true;
     }
     
+
     public boolean placeIsPassPlace(int place) {
     	boolean passPlace = false;
     	for (int thisSpot=place ; thisSpot<this.getNumberOfReservePlaces() ; thisSpot++) {
@@ -201,5 +308,9 @@ public class ParkingLot {
     	return passPlace;
     }
     
-    
+
+	public int getAmountOfCars() {
+		return (numberOfFloors * numberOfRows * numberOfPlaces) - numberOfOpenSpots;
+	}
 }
+

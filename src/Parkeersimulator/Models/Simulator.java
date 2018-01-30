@@ -1,11 +1,13 @@
 package Parkeersimulator.Models;
 
-import java.text.NumberFormat;
 import java.util.Random;
+
+import Parkeersimulator.DataStore;
+import Parkeersimulator.DataStore.StorageItem;
 
 //import Parkeersimulator.SimulatorView;
 
-public class Simulator {
+public class Simulator implements Runnable{
 
 	// Easy names for regular people and subscription holders.
 	private static final String AD_HOC = "1";
@@ -19,11 +21,15 @@ public class Simulator {
     private CarQueue exitCarQueue; // Exit queue.
 
     private ParkingLot parkingLot;
+	private DataStore datastore;
+
+	//private ParkingLot parkinglot;
 
     // The current time.
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
+    protected int week = 0;
 
     // Milliseconds between ticks. Change this to make the simulation go faster.
     private int tickDuration = 100;
@@ -37,11 +43,11 @@ public class Simulator {
     // For pass (subscription people) people (PASS).
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
-    
+
     // For reservees (RESERVE)
     int weekDayReservationArrivals = 75; // average number of arriving cars per hour
     int weekendReservationArrivals = 10; // average number of arriving cars per hour
-    
+
     // Amount of cars the different types of queue can handle per minute.
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast) (easy on the sass boii)
@@ -49,7 +55,9 @@ public class Simulator {
 
     // Earnings
     private int totalEarnings = 0;
-    
+
+    public boolean running;
+
     /**
      * Simulator constructor, initializes queues and view
      */
@@ -59,22 +67,28 @@ public class Simulator {
         this.paymentCarQueue = new CarQueue();
         this.exitCarQueue = new CarQueue();
         this.parkingLot = parkingLot;
+        this.datastore = DataStore.createInstance();
+        //System.out.println("ik ben de constructor van SImulator: " + this.parkingLot);
     }
+
     
     public int getTotalEarnings() {
     	return this.totalEarnings;
     }
     
-    /**
-     * Runs the simulation for certain amount of ticks
-     * @param number of ticks to run the simulation, defaults to 10k if 0
-     */
-    public void run(int times) {
-    	if (times <= 0) {
-    		times = 10000;
 
-    	}
-        for (int i = 0; i < times; i++) {
+
+    public int newTickDuration(int milliSec){
+    	this.tickDuration = milliSec;
+    	return tickDuration;
+    }
+
+    @Override
+    public void run() {
+    	int i = 0;
+    	while (running) {
+    		long startTime = System.currentTimeMillis(); // Time in milliseconds.
+
         	if (i%5 == 0) {
 	            System.out.printf("Cur: %d %d:%d; Entrance queue: %d; Payment queue: %d; Exit queue: %d\n",
 	            		this.day, this.hour, this.minute,
@@ -82,38 +96,87 @@ public class Simulator {
 	            		this.paymentCarQueue.carsInQueue(),
 	            		this.exitCarQueue.carsInQueue());
         	}
+
             tick();
+
+            long endTime = System.currentTimeMillis(); // Time in milliseconds.
+
+            long timeTickTook = endTime-startTime; // How long this tick took to calculate
+
+            long timeToSleep = this.tickDuration - timeTickTook;
+
+    		// TODO: This sleep should not be done in tick, but in the method that continuely runs tick (which is run()).
+
+            if (timeToSleep > 0) {
+    	        // Pause.
+    	        try {
+    	            Thread.sleep(timeToSleep);
+    	        } catch (InterruptedException e) {
+    	            e.printStackTrace();
+    	        }
+            }
+
+            i++;
         }
+    }
+
+    public void start()
+    {
+    	if (this.running) {
+    		return;
+    	}
+
+    	this.running = true;
+
+    	new Thread(this).start();
+    }
+
+    public void stop()
+    {
+    	this.running = false;
+    }
+
+
+    private void tick()
+    {
+    	this.tick(true);
     }
 
     /**
      * tick represents one time period in the simulation.
      * The tick triggers and handles events in this world.
      */
-    private void tick() {
-    	long startTime = System.currentTimeMillis(); // Time in milliseconds.
-
+    private void tick(boolean updateViews)
+    {
     	this.advanceTime();
+
     	this.handleExit();
-
-        long endTime = System.currentTimeMillis(); // Time in milliseconds.
-
-        long timeTickTook = endTime-startTime; // How long this tick took to calculate
-
-        long timeToSleep = this.tickDuration - timeTickTook;
-
-        if (timeToSleep > 0) {
-	        // Pause.
-	        try {
-	            Thread.sleep(timeToSleep);
-	        } catch (InterruptedException e) {
-	            e.printStackTrace();
-	        }
-        }
 
         this.handleEntrance();
 
+		StorageItem storageItem = this.datastore.new StorageItem();
+		storageItem.minute = this.minute;
+		storageItem.hour = this.hour;
+		storageItem.day = this.day;
+		storageItem.week = this.week;
+		storageItem.carTypeAmount = this.parkingLot.calculateAmountOfCars();
+
+		this.datastore.addItem(storageItem);
+
         this.updateViews();
+    }
+
+    /**
+     * Execute given amount of ticks manually, as fast as possible.
+     *
+     * @param amount
+     * @param Whether to update views every tick.
+     */
+    public void manualTick(int amount, boolean updateViewsEveryTick)
+    {
+    	for (int i = 0; i < amount; i++) {
+    		tick(updateViewsEveryTick);
+    	}
     }
 
     /**
@@ -132,9 +195,26 @@ public class Simulator {
         }
         while (day > 6) {
             day -= 7;
+            week++;
         }
 
     }
+
+	public int getWeek() {
+		return week;
+	}
+
+	public int getDay() {
+		return day;
+	}
+
+	public int getHour() {
+		return hour;
+	}
+
+	public int getMinute() {
+		return minute;
+	}
 
     /**
      * handleEntrance triggers and handles events for the entrance queues.
@@ -173,7 +253,7 @@ public class Simulator {
 
     	numberOfCars = this.getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
     	this.addArrivingCars(numberOfCars, PASS);
-    	
+
     	numberOfCars = this.getNumberOfCars(weekDayReservationArrivals, weekendReservationArrivals);
     	this.addArrivingCars(numberOfCars, RESERVE);
     }
@@ -207,9 +287,9 @@ public class Simulator {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            this.paymentCarQueue.addCar(car);
-	            
+
 	            this.totalEarnings += this.paymentCarQueue.carPays(car);
-	           
+
         	}
         	else {
         		this.carLeavesSpot(car);
@@ -218,8 +298,8 @@ public class Simulator {
     }
 
     /**
-     * Handles cars from the payment queue
-     */
+    * Handles cars from the payment queue
+    */
     private void carsPaying(){
         // Let cars pay.
     	int i = 0;
@@ -297,6 +377,7 @@ public class Simulator {
      */
     private void carLeavesSpot(Car car){
     	
+    	/*//print test
     	Location carLocation = car.getLocation();
     	int carPlace = carLocation.getPlace();
     	
@@ -304,10 +385,16 @@ public class Simulator {
         	System.out.println("left from pass spot");
         }
         else System.out.println("left from normal spot");
+    	*/
     	
     	//print spot type when car leaving
     	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
-        //System.out.println("Euroteken "+this.totalEarnings/100);
     }
+
+	public ParkingLot getParkingLot() {
+		//System.out.println("getParkingLot hier: " + this.parkingLot);
+		return this.parkingLot;
+	}
+
 }
