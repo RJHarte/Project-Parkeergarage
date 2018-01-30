@@ -65,8 +65,7 @@ public class DataStore
 		public int minute;
 		public int hour;
 
-		public int day; // Day of the simulation. 0...7
-		public int week; // Week of the simulation. 0...alot
+		public int day; // Day of the simulation. 0...alot
 
 		public CarAmount[] carTypeAmount;
 
@@ -80,7 +79,7 @@ public class DataStore
 				carAmount += String.format("%s => %d; ", amount.carName, amount.amount);
 			}
 
-			return String.format("%02d:%02d %03d d %03 w %s", this.hour, this.minute, this.day, this.week, carAmount);
+			return String.format("%02d:%02d %03d: %s", this.hour, this.minute, this.day, carAmount);
 		}
 	}
 }

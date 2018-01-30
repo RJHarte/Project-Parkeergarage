@@ -5,16 +5,14 @@ public class Location {
     private int floor;
     private int row;
     private int place;
-    private boolean passPlace;
 
     /**
      * Constructor for objects of class Location
      */
-    public Location(int floor, int row, int place, boolean passPlace) {
+    public Location(int floor, int row, int place) {
         this.floor = floor;
         this.row = row;
         this.place = place;
-        this.passPlace = passPlace;
     }
 
     /**
@@ -29,8 +27,7 @@ public class Location {
             Location other = (Location) obj;
             return this.floor == other.getFloor() &&
             		this.row == other.getRow() &&
-            		this.place == other.getPlace() &&
-            		this.passPlace == other.getPassPlace();
+            		this.place == other.getPlace();
         }
         else {
             return false;
@@ -77,17 +74,6 @@ public class Location {
      */
     public int getPlace() {
         return this.place;
-    }
-    
-    /*
-     * @return if place is passholder place
-     */
-    public boolean getPassPlace() {
-    	return this.passPlace;
-    }
-    
-    public void setPassPlace(boolean passPlace) {
-    	this.passPlace = passPlace;
     }
 
 }
