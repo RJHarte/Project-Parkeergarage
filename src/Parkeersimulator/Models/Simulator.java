@@ -22,7 +22,7 @@ public class Simulator implements Runnable{
 
     private ParkingLot parkingLot;
 	private DataStore datastore;
-	
+
 	//private ParkingLot parkinglot;
 
     // The current time.
@@ -67,10 +67,10 @@ public class Simulator implements Runnable{
         this.paymentCarQueue = new CarQueue();
         this.exitCarQueue = new CarQueue();
         this.parkingLot = parkingLot;
-        this.datastore = DataStore.createInstance(); 
+        this.datastore = DataStore.createInstance();
         //System.out.println("ik ben de constructor van SImulator: " + this.parkingLot);
     }
-    
+
     public int newTickDuration(int milliSec){
     	this.tickDuration = milliSec;
     	return tickDuration;
@@ -151,6 +151,7 @@ public class Simulator implements Runnable{
 		storageItem.minute = this.minute;
 		storageItem.hour = this.hour;
 		storageItem.day = this.day;
+		storageItem.week = this.week;
 		storageItem.carTypeAmount = this.parkingLot.calculateAmountOfCars();
 
 		this.datastore.addItem(storageItem);
@@ -207,7 +208,7 @@ public class Simulator implements Runnable{
 	public int getMinute() {
 		return minute;
 	}
-    
+
     /**
      * handleEntrance triggers and handles events for the entrance queues.
      */
@@ -371,10 +372,10 @@ public class Simulator implements Runnable{
         this.exitCarQueue.addCar(car);
         //System.out.println(this.totalEarnings*.01);
     }
-    
+
 	public ParkingLot getParkingLot() {
 		//System.out.println("getParkingLot hier: " + this.parkingLot);
 		return this.parkingLot;
 	}
-    
+
 }
