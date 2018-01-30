@@ -24,10 +24,13 @@ public class Simulator implements Runnable{
 
 	private DataStore datastore;
 
+	private ParkingLot parkinglot;
+	
     // The current time.
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
+    protected int week = 0;
 
     // Milliseconds between ticks. Change this to make the simulation go faster.
     private int tickDuration = 100;
@@ -180,10 +183,27 @@ public class Simulator implements Runnable{
         }
         while (day > 6) {
             day -= 7;
+            week++;
         }
 
     }
 
+	public int getWeek() {
+		return week;
+	}
+
+	public int getDay() {
+		return day;
+	}
+
+	public int getHour() {
+		return hour;
+	}
+
+	public int getMinute() {
+		return minute;
+	}
+    
     /**
      * handleEntrance triggers and handles events for the entrance queues.
      */
@@ -347,4 +367,9 @@ public class Simulator implements Runnable{
         this.exitCarQueue.addCar(car);
         //System.out.println(this.totalEarnings*.01);
     }
+    
+	public ParkingLot getParkingLot() {
+		return parkinglot;
+	}
+    
 }

@@ -16,6 +16,7 @@ import Parkeersimulator.controls.Controller;
 //import Parkeersimulator.view.AbstractView;
 import Parkeersimulator.view.CarParkView;
 import Parkeersimulator.view.OccupationPieChartView;
+import Parkeersimulator.view.TextView;
 
 public class ParkingSimulator {
 	private JFrame screen;
@@ -34,6 +35,8 @@ public class ParkingSimulator {
 		CarParkView carParkView = new CarParkView(parkingLot, 800, 400);
 
 		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(parkingLot, 500, 500);
+		
+		TextView TextView = new TextView(parkingLot, 200, 100);
 
 		// Setup the screen.
 		screen = new JFrame("Parking Simulator");
@@ -45,9 +48,11 @@ public class ParkingSimulator {
 
 		screen.getContentPane().add(carParkView);
 		screen.getContentPane().add(occupationPieChartView);
+		screen.getContentPane().add(TextView);
 
 		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
 		occupationPieChartView.setBounds(0, carParkView.getHeight(), 250, 250);
+		TextView.setBounds(600, carParkView.getHeight(), 250, 250);
 
 		//opmaak van de buttons
 		Controller controller = new Controller(model);

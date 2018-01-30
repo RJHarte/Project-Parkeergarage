@@ -284,4 +284,8 @@ public class ParkingLot implements Iterable<Car> {
         }
         return true;
     }
+    
+	public int getAmountOfCars() {
+		return (numberOfFloors * numberOfRows * numberOfPlaces) - numberOfOpenSpots;
+	}
 }
