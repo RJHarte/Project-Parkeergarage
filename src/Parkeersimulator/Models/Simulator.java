@@ -157,6 +157,7 @@ public class Simulator {
     	this.parkingLot.tick();
         // Update the car park view.
     	this.parkingLot.updateView();
+    
     }
 
     /**
@@ -291,8 +292,19 @@ public class Simulator {
      * @param car
      */
     private void carLeavesSpot(Car car){
+    	
+    	Location carLocation = car.getLocation();
+    	int carPlace = carLocation.getPlace();
+        if (this.parkingLot.placeIsPassPlace(carPlace)) {
+        	System.out.println("left from pass spot");
+        }
+        else System.out.println("left from normal spot");
+    	
+    	//print spot type when car leaving
     	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
         //System.out.println(this.totalEarnings);
+        
+    	
     }
 }
