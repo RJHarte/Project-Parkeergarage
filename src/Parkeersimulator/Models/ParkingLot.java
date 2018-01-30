@@ -19,20 +19,31 @@ public class ParkingLot implements Iterable<Car> {
 
     private int numberOfFloors;
     private int numberOfRows;
+    
     private int numberOfPlaces;
-    private int numberOfReservePlaces;
     private int numberOfOpenSpots;
-    private int numberOfOpenReserves;
+    
+    private int numberOfPassPlaces;
+    private int numberOfOpenPassSpots;
+    
+    private int numberOfReservePlaces;
+    private int numberOfOpenReserveSpots;
     
     private Car[][][] cars;
-
-    public ParkingLot(int numberOfFloors, int numberOfRows, int numberOfPlaces, int numberOfReservePlaces) {
+    
+    public ParkingLot(int numberOfFloors, int numberOfRows, int numberOfPlaces, int numberOfPassPlaces, int numberOfReservePlaces) {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
+        
         this.numberOfPlaces = numberOfPlaces;
+        this.numberOfOpenSpots = (numberOfFloors*numberOfRows*numberOfPlaces)-numberOfPassPlaces;
+        
+        this.numberOfPassPlaces = numberOfPassPlaces;
+        this.numberOfOpenPassSpots = numberOfPassPlaces;
+        
         this.numberOfReservePlaces = numberOfReservePlaces;
-        this.numberOfOpenSpots = numberOfFloors*numberOfRows*numberOfPlaces;
-        this.numberOfOpenReserves = this.numberOfReservePlaces;
+        this.numberOfOpenReserveSpots = numberOfReservePlaces;
+        
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
         this.views = new ArrayList<AbstractView>();
     }
@@ -67,6 +78,10 @@ public class ParkingLot implements Iterable<Car> {
     public int getNumberOfReservePlaces() {
     	return this.numberOfReservePlaces;
     }
+    
+    public int getNumberOfPassPlaces() {
+    	return this.numberOfPassPlaces;
+    }
     /**
      * Get the car from the given parking spot location.
      *
@@ -98,8 +113,17 @@ public class ParkingLot implements Iterable<Car> {
         }
         this.cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
         car.setLocation(location);
-        this.numberOfOpenSpots--;
-
+        
+        if (car instanceof ParkingPassCar ) {
+        	this.numberOfOpenPassSpots--;
+        }
+        else if (car instanceof ReservedCar ) {
+        	this.numberOfOpenReserveSpots--;
+        }
+        else if (car instanceof AdHocCar ) {
+        	this.numberOfOpenSpots--;
+        }
+        
         return true;
     }
 
@@ -119,11 +143,19 @@ public class ParkingLot implements Iterable<Car> {
             return null;
         }
         
-        
-        
         this.cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
         car.setLocation(null);
-        this.numberOfOpenSpots++;
+        
+        // opens up spots in relation to car type 
+        if (car instanceof ParkingPassCar ) {
+        	this.numberOfOpenPassSpots++;
+        }
+        else if (car instanceof ReservedCar ) {
+        	this.numberOfOpenReserveSpots++;
+        }
+        else if (car instanceof AdHocCar ) {
+        	this.numberOfOpenSpots++;
+        }
         
         return car;
     }
@@ -138,12 +170,46 @@ public class ParkingLot implements Iterable<Car> {
         for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
             for (int row = 0; row < this.getNumberOfRows(); row++) {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
-                	// hier checken welk type auto
-                	Location location = new Location(floor, row, place, placeIsPassPlace(place));
+                	
+                	Location location = new Location(floor, row, place);
+                	setAllPassPlaces(location,0,this.numberOfPassPlaces/3);
+                	
+                	boolean isPassPlace = locationIsPassPlace(location);
+                	boolean isReserved = locationIsReservedPlace(location);
+                	
+
                 	// if there's not car at location return location
-                    if (this.getCarAt(location) == null) {
-                        return location;
-                    }
+                	if(car instanceof ParkingPassCar) {
+                		if (this.numberOfOpenPassSpots > 0) {
+                			if (isPassPlace) {
+		                		if (this.getCarAt(location) == null) {
+		                            return location;
+		                		}
+                			}
+	                	}
+                		else if (this.getCarAt(location) == null) {
+                            return location;
+                		}
+                	}
+                	else if(car instanceof ReservedCar) {
+                		if (!isPassPlace) {
+	                		if (this.numberOfOpenReserveSpots > 0 && isReserved){
+		                		if (this.getCarAt(location) == null) {
+		                            return location;
+		                        }
+	                		}
+	                		else if (this.getCarAt(location) == null) {
+	                            return location;
+	                		}
+                		}
+                	}
+                	else if(car instanceof AdHocCar) {
+                		if (!isPassPlace && !isReserved) {
+	                		if (this.getCarAt(location) == null) {
+	                            return location;
+	                        }
+	                	}
+                	}
                 }
             }
         }
@@ -159,8 +225,12 @@ public class ParkingLot implements Iterable<Car> {
         for (int floor = 0; floor < this.getNumberOfFloors(); floor++) {
             for (int row = 0; row < this.getNumberOfRows(); row++) {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
-
-                    Location location = new Location(floor, row, place, placeIsPassPlace(place));
+                	
+                	Location location = new Location(floor, row, place);
+                	setAllPassPlaces(location,0,this.numberOfPassPlaces/3);
+                	boolean isPassPlace = locationIsPassPlace(location);
+                	boolean isReserved = locationIsReservedPlace(location);
+                	
                     Car car = this.getCarAt(location);
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
                         return car;
@@ -179,7 +249,11 @@ public class ParkingLot implements Iterable<Car> {
             for (int row = 0; row < this.getNumberOfRows(); row++) {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
                 	
-                	Location location = new Location(floor, row, place, placeIsPassPlace(place));
+                	Location location = new Location(floor, row, place);
+                	setAllPassPlaces(location,0,this.numberOfPassPlaces/3);
+                	boolean isPassPlace = locationIsPassPlace(location);
+                	boolean isReserved = locationIsReservedPlace(location);
+                	
                     Car car = this.getCarAt(location);
                     if (car != null) {
                         car.tick();
@@ -299,18 +373,22 @@ public class ParkingLot implements Iterable<Car> {
         return true;
     }
     
-
-    public boolean placeIsPassPlace(int place) {
-    	boolean passPlace = false;
-    	for (int thisSpot=place ; thisSpot<this.getNumberOfReservePlaces() ; thisSpot++) {
-    		passPlace = true;
-    	}
-    	return passPlace;
+    public boolean locationIsPassPlace(Location location) {
+    	return location.getPassPlace();
     }
     
+    public boolean locationIsReservedPlace(Location location) {
+    	return location.getReservedPlace();
+    }
 
 	public int getAmountOfCars() {
 		return (numberOfFloors * numberOfRows * numberOfPlaces) - numberOfOpenSpots;
+	}
+	
+	public void setAllPassPlaces(Location location, int row, int place) {
+		if (location.getRow() == row && location.getPlace() < place) {
+    		location.setPassPlace(true);
+    	}
 	}
 }
 
