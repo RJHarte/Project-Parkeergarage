@@ -30,10 +30,10 @@ public class OccupationPieChartView extends AbstractView {
      */
     @Override
 	public Dimension getPreferredSize() {
-        return new Dimension(500, 800);
+        return new Dimension(800, 400);
     }
 
-    /**
+    /**screen.getContentPane().add(occupationPieChartView);
      * Overriden. The car park view component needs to be redisplayed. Copy the
      * internal image to screen.
      */
