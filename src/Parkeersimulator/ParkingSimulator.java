@@ -71,7 +71,7 @@ public class ParkingSimulator {
 
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
 		model.run(0);
+
 	}
 }

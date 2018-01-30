@@ -71,14 +71,9 @@ public class Controller extends AbstractController implements ActionListener, Ch
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
 	      JSlider source = (JSlider)e.getSource();
 	        if (!source.getValueIsAdjusting()) {
 	            System.out.println("Test "+ source.getValue());
 	            }
-
 	}
-	
-
-
 }

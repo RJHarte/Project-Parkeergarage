@@ -65,7 +65,11 @@ public class Simulator {
         this.parkingLot = parkingLot;
         this.datastore = DataStore.createInstance();
     }
-
+    
+    public void newTickDuration(int milliSec){
+    	this.tickDuration = milliSec;
+    }
+    
     /**
      * Runs the simulation for certain amount of ticks
      * @param number of ticks to run the simulation, defaults to 10k if 0
