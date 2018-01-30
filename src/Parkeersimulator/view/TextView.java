@@ -27,9 +27,10 @@ public class TextView extends AbstractView {
 	private JLabel reserveL;
 	private JLabel abboL;
 	private JLabel moneyL;
-	private JLabel que1L;
-	private JLabel que2L;
-	private JLabel que3L;
+	private JLabel entranceL;
+	private JLabel passentranceL;
+	private JLabel paymentL;
+	private JLabel exitL;
 
     public TextView(Simulator simulator, int width, int height) {
         super(simulator, width, height);
@@ -43,27 +44,30 @@ public class TextView extends AbstractView {
 		reserveL = new JLabel("");
 		abboL = new JLabel("");
 		moneyL = new JLabel("");
-		que1L = new JLabel("");
-		que2L = new JLabel("");
-		que3L = new JLabel("");
+		entranceL = new JLabel("");
+		passentranceL = new JLabel("");
+		paymentL = new JLabel("");
+		exitL = new JLabel("");
 		timeL.setPreferredSize(new Dimension(width, 13));
 		carL.setPreferredSize(new Dimension(width, 13));
 		adhocL.setPreferredSize(new Dimension(width, 13));
 		reserveL.setPreferredSize(new Dimension(width, 13));
 		abboL.setPreferredSize(new Dimension(width, 13));
 		moneyL.setPreferredSize(new Dimension(width, 13));
-		que1L.setPreferredSize(new Dimension(width, 13));
-		que2L.setPreferredSize(new Dimension(width, 13));
-		que3L.setPreferredSize(new Dimension(width, 13));
+		entranceL.setPreferredSize(new Dimension(width, 13));
+		passentranceL.setPreferredSize(new Dimension(width, 13));
+		paymentL.setPreferredSize(new Dimension(width, 13));
+		exitL.setPreferredSize(new Dimension(width, 13));
 		add(timeL);
 		add(carL);
 		add(adhocL);
 		add(reserveL);
 		add(abboL);
 		add(moneyL);
-		add(que1L);
-		add(que2L);
-		add(que3L);
+		add(entranceL);
+		add(passentranceL);
+		add(paymentL);
+		add(exitL);
 		updateLabels();
     }
 
@@ -93,10 +97,11 @@ public class TextView extends AbstractView {
     	String adhoc = "Ad-Hoc: " + this.simulator.getParkingLot().calculateAmountOfCars()[0].amount;
     	String reserv = "Reserved: " + this.simulator.getParkingLot().calculateAmountOfCars()[1].amount; 
     	String abbo = "Pass: " + this.simulator.getParkingLot().calculateAmountOfCars()[2].amount; 
-    	String money = "Total money earned: ";
-    	String que1 = "AdHoc Entrance queue: "; 
-    	String que2 = "Reserve Entrance queue: ";
-    	String que3 = "Passholders Entrance queue: ";
+    	String money = "Total money earned: " ;
+    	String enter = "Entrance Queue: " + simulator.getQueues().get(0).carsInQueue();
+    	String passenter = "Passholders EQueue: " + simulator.getQueues().get(1).carsInQueue();;
+    	String pay = "Payment Queue: " + simulator.getQueues().get(2).carsInQueue();
+    	String exit = "Exit Queue: " + simulator.getQueues().get(3).carsInQueue();
     	
     	timeL.setText(time);
     	carL.setText(cars);
@@ -104,10 +109,10 @@ public class TextView extends AbstractView {
     	reserveL.setText(reserv);
     	abboL.setText(abbo);	
     	moneyL.setText(money);
-    	que1L.setText(que1);
-    	que2L.setText(que2);
-    	que3L.setText(que3);
-    	
+    	entranceL.setText(enter);
+    	passentranceL.setText(passenter);
+    	paymentL.setText(pay);
+    	exitL.setText(exit);
     	}
 
 

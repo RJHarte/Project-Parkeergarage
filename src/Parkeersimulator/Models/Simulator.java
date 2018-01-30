@@ -1,5 +1,6 @@
 package Parkeersimulator.Models;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import Parkeersimulator.DataStore;
@@ -376,5 +377,18 @@ public class Simulator implements Runnable{
 		//System.out.println("getParkingLot hier: " + this.parkingLot);
 		return this.parkingLot;
 	}
-    
+	
+	/**
+	 * adds the different queues to an array that can be returned. 
+	 * 
+	 * @return sizes of the different queues
+	 */
+	public ArrayList<CarQueue> getQueues() {
+		ArrayList<CarQueue> r = new ArrayList<>();
+		r.add(entranceCarQueue);
+		r.add(entrancePassQueue);
+		r.add(paymentCarQueue);
+		r.add(exitCarQueue);
+		return r;
+	}
 }
