@@ -6,15 +6,17 @@ public class Location {
     private int row;
     private int place;
     private boolean passPlace;
+    private boolean reservedPlace;
 
     /**
      * Constructor for objects of class Location
      */
-    public Location(int floor, int row, int place, boolean passPlace) {
+    public Location(int floor, int row, int place) {
         this.floor = floor;
         this.row = row;
         this.place = place;
-        this.passPlace = passPlace;
+        this.passPlace = false;
+        this.reservedPlace = false;
     }
 
     /**
@@ -30,7 +32,8 @@ public class Location {
             return this.floor == other.getFloor() &&
             		this.row == other.getRow() &&
             		this.place == other.getPlace() &&
-            		this.passPlace == other.getPassPlace();
+            		this.passPlace == other.getPassPlace() &&
+            		this.reservedPlace == other.getReservedPlace();
         }
         else {
             return false;
@@ -86,8 +89,16 @@ public class Location {
     	return this.passPlace;
     }
     
+    public boolean getReservedPlace() {
+    	return this.reservedPlace;
+    }
+    
     public void setPassPlace(boolean passPlace) {
     	this.passPlace = passPlace;
+    }
+    
+    public void setReservedPlace(boolean reservedPlace) {
+    	this.reservedPlace = reservedPlace;
     }
 
 }
