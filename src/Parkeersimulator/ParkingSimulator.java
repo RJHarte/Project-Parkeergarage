@@ -15,6 +15,7 @@ import Parkeersimulator.controls.Controller;
 //import Parkeersimulator.Models.ParkingPassCar;
 //import Parkeersimulator.view.AbstractView;
 import Parkeersimulator.view.CarParkView;
+import Parkeersimulator.view.OccupationLineGraphView;
 import Parkeersimulator.view.OccupationPieChartView;
 
 public class ParkingSimulator {
@@ -33,7 +34,8 @@ public class ParkingSimulator {
 
 		CarParkView carParkView = new CarParkView(parkingLot, 800, 400);
 
-		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(parkingLot, 500, 500);
+		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(parkingLot, 250, 250);
+		OccupationLineGraphView occupationLineGraphView = new OccupationLineGraphView(parkingLot, 800, 400);
 
 		// Setup the screen.
 		screen = new JFrame("Parking Simulator");
@@ -45,10 +47,12 @@ public class ParkingSimulator {
 
 		screen.getContentPane().add(carParkView);
 		screen.getContentPane().add(occupationPieChartView);
+		screen.getContentPane().add(occupationLineGraphView);
 
 		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
-		occupationPieChartView.setBounds(0, carParkView.getHeight(), 250, 250);
-		
+		occupationPieChartView.setBounds(0, carParkView.getHeight(), occupationPieChartView.getWidth(), occupationPieChartView.getHeight());
+		occupationLineGraphView.setBounds(0, carParkView.getHeight()+occupationPieChartView.getHeight(), occupationLineGraphView.getWidth(), occupationLineGraphView.getHeight());
+
 		//opmaak van de buttons
 		Controller controller = new Controller(model);
 		controller.makeControl();
@@ -57,21 +61,25 @@ public class ParkingSimulator {
 		screen.getContentPane().add(controller.start);
 		screen.getContentPane().add(controller.stop);
 		screen.getContentPane().add(controller.ticksPerSecond);
-		
-		controller.eenStap.setBounds(occupationPieChartView.getWidth(), carParkView.getHeight(), 100, 25);
-		controller.honderdStappen.setBounds(occupationPieChartView.getWidth(), carParkView.getHeight()+25, 100, 25);
-		controller.start.setBounds(occupationPieChartView.getWidth()+100, carParkView.getHeight(), 100, 25);
-		controller.stop.setBounds(occupationPieChartView.getWidth()+100, carParkView.getHeight()+25, 100, 25);
-		controller.ticksPerSecond.setBounds(occupationPieChartView.getWidth(), carParkView.getHeight()+50, 200, 40);
-		
-		System.out.printf("in Constructor: %d %d\n", carParkView.getWidth(), carParkView.getHeight());
+
+		controller.eenStap.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight(), 100, 25);
+		controller.honderdStappen.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight()+25, 100, 25);
+		controller.start.setBounds(occupationPieChartView.getWidth()+120, carParkView.getHeight(), 100, 25);
+		controller.stop.setBounds(occupationPieChartView.getWidth()+120, carParkView.getHeight()+25, 100, 25);
+		controller.ticksPerSecond.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight()+57, 200, 40);
+
+		System.out.printf("in Constructor: %d %d\n", occupationLineGraphView.getWidth(), occupationLineGraphView.getHeight());
 
 		System.out.println(carParkView.getWidth());
 		System.out.println(carParkView.getHeight());
 
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		model.run(0);
 
+		//model.run(0);
+
+		parkingLot.updateView();
+
+		model.start();
 	}
 }
