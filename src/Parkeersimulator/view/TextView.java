@@ -26,6 +26,10 @@ public class TextView extends AbstractView {
 	private JLabel adhocL;
 	private JLabel reserveL;
 	private JLabel abboL;
+	private JLabel moneyL;
+	private JLabel que1L;
+	private JLabel que2L;
+	private JLabel que3L;
 
     public TextView(Simulator simulator, int width, int height) {
         super(simulator, width, height);
@@ -38,16 +42,28 @@ public class TextView extends AbstractView {
 		adhocL = new JLabel("");
 		reserveL = new JLabel("");
 		abboL = new JLabel("");
+		moneyL = new JLabel("");
+		que1L = new JLabel("");
+		que2L = new JLabel("");
+		que3L = new JLabel("");
 		timeL.setPreferredSize(new Dimension(width, 13));
 		carL.setPreferredSize(new Dimension(width, 13));
 		adhocL.setPreferredSize(new Dimension(width, 13));
 		reserveL.setPreferredSize(new Dimension(width, 13));
 		abboL.setPreferredSize(new Dimension(width, 13));
+		moneyL.setPreferredSize(new Dimension(width, 13));
+		que1L.setPreferredSize(new Dimension(width, 13));
+		que2L.setPreferredSize(new Dimension(width, 13));
+		que3L.setPreferredSize(new Dimension(width, 13));
 		add(timeL);
 		add(carL);
 		add(adhocL);
 		add(reserveL);
 		add(abboL);
+		add(moneyL);
+		add(que1L);
+		add(que2L);
+		add(que3L);
 		updateLabels();
     }
 
@@ -74,15 +90,24 @@ public class TextView extends AbstractView {
     	int min = this.simulator.getMinute();
     	String time = "Week: " + week + ", Day: " + day + ", Time: " + hour + ":" + (min < 10 ? ("0" + min) : min);
     	String cars = "Cars: " + this.simulator.getParkingLot().getAmountOfCars() + " / 540";
-    	String adhoc = "Ad-Hoc: "; 
-    	String reserv = "Reserved: "; 
-    	String abbo = "Pass: "; 
-
+    	String adhoc = "Ad-Hoc: " + this.simulator.getParkingLot().calculateAmountOfCars()[0].amount;
+    	String reserv = "Reserved: " + this.simulator.getParkingLot().calculateAmountOfCars()[1].amount; 
+    	String abbo = "Pass: " + this.simulator.getParkingLot().calculateAmountOfCars()[2].amount; 
+    	String money = "Total money earned: ";
+    	String que1 = "AdHoc Entrance queue: "; 
+    	String que2 = "Reserve Entrance queue: ";
+    	String que3 = "Passholders Entrance queue: ";
+    	
     	timeL.setText(time);
     	carL.setText(cars);
     	adhocL.setText(adhoc);
     	reserveL.setText(reserv);
     	abboL.setText(abbo);	
+    	moneyL.setText(money);
+    	que1L.setText(que1);
+    	que2L.setText(que2);
+    	que3L.setText(que3);
+    	
     	}
 
 

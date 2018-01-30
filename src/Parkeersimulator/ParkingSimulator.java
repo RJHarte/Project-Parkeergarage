@@ -30,8 +30,7 @@ public class ParkingSimulator {
 
 		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(simulator, 100, 100);
 		OccupationLineGraphView occupationLineGraphView = new OccupationLineGraphView(simulator, 800, 300);
-
-		TextView textView = new TextView(simulator, 200, 100);
+		TextView textView = new TextView(simulator, 200, 200);
 
 		// Setup the screen.
 		screen = new JFrame("Parking Simulator");
@@ -49,7 +48,7 @@ public class ParkingSimulator {
 		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
 		occupationPieChartView.setBounds(0, carParkView.getHeight(), occupationPieChartView.getWidth(), occupationPieChartView.getHeight());
 		occupationLineGraphView.setBounds(0, carParkView.getHeight()+occupationPieChartView.getHeight(), occupationLineGraphView.getWidth(), occupationLineGraphView.getHeight());
-		textView.setBounds(500, carParkView.getHeight(), textView.getWidth(), textView.getHeight());
+		textView.setBounds(700, 0, textView.getWidth(), textView.getHeight());
 
 		//opmaak van de buttons
 		Controller controller = new Controller(simulator);
