@@ -69,6 +69,7 @@ public class CarParkView extends AbstractView {
         int floors = this.simulator.getParkingLot().getNumberOfFloors();
         int rows = this.simulator.getParkingLot().getNumberOfRows();
         int places = this.simulator.getParkingLot().getNumberOfPlaces();
+        int reservePlaced = this.simulator.getParkingLot().getNumberOfReservePlaces();
 
         Graphics graphics = this.carParkImage.getGraphics();
         graphics.setColor(Color.pink);
@@ -76,10 +77,25 @@ public class CarParkView extends AbstractView {
         for (int floor = 0; floor < floors; floor++) {
             for (int row = 0; row < rows; row++) {
                 for (int spot = 0; spot < places; spot++) {
-                	Location location = new Location(floor, row, spot);
-
+                	
+                	// set passPlace if row meets right conditions
+                	boolean passPlace = false;
+                	passPlace = this.simulator.getParkingLot().placeIsPassPlace(spot);
+                	
+                	Location location = new Location(floor, row, spot, passPlace);
                     Car car = this.simulator.getParkingLot().getCarAt(location);
-                    Color color = car == null ? Color.white : car.getColor();
+                    //Color color = car == null ? Color.white : car.getColor();
+                    Color color;
+                    if (car == null && passPlace ) {
+                    	color = Color.gray;
+                    }
+                    else if (car == null ) {
+                    	color = Color.white;
+                    }
+                    else {
+                    	color = car.getColor();
+                    }
+                    
                     drawPlace(graphics, floor, row, spot, color);
                 }
             }

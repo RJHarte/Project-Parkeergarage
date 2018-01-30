@@ -22,7 +22,7 @@ public class ParkingSimulator {
 	 */
 	public ParkingSimulator() {
 		// Create components.
-		ParkingLot parkingLot = new ParkingLot(3, 6, 30);
+		ParkingLot parkingLot = new ParkingLot(3, 6, 30, 5);
 
 		Simulator simulator = new Simulator(parkingLot);
 
@@ -53,17 +53,23 @@ public class ParkingSimulator {
 		//opmaak van de buttons
 		Controller controller = new Controller(simulator);
 		controller.makeControl();
-		screen.getContentPane().add(controller.eenStap);
-		screen.getContentPane().add(controller.honderdStappen);
+		screen.getContentPane().add(controller.minute);
+		screen.getContentPane().add(controller.hour);
+		screen.getContentPane().add(controller.day);
 		screen.getContentPane().add(controller.start);
 		screen.getContentPane().add(controller.stop);
+		screen.getContentPane().add(controller.maxTickSpeed);
+		screen.getContentPane().add(controller.normalSpeed);
 		screen.getContentPane().add(controller.ticksPerSecond);
 
-		controller.eenStap.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight(), 100, 25);
-		controller.honderdStappen.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight()+25, 100, 25);
+		controller.minute.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight(), 100, 25);
+		controller.hour.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight()+25, 100, 25);
+		controller.day.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight()+50, 100, 25);
 		controller.start.setBounds(occupationPieChartView.getWidth()+120, carParkView.getHeight(), 100, 25);
 		controller.stop.setBounds(occupationPieChartView.getWidth()+120, carParkView.getHeight()+25, 100, 25);
-		controller.ticksPerSecond.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight()+57, 200, 40);
+		controller.maxTickSpeed.setBounds(occupationPieChartView.getWidth()+220, carParkView.getHeight()+25, 100, 25);
+		controller.normalSpeed.setBounds(occupationPieChartView.getWidth()+220, carParkView.getHeight(), 100, 25);
+		controller.ticksPerSecond.setBounds(occupationPieChartView.getWidth()+20, carParkView.getHeight()+82, 200, 40);
 
 		System.out.printf("in Constructor: %d %d\n", carParkView.getWidth(), carParkView.getHeight());
 
@@ -73,7 +79,5 @@ public class ParkingSimulator {
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		parkingLot.updateView();
-
-		simulator.start();
 	}
 }
