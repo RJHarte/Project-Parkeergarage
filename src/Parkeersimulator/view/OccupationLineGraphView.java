@@ -132,18 +132,27 @@ public class OccupationLineGraphView extends AbstractView
         	graphics.drawString("" + (int)(i*amountPerItemY), 0, y);
         }
 
+        int totalMinutes = 0;
+        if (store.getItems().size() > 0) {
+        	StorageItem lastItem = store.getItems().get(store.getItems().size()-1);
+        	System.out.println(lastItem);
+        	totalMinutes = lastItem.minute + (lastItem.hour*60) + (lastItem.day*60*24);
+        }
+
         int itemsX = 15;
-        double amountPerItemX = (double)highest / itemsX;
+        double amountPerItemX = (double)totalMinutes / itemsX;
         //System.out.println("AMount per item: " + amountPerItemX);
         graphics.setColor(Color.black);
         for (int i = 0; i < itemsX; i++) {
         	int x = (int) ((double)i / itemsX * w);
 
         	int val = (int)(i*amountPerItemX);
-        	if (val / 24 >= 5) {
-        		graphics.drawString(val/24 + "d" + val%24 + "h", x, h);
+        	if (val / 60 < 1) {
+        		graphics.drawString(val + "m", x, h);
+        	} else if (val / 60 / 24 < 1) {
+        		graphics.drawString(val/60 + "h" + val%60 + "m", x, h);
         	} else {
-        		graphics.drawString(val + "h", x, h);
+        		graphics.drawString(val/60/24 + "d" + val/60 + "h", x, h);
         	}
         }
 
@@ -156,7 +165,7 @@ public class OccupationLineGraphView extends AbstractView
         		}
 
         		int x = (int) ((this.getSize().getWidth() / amount) * i);
-        		int y = (int)(this.getSize().getHeight() - (this.getSize().getHeight() * ((double)am.amount / (double)highest)));
+        		int y = (int)(this.getSize().getHeight() - (this.getSize().getHeight() * (am.amount / (double)highest)));
         		//int y = (int)this.getSize().getHeight()-(int)(am.amount / highest * this.getSize().getHeight());
         		//int x = (int)(i / amount * this.getSize().getWidth());
         		//System.out.println(x + " - " + y);
