@@ -22,7 +22,7 @@ public class ParkingSimulator {
 	 */
 	public ParkingSimulator() {
 		// Create components.
-		ParkingLot parkingLot = new ParkingLot(3, 6, 30, 6, 0);
+		ParkingLot parkingLot = new ParkingLot(3, 6, 30, 5);
 
 		Simulator simulator = new Simulator(parkingLot);
 
