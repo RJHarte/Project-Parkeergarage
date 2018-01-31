@@ -34,26 +34,26 @@ public abstract class Car {
     public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;
     }
-    
+
     // sets fee to pay
     public void setTotalFee(int totalFee) {
     	this.totalFee = totalFee;
     }
-    
+
     //returns total fee
     public int getTotalFee() {
     	return this.totalFee;
     }
-    
+
     // returns basic fee
     public int getBasicFee() {
     	return basicFee;
     }
-    
+
     public int getReservationFee() {
     	return reservationFee;
     }
-    
+
     public boolean getIsPaying() {
         return this.isPaying;
     }
@@ -78,4 +78,14 @@ public abstract class Car {
     }
 
     public abstract Color getColor();
+
+    /**
+     * Determine what this car accepts as a estimated waiting time for the entrance
+     * queue.
+     * If the estimated waiting time for the entrance queue is longer than this,
+     * the car will not queue.
+     *
+     * @return Amount of minutes.
+     */
+    public abstract int maxMinutesToWaitEntrance();
 }

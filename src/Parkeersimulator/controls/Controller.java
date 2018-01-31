@@ -1,15 +1,23 @@
 package Parkeersimulator.controls;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import Parkeersimulator.ParkingSimulator;
+import Parkeersimulator.Models.ParkingLot;
 import Parkeersimulator.Models.Simulator;
+import Parkeersimulator.view.CarParkView;
+import Parkeersimulator.view.OccupationLineGraphView;
+import Parkeersimulator.view.OccupationPieChartView;
+import Parkeersimulator.view.TextView;
+import Parkeersimulator.Main;
 
 public class Controller extends AbstractController implements ActionListener, ChangeListener {
 
@@ -25,6 +33,7 @@ public class Controller extends AbstractController implements ActionListener, Ch
 	public JSlider ticksPerSecond;
 	public JButton maxTickSpeed;
 	public JButton normalSpeed;
+	public JButton reset;
 
 	public void makeControl() {
 		// Doe eem "this."
@@ -48,6 +57,9 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		
 		this.normalSpeed = new JButton("Normal");
 		normalSpeed.addActionListener(this);
+		
+		this.reset = new JButton("Reset");
+		this.reset.addActionListener(this);
 		
 		ticksPerSecond = new JSlider(JSlider.HORIZONTAL, 0, 200, 100);
 		ticksPerSecond.addChangeListener(this);
@@ -86,6 +98,10 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		}
 		if(e.getSource() == this.normalSpeed) {
 			this.simulator.newTickDuration(100);
+		}
+		if(e.getSource() == this.reset) {
+			this.simulator.stop();
+			ParkingSimulator.parkingSimulatorOpslag.reset();
 		}
 	}
 
