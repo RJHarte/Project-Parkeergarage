@@ -184,7 +184,7 @@ public class Simulator implements Runnable{
 		storageItem.carTypeAmount = this.parkingLot.calculateAmountOfCars();
 
 		this.datastore.addItem(storageItem);
-
+		//System.out.println("Deze: "+this.parkingLot.numberOfOpenReserveSpots);
         this.updateViews();
     }
 
@@ -288,17 +288,36 @@ public class Simulator implements Runnable{
      */
     private void carsEntering(CarQueue queue){
         int i=0;
+        
+        // Wat ook een probleem is is dat in een queue ja AdHoc en Reservees bevat;
+        // Voor allebei moet je op een andere manier checken of je ze ergens kwijt kan.
+        
+        while (queue.carsInQueue() > 0 && i < this.enterSpeed) {
+        	Car car = queue.getNextCar();
+        	
+        	Location freeLocation = this.parkingLot.getFirstFreeLocation(car);
+        	if (freeLocation == null) {
+        		// Next person in line can't get a spot.
+        		return;
+        	}
+        	
+        	car = queue.removeCar();
+        	this.parkingLot.setCarAt(freeLocation, car);
+        	i++;
+        }
+        
         // Remove car from the front of the queue and assign to a parking space.
-    	while (queue.carsInQueue()>0 &&	// Checks if any cars are in queue
-    			this.parkingLot.getNumberOfOpenSpots()>0 && // Checks if spots are available
+    	/*while (queue.carsInQueue()>0 &&	// Checks if any cars are in queue
+    			this.getNumberOfOpenSpotsForCarType(type) > 0 && // Checks if spots are available
     			i<this.enterSpeed) {	// Checks if enterspeed is not reached
             Car car = queue.removeCar();
             Location freeLocation = this.parkingLot.getFirstFreeLocation(car);
+            
             this.parkingLot.setCarAt(freeLocation, car);
             i++;
-        }
+        }*/
     }
-
+    
     /**
      * Adds paying cars to the payment queue.
      * Makes car leave parking spot.

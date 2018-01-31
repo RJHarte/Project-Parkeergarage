@@ -27,6 +27,11 @@ public class CarQueue {
     public Car removeCar() {
         return queue.poll();
     }
+    
+    public Car getNextCar()
+    {
+    	return this.queue.peek();
+    }
 
     /**
      * Get amount of cars currently in the queue.
