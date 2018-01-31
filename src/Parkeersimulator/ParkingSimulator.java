@@ -41,7 +41,7 @@ public class ParkingSimulator {
 
 	}
 	public void reset() {
-		ParkingLot parkingLot = new ParkingLot(3, 6, 30);
+		ParkingLot parkingLot = new ParkingLot(3, 6, 30, 90, 90);
 
 		Simulator simulator = new Simulator(parkingLot);
 
@@ -49,16 +49,24 @@ public class ParkingSimulator {
 
 		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(simulator, 100, 100);
 		OccupationLineGraphView occupationLineGraphView = new OccupationLineGraphView(simulator, 800, 300);
+//<<<<<<< HEAD
 
 		TextView textView = new TextView(simulator, 200, 100);
 		
 		screen.getContentPane().removeAll();
 
+
 		screen.getContentPane().add(carParkView);
 		screen.getContentPane().add(occupationPieChartView);
 		screen.getContentPane().add(occupationLineGraphView);
 		screen.getContentPane().add(textView);
-		
+
+		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
+		occupationPieChartView.setBounds(0, carParkView.getHeight(), occupationPieChartView.getWidth(), occupationPieChartView.getHeight());
+		occupationLineGraphView.setBounds(0, carParkView.getHeight()+occupationPieChartView.getHeight(), occupationLineGraphView.getWidth(), occupationLineGraphView.getHeight());
+		textView.setBounds(700, 0, textView.getWidth(), textView.getHeight());
+
+		//opmaak van de buttons
 		Controller controller = new Controller(simulator);
 		controller.makeControl();
 		screen.getContentPane().add(controller.minute);
