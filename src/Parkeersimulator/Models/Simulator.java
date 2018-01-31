@@ -295,8 +295,12 @@ public class Simulator implements Runnable{
     			this.parkingLot.getNumberOfOpenSpots()>0 && // Checks if spots are available
     			i<this.enterSpeed) {	// Checks if enterspeed is not reached
             Car car = queue.removeCar();
-            Location freeLocation = this.parkingLot.getFirstFreeLocation(car);
-            this.parkingLot.setCarAt(freeLocation, car);
+            try {
+            	Location freeLocation = this.parkingLot.getFirstFreeLocation(car);
+            	this.parkingLot.setCarAt(freeLocation, car);
+            } catch (NullPointerException e) {
+            	System.out.println("Temporary cuz no free free spot (only for special people spot I guess), Thom will fix");
+            }
             i++;
         }
     }
