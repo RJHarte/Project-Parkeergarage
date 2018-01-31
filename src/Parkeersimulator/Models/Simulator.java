@@ -75,7 +75,7 @@ public class Simulator implements Runnable{
     int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast) (easy on the sass boii)
     int exitSpeed = 5; // number of cars that can leave per minute
 
-    private int[] carsNotWantedToQueue = new int[3];
+    public int[] carsNotWantedToQueue = new int[3];
 
     // Earnings
     private int totalEarnings = 0;

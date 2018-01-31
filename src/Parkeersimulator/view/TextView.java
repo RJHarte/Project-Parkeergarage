@@ -23,6 +23,7 @@ public class TextView extends AbstractView {
 	private JLabel passentranceL;
 	private JLabel paymentL;
 	private JLabel exitL;
+	private JLabel leftQueL;
 	private JLabel legadhocL;
 	private JLabel legpassL;
 	private JLabel legreservL;
@@ -43,6 +44,7 @@ public class TextView extends AbstractView {
 		passentranceL = new JLabel("");
 		paymentL = new JLabel("");
 		exitL = new JLabel("");
+		leftQueL = new JLabel("");
 		legadhocL = new JLabel("Ad-Hoc Car");
 		legpassL = new JLabel("Passholder Car");
 		legreservL = new JLabel("Reserved Car");
@@ -61,9 +63,11 @@ public class TextView extends AbstractView {
 		passentranceL.setPreferredSize(new Dimension(width, 13));
 		paymentL.setPreferredSize(new Dimension(width, 13));
 		exitL.setPreferredSize(new Dimension(width, 13));
+		leftQueL.setPreferredSize(new Dimension(width, 13));
 		legadhocL.setPreferredSize(new Dimension(width, 13));
 		legpassL.setPreferredSize(new Dimension(width, 13));
 		legreservL.setPreferredSize(new Dimension(width, 13));
+		
 		
 		add(timeL);
 		add(carL);
@@ -75,6 +79,7 @@ public class TextView extends AbstractView {
 		add(passentranceL);
 		add(paymentL);
 		add(exitL);
+		add(leftQueL);
 		add(legadhocL);
 		add(legpassL);
 		add(legreservL);
@@ -112,6 +117,9 @@ public class TextView extends AbstractView {
     	String passenter = "Passholders EQueue: " + simulator.getQueues().get(1).carsInQueue();;
     	String pay = "Payment Queue: " + simulator.getQueues().get(2).carsInQueue();
     	String exit = "Exit Queue: " + simulator.getQueues().get(3).carsInQueue();
+    	String left = "Cars didnt't enter queue: " + (this.simulator.carsNotWantedToQueue[0] + 
+    			this.simulator.carsNotWantedToQueue[1] + this.simulator.carsNotWantedToQueue[2]);
+    	
     	
     	timeL.setText(time);
     	carL.setText(cars);
@@ -123,5 +131,6 @@ public class TextView extends AbstractView {
     	passentranceL.setText(passenter);
     	paymentL.setText(pay);
     	exitL.setText(exit);
+    	leftQueL.setText(left);
     	}
 }
