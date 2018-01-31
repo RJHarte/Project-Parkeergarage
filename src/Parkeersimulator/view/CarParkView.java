@@ -69,7 +69,6 @@ public class CarParkView extends AbstractView {
         int floors = this.simulator.getParkingLot().getNumberOfFloors();
         int rows = this.simulator.getParkingLot().getNumberOfRows();
         int places = this.simulator.getParkingLot().getNumberOfPlaces();
-        int reservePlaced = this.simulator.getParkingLot().getNumberOfReservePlaces();
 
         Graphics graphics = this.carParkImage.getGraphics();
         graphics.setColor(Color.pink);
@@ -83,7 +82,7 @@ public class CarParkView extends AbstractView {
                 	this.simulator.getParkingLot().setAllPassPlaces(location,0,this.simulator.getParkingLot().getNumberOfPassPlaces()/3);
                 	boolean isPassPlace = this.simulator.getParkingLot().locationIsPassPlace(location);
                 	boolean isReserved = this.simulator.getParkingLot().isReserved(location);
-
+                	//System.out.println("Hiero!: "+isReserved);
                     Car car = this.simulator.getParkingLot().getCarAt(location);
                     //Color color = car == null ? Color.white : car.getColor();
                     Color color;
