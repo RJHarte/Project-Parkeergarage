@@ -389,7 +389,8 @@ public class Simulator implements Runnable{
     		Car car = Simulator.carFactory(type);
 
     		if (this.entranceCarQueue.estimateMinutesWaitingTime() > car.maxMinutesToWaitEntrance()) {
-        		System.out.println("Ja daaaag");
+    			this.carsNotWantedToQueue[type]++;
+        		System.out.println("Ja daaaag, queue is mie too long");
         		continue;
         	}
 
