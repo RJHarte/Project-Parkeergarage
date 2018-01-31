@@ -1,7 +1,7 @@
 package Parkeersimulator.Models;
 
 import java.util.Random;
-
+import Parkeersimulator.Models.Car;
 import Parkeersimulator.DataStore;
 import Parkeersimulator.DataStore.StorageItem;
 
@@ -46,7 +46,7 @@ public class Simulator implements Runnable{
 
     // For reservees (RESERVE)
     int weekDayReservationArrivals = 75; // average number of arriving cars per hour
-    int weekendReservationArrivals = 10; // average number of arriving cars per hour
+    int weekendReservationArrivals = 5; // average number of arriving cars per hour
 
     // Amount of cars the different types of queue can handle per minute.
     int enterSpeed = 3; // number of cars that can enter per minute
