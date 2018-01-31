@@ -24,4 +24,10 @@ public class AdHocCar extends Car {
 	public Color getColor(){
     	return COLOR;
     }
+
+	@Override
+	public int maxMinutesToWaitEntrance() {
+		Random random = new Random();
+		return (int) (15 + (random.nextFloat() * 45));
+	}
 }

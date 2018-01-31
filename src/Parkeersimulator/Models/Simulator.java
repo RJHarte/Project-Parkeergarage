@@ -11,9 +11,9 @@ import Parkeersimulator.DataStore.StorageItem;
 public class Simulator implements Runnable{
 
 	// Easy names for regular people and subscription holders.
-	private static final String AD_HOC = "1";
-	private static final String PASS = "2";
-	private static final String RESERVE = "3";
+	private static final int AD_HOC = 0;
+	private static final int PASS = 1;
+	private static final int RESERVE = 2;
 
 	// The difference queues.
 	private CarQueue entranceCarQueue; // Entrance queue for regular people.
@@ -75,6 +75,8 @@ public class Simulator implements Runnable{
     int paymentSpeed = 7; // number of cars that can pay per minute (apparently payment is very fast) (easy on the sass boii)
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    private int[] carsNotWantedToQueue = new int[3];
+
     // Earnings
     private int totalEarnings = 0;
 
@@ -84,20 +86,20 @@ public class Simulator implements Runnable{
      * Simulator constructor, initializes queues and view
      */
     public Simulator(ParkingLot parkingLot) {
-        this.entranceCarQueue = new CarQueue();
-        this.entrancePassQueue = new CarQueue();
-        this.paymentCarQueue = new CarQueue();
-        this.exitCarQueue = new CarQueue();
+        this.entranceCarQueue = new CarQueue(this.enterSpeed);
+        this.entrancePassQueue = new CarQueue(this.enterSpeed);
+        this.paymentCarQueue = new CarQueue(this.paymentSpeed);
+        this.exitCarQueue = new CarQueue(this.exitSpeed);
         this.parkingLot = parkingLot;
         this.datastore = DataStore.createInstance();
         //System.out.println("ik ben de constructor van SImulator: " + this.parkingLot);
     }
 
-    
+
     public int getTotalEarnings() {
     	return this.totalEarnings;
     }
-    
+
 
 
     public int newTickDuration(int milliSec){
@@ -263,7 +265,7 @@ public class Simulator implements Runnable{
     	this.parkingLot.tick();
         // Update the car park view.
     	this.parkingLot.updateView();
-    
+
     }
 
     /**
@@ -377,24 +379,47 @@ public class Simulator implements Runnable{
      * @param  numberOfCars
      * @param car type
      */
-    private void addArrivingCars(int numberOfCars, String type){
-        // Add the cars to the back of the queue.
-    	switch(type) {
+    private void addArrivingCars(int numberOfCars, int type)
+    {
+    	for (int i = 0; i < numberOfCars; i++) {
+    		Car car = Simulator.carFactory(type);
+
+    		if (this.entranceCarQueue.estimateMinutesWaitingTime() > car.maxMinutesToWaitEntrance()) {
+        		System.out.println("Ja daaaag");
+        		continue;
+        	}
+
+    		switch (type) {
+    		case AD_HOC:
+    			this.entranceCarQueue.addCar(car);
+    			break;
+    		case PASS:
+    			this.entrancePassQueue.addCar(car);
+    			break;
+    		case RESERVE:
+    			this.entranceCarQueue.addCar(car);
+    			break;
+    		}
+    	}
+    }
+
+    /**
+     * Create car depending on the given type.
+     *
+     * @param type
+     * @return the created Car.
+     */
+    private static Car carFactory(int type)
+    {
+    	switch (type) {
     	case AD_HOC:
-            for (int i = 0; i < numberOfCars; i++) {
-            	this.entranceCarQueue.addCar(new AdHocCar());
-            }
-            break;
+    		return new AdHocCar();
     	case PASS:
-            for (int i = 0; i < numberOfCars; i++) {
-            	this.entrancePassQueue.addCar(new ParkingPassCar());
-            }
-            break;
+    		return new ParkingPassCar();
     	case RESERVE:
-            for (int i = 0; i < numberOfCars; i++) {
-            	this.entranceCarQueue.addCar(new ReservedCar());
-            }
-            break;
+    		return new ReservedCar();
+    	default:
+    		throw new Error("What type?");
     	}
     }
 
@@ -403,17 +428,17 @@ public class Simulator implements Runnable{
      * @param car
      */
     private void carLeavesSpot(Car car){
-    	
+
     	/*//print test
     	Location carLocation = car.getLocation();
     	int carPlace = carLocation.getPlace();
-    	
+
         if (this.parkingLot.placeIsPassPlace(carPlace)) {
         	System.out.println("left from pass spot");
         }
         else System.out.println("left from normal spot");
     	*/
-    	
+
     	//print spot type when car leaving
     	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
@@ -423,10 +448,10 @@ public class Simulator implements Runnable{
 		//System.out.println("getParkingLot hier: " + this.parkingLot);
 		return this.parkingLot;
 	}
-	
+
 	/**
-	 * adds the different queues to an array that can be returned. 
-	 * 
+	 * adds the different queues to an array that can be returned.
+	 *
 	 * @return sizes of the different queues
 	 */
 	public ArrayList<CarQueue> getQueues() {
