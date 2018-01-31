@@ -8,6 +8,14 @@ import java.util.Queue;
 public class CarQueue {
     private Queue<Car> queue = new LinkedList<>();
 
+    // Amount this queue can process per minute.
+    private int speedPerMinute;
+
+    public CarQueue(int speedPerMinute)
+    {
+    	this.speedPerMinute = speedPerMinute;
+    }
+
     /**
      * Add car to the queue.
      *
@@ -36,10 +44,15 @@ public class CarQueue {
     public int carsInQueue(){
     	return queue.size();
     }
-    
+
     public int carPays(Car car) {
-    	
+
     	return car.getTotalFee();
+    }
+
+    public int estimateMinutesWaitingTime()
+    {
+    	return this.queue.size() / this.speedPerMinute;
     }
 
 }
