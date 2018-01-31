@@ -30,7 +30,7 @@ public class ParkingSimulator {
 
 		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(simulator, 100, 100);
 		OccupationLineGraphView occupationLineGraphView = new OccupationLineGraphView(simulator, 800, 300);
-		TextView textView = new TextView(simulator, 200, 200);
+		TextView textView = new TextView(simulator, 200, 300);
 
 		// Setup the screen.
 		screen = new JFrame("Parking Simulator");

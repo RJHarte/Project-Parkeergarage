@@ -3,22 +3,14 @@ package Parkeersimulator.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 
 import javax.swing.JLabel;
 
 import Parkeersimulator.Models.Simulator;
-import Parkeersimulator.Models.Car;
-import Parkeersimulator.Models.Location;
-import Parkeersimulator.Models.ParkingLot;
-import Parkeersimulator.Models.ParkingLot.CarAmount;
 
 public class TextView extends AbstractView {
     private static final long serialVersionUID = 1234L;
 
-    private Dimension size;
-    private Image image;
-    private ParkingLot parkingLot;
     private Simulator simulator;
     
 	private JLabel timeL;
@@ -31,6 +23,9 @@ public class TextView extends AbstractView {
 	private JLabel passentranceL;
 	private JLabel paymentL;
 	private JLabel exitL;
+	private JLabel legadhocL;
+	private JLabel legpassL;
+	private JLabel legreservL;
 
     public TextView(Simulator simulator, int width, int height) {
         super(simulator, width, height);
@@ -48,6 +43,14 @@ public class TextView extends AbstractView {
 		passentranceL = new JLabel("");
 		paymentL = new JLabel("");
 		exitL = new JLabel("");
+		legadhocL = new JLabel("Ad-Hoc Car");
+		legpassL = new JLabel("Passholder Car");
+		legreservL = new JLabel("Reserved Car");
+		
+		legadhocL.setForeground(Color.RED);
+		legpassL.setForeground(Color.BLUE);
+		legreservL.setForeground(Color.ORANGE);
+		
 		timeL.setPreferredSize(new Dimension(width, 13));
 		carL.setPreferredSize(new Dimension(width, 13));
 		adhocL.setPreferredSize(new Dimension(width, 13));
@@ -58,6 +61,10 @@ public class TextView extends AbstractView {
 		passentranceL.setPreferredSize(new Dimension(width, 13));
 		paymentL.setPreferredSize(new Dimension(width, 13));
 		exitL.setPreferredSize(new Dimension(width, 13));
+		legadhocL.setPreferredSize(new Dimension(width, 13));
+		legpassL.setPreferredSize(new Dimension(width, 13));
+		legreservL.setPreferredSize(new Dimension(width, 13));
+		
 		add(timeL);
 		add(carL);
 		add(adhocL);
@@ -68,6 +75,9 @@ public class TextView extends AbstractView {
 		add(passentranceL);
 		add(paymentL);
 		add(exitL);
+		add(legadhocL);
+		add(legpassL);
+		add(legreservL);
 		updateLabels();
     }
 
@@ -97,7 +107,7 @@ public class TextView extends AbstractView {
     	String adhoc = "Ad-Hoc: " + this.simulator.getParkingLot().calculateAmountOfCars()[0].amount;
     	String reserv = "Reserved: " + this.simulator.getParkingLot().calculateAmountOfCars()[1].amount; 
     	String abbo = "Pass: " + this.simulator.getParkingLot().calculateAmountOfCars()[2].amount; 
-    	String money = "Total money earned: " + simulator.getTotalEarnings() + "$";
+    	String money = "Total money earned: " + (simulator.getTotalEarnings() * 0.01) + "$";
     	String enter = "Entrance Queue: " + simulator.getQueues().get(0).carsInQueue();
     	String passenter = "Passholders EQueue: " + simulator.getQueues().get(1).carsInQueue();;
     	String pay = "Payment Queue: " + simulator.getQueues().get(2).carsInQueue();
@@ -114,6 +124,4 @@ public class TextView extends AbstractView {
     	paymentL.setText(pay);
     	exitL.setText(exit);
     	}
-
-
 }
