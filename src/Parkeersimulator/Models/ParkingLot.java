@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import Parkeersimulator.view.AbstractView;
 import Parkeersimulator.view.CarParkView;
@@ -30,6 +31,9 @@ public class ParkingLot implements Iterable<Car> {
     private int numberOfOpenReserveSpots;
     
     private Car[][][] cars;
+    private ArrayList<Location> reservedLocations = new ArrayList<Location>();
+    
+    
     
     public ParkingLot(int numberOfFloors, int numberOfRows, int numberOfPlaces, int numberOfPassPlaces, int numberOfReservePlaces) {
         this.numberOfFloors = numberOfFloors;
@@ -46,6 +50,10 @@ public class ParkingLot implements Iterable<Car> {
         
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
         this.views = new ArrayList<AbstractView>();
+        this.reservedLocations = new ArrayList<>();
+        addRandomReservation();
+        addRandomReservation();
+        addRandomReservation();
     }
 
 	public void addView(AbstractView view)
@@ -175,7 +183,7 @@ public class ParkingLot implements Iterable<Car> {
                 	setAllPassPlaces(location,0,this.numberOfPassPlaces/3);
                 	
                 	boolean isPassPlace = locationIsPassPlace(location);
-                	boolean isReserved = locationIsReservedPlace(location);
+                	boolean isReserved = isReserved(location);
                 	
 
                 	// if there's not car at location return location
@@ -229,7 +237,7 @@ public class ParkingLot implements Iterable<Car> {
                 	Location location = new Location(floor, row, place);
                 	setAllPassPlaces(location,0,this.numberOfPassPlaces/3);
                 	boolean isPassPlace = locationIsPassPlace(location);
-                	boolean isReserved = locationIsReservedPlace(location);
+                	boolean isReserved = isReserved(location);
                 	
                     Car car = this.getCarAt(location);
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
@@ -252,7 +260,7 @@ public class ParkingLot implements Iterable<Car> {
                 	Location location = new Location(floor, row, place);
                 	setAllPassPlaces(location,0,this.numberOfPassPlaces/3);
                 	boolean isPassPlace = locationIsPassPlace(location);
-                	boolean isReserved = locationIsReservedPlace(location);
+                	boolean isReserved = isReserved(location);
                 	
                     Car car = this.getCarAt(location);
                     if (car != null) {
@@ -390,5 +398,28 @@ public class ParkingLot implements Iterable<Car> {
     		location.setPassPlace(true);
     	}
 	}
+	
+	//Compares location to reserved locations arrayList
+	public boolean isReserved(Location location) {
+		boolean isRes = false;
+		Iterator<Location> it = reservedLocations.iterator();
+		while (it.hasNext()) {
+			if (location == it.next()) {
+				isRes = true;
+			}
+		}
+		return isRes;
+	}
+	
+	public void addRandomReservation() {
+		Random ranGen = new Random();
+		int floor = ranGen.nextInt( this.numberOfFloors);
+		int row = ranGen.nextInt( this.numberOfRows);
+		int place = ranGen.nextInt( this.numberOfPlaces);
+		Location location = new Location(floor,row,place);
+		this.reservedLocations.add(location);
+		
+	}
+	
 }
 

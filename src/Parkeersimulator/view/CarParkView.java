@@ -82,13 +82,16 @@ public class CarParkView extends AbstractView {
                 	Location location = new Location(floor, row, place);
                 	this.simulator.getParkingLot().setAllPassPlaces(location,0,this.simulator.getParkingLot().getNumberOfPassPlaces()/3);
                 	boolean isPassPlace = this.simulator.getParkingLot().locationIsPassPlace(location);
-                	boolean isReserved = this.simulator.getParkingLot().locationIsReservedPlace(location);
+                	boolean isReserved = this.simulator.getParkingLot().isReserved(location);
 
                     Car car = this.simulator.getParkingLot().getCarAt(location);
                     //Color color = car == null ? Color.white : car.getColor();
                     Color color;
                     if (car == null && isPassPlace ) {
                     	color = Color.gray;
+                    }
+                    else if (car == null && isReserved ) {
+                    	color = Color.green;
                     }
                     else if (car == null ) {
                     	color = Color.white;
