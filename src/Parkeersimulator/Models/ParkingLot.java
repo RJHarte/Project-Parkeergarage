@@ -154,7 +154,7 @@ public class ParkingLot implements Iterable<Car> {
     		this.removeReservedSpot(location);
     		location.setReservedPlace(false);
     		this.numberOfOpenReserveSpots = this.reservedLocations.size();
-        	System.out.println("Yeh boii "+this.numberOfOpenReserveSpots);
+        	//System.out.println("Yeh boii "+this.numberOfOpenReserveSpots);
     	}
     	//addRandmReservation, might need another location in code
     	for (int i=0; this.numberOfOpenReserveSpots < this.numberOfReservePlaces; i++ ) {
@@ -410,7 +410,7 @@ public class ParkingLot implements Iterable<Car> {
 		while (it.hasNext()) {
 			Location loc= it.next();
 			if (location.equals(loc)) {
-				System.out.println("Removed reservation from: "+location);
+				//System.out.println("Removed reservation from: "+location);
 				it.remove();
 			}
 		}
@@ -458,10 +458,10 @@ public class ParkingLot implements Iterable<Car> {
 		Location location = new Location(floor,row,place);
 		
 		if (isReserved(location) || locationIsPassPlace(location)){
-			System.out.println(location+ " already reserved,Rerolling");
+			//System.out.println(location+ " already reserved,Rerolling");
 			this.addRandomReservation();
 		} else {
-			System.out.println("Adding reservation to "+location);
+			//System.out.println("Adding reservation to "+location);
 			this.reservedLocations.add(location);
 			this.numberOfOpenReserveSpots= this.reservedLocations.size(); 
 		}
