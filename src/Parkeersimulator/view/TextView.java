@@ -11,9 +11,6 @@ import Parkeersimulator.Models.Simulator;
 /**
  * This class puts different information from the simulation into a 
  * textview that can be displayed
- * 
- * @author ruben
- *
  */
 public class TextView extends AbstractView {
     private static final long serialVersionUID = 1234L;
@@ -40,7 +37,7 @@ public class TextView extends AbstractView {
     public TextView(Simulator simulator, int width, int height) {
         super(simulator, width, height);
 
-        this.size = new Dimension(200, 100);
+        this.size = new Dimension(250, 300);
         this.simulator = simulator;
         
 		timeL = new JLabel("");

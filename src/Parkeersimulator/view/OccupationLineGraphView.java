@@ -21,9 +21,6 @@ public class OccupationLineGraphView extends AbstractView
     private Dimension size;
     private Image image;
 
-   // private JFreeChart chart;
-   // private ChartPanel panel;
-
     private boolean firstViewUpdate;
 
     /**

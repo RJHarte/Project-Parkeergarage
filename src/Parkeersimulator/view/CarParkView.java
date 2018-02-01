@@ -11,10 +11,8 @@ import Parkeersimulator.Models.Simulator;
 
 public class CarParkView extends AbstractView {
     private static final long serialVersionUID = 1L;
-    //private Dimension size;
     private Image carParkImage;
-  //  private ParkingLot parkingLot;
-  //  private Simulator simulator;
+
 
     /**
      * Constructor for objects of class CarPark
@@ -23,9 +21,6 @@ public class CarParkView extends AbstractView {
         super(simulator, width, height);
     	System.out.println("hey hier Carparkview: " + simulator);
 
-        //this.size = new Dimension(500, 800);
-      //  this.simulator = simulator;
-        //this.carParkImage = createImage(500, 800);
     }
 
     /**
@@ -82,9 +77,7 @@ public class CarParkView extends AbstractView {
                 	this.simulator.getParkingLot().setAllPassPlaces(location,0,this.simulator.getParkingLot().getNumberOfPassPlaces()/3);
                 	boolean isPassPlace = this.simulator.getParkingLot().locationIsPassPlace(location);
                 	boolean isReserved = this.simulator.getParkingLot().isReserved(location);
-                	//System.out.println("Hiero!: "+isReserved);
                     Car car = this.simulator.getParkingLot().getCarAt(location);
-                    //Color color = car == null ? Color.white : car.getColor();
                     Color color;
                     if (car == null && isPassPlace ) {
                     	color = Color.gray;

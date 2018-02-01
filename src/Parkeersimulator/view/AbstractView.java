@@ -14,7 +14,6 @@ public abstract class AbstractView extends JPanel {
 	protected Simulator simulator;
 
 	public AbstractView(Simulator simulator, int width, int height) {
-    	//System.out.println("hey hier AbstractView: " + simulator);
 
 		this.simulator = simulator;
 		this.height = height;
@@ -25,8 +24,6 @@ public abstract class AbstractView extends JPanel {
 		this.setSize(width, height);
 
 		this.setPreferredSize(new Dimension(this.width, this.height));
-
-		//System.out.println("hoi AbstractView wil graag je parkinglot: " + this.simulator.getParkingLot());
 
 		this.simulator.getParkingLot().addView(this);
 	}

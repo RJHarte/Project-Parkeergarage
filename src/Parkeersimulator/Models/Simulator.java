@@ -93,7 +93,6 @@ public class Simulator implements Runnable{
         this.exitCarQueue = new CarQueue(this.exitSpeed);
         this.parkingLot = parkingLot;
         this.datastore = DataStore.createInstance();
-        //System.out.println("ik ben de constructor van SImulator: " + this.parkingLot);
     }
 
 
