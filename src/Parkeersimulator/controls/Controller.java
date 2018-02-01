@@ -62,14 +62,14 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		this.reset = new JButton("Reset");
 		this.reset.addActionListener(this);
 		
-		ticksPerSecond = new JSlider(JSlider.HORIZONTAL, 0, 200, 100);
+		ticksPerSecond = new JSlider(JSlider.VERTICAL, 0, 100, 50);
 		ticksPerSecond.addChangeListener(this);
 
 		//Turn on labels at major tick marks.
 		ticksPerSecond.setMajorTickSpacing(50);
 		ticksPerSecond.setMinorTickSpacing(1);
-		ticksPerSecond.setPaintTicks(true);
-		ticksPerSecond.setPaintLabels(true);
+		//ticksPerSecond.setPaintTicks(true);
+		//ticksPerSecond.setPaintLabels(true);
 	}
 
 	@Override
@@ -100,9 +100,13 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		}
 		if(e.getSource() == this.maxTickSpeed) {
 			this.simulator.newTickDuration(0);
+			this.normalSpeed.setVisible(true);
+			this.maxTickSpeed.setVisible(false);
 		}
 		if(e.getSource() == this.normalSpeed) {
 			this.simulator.newTickDuration(100);
+			this.normalSpeed.setVisible(false);
+			this.maxTickSpeed.setVisible(true);
 		}
 		if(e.getSource() == this.reset) {
 			this.simulator.stop();
@@ -114,7 +118,7 @@ public class Controller extends AbstractController implements ActionListener, Ch
 	public void stateChanged(ChangeEvent e) {
 	      JSlider source = (JSlider)e.getSource();
 	        if (!source.getValueIsAdjusting()) {
-	            this.simulator.newTickDuration(source.getValue());
+	            this.simulator.newTickDuration(100-source.getValue());
 	            }
 	}
 }

@@ -55,7 +55,7 @@ public class ParkingSimulator {
 		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(simulator, 100, 100);
 		OccupationLineGraphView occupationLineGraphView = new OccupationLineGraphView(simulator, 800, 300);
 
-		TextView textView = new TextView(simulator, 200, 100);
+		TextView textView = new TextView(simulator, 250, 300);
 		
 		screen.getContentPane().removeAll();
 
@@ -93,10 +93,10 @@ public class ParkingSimulator {
 		controller.day.setBounds(120, carParkView.getHeight()+50, 100, 25);
 		controller.start.setBounds(220, carParkView.getHeight(), 100, 25);
 		controller.stop.setBounds(220, carParkView.getHeight(), 100, 25);
-		controller.maxTickSpeed.setBounds(320, carParkView.getHeight()+25, 100, 25);
-		controller.normalSpeed.setBounds(320, carParkView.getHeight(), 100, 25);
-		controller.ticksPerSecond.setBounds(120, carParkView.getHeight()+82, 200, 40);
-		controller.reset.setBounds(220, carParkView.getHeight()+25, 100, 25);
+		controller.maxTickSpeed.setBounds(220, carParkView.getHeight()+25, 100, 25);
+		controller.normalSpeed.setBounds(220, carParkView.getHeight()+25, 100, 25);
+		controller.ticksPerSecond.setBounds(325, carParkView.getHeight(), 40, 83);
+		controller.reset.setBounds(220, carParkView.getHeight()+50, 100, 25);
 
 		/**
 		 * this draws the parkingLot

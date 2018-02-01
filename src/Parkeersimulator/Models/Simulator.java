@@ -108,6 +108,7 @@ public class Simulator implements Runnable{
     	return tickDuration;
     }
 
+
     @Override
     public void run() {
     	int i = 0;

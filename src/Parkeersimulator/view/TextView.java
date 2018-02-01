@@ -108,7 +108,8 @@ public class TextView extends AbstractView {
     	int hour = this.simulator.getHour();
     	int min = this.simulator.getMinute();
     	String time = "Week: " + week + ", Day: " + day + ", Time: " + hour + ":" + (min < 10 ? ("0" + min) : min);
-    	String cars = "Cars: " + this.simulator.getParkingLot().getAmountOfCars() + " / 540";
+    	String cars = "Cars: " + this.simulator.getParkingLot().getAmountOfCars() + " / " + (this.simulator.getParkingLot().getNumberOfFloors() 
+    			* this.simulator.getParkingLot().getNumberOfRows() * this.simulator.getParkingLot().getNumberOfPlaces());
     	String adhoc = "Ad-Hoc: " + this.simulator.getParkingLot().calculateAmountOfCars()[0].amount;
     	String reserv = "Reserved: " + this.simulator.getParkingLot().calculateAmountOfCars()[1].amount; 
     	String abbo = "Pass: " + this.simulator.getParkingLot().calculateAmountOfCars()[2].amount; 
@@ -117,7 +118,7 @@ public class TextView extends AbstractView {
     	String passenter = "Passholders EQueue: " + simulator.getQueues().get(1).carsInQueue();;
     	String pay = "Payment Queue: " + simulator.getQueues().get(2).carsInQueue();
     	String exit = "Exit Queue: " + simulator.getQueues().get(3).carsInQueue();
-    	String left = "Cars didnt't enter queue: " + (this.simulator.carsNotWantedToQueue[0] + 
+    	String left = "Cars that left queue: " + (this.simulator.carsNotWantedToQueue[0] + 
     			this.simulator.carsNotWantedToQueue[1] + this.simulator.carsNotWantedToQueue[2]);
     	
     	
