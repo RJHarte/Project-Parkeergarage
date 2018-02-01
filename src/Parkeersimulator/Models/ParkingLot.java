@@ -160,7 +160,7 @@ public class ParkingLot implements Iterable<Car> {
     	for (int i=0; this.numberOfOpenReserveSpots < this.numberOfReservePlaces; i++ ) {
     		this.addRandomReservation();
     		this.numberOfOpenReserveSpots = this.reservedLocations.size();
-        	System.out.println("Yeh boii "+this.numberOfOpenReserveSpots);
+        	//System.out.println("Yeh boii "+this.numberOfOpenReserveSpots);
     	}
 		
     	
