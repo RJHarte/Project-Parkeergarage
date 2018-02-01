@@ -55,7 +55,7 @@ public class ParkingSimulator {
 		OccupationPieChartView occupationPieChartView = new OccupationPieChartView(simulator, 100, 100);
 		OccupationLineGraphView occupationLineGraphView = new OccupationLineGraphView(simulator, 800, 300);
 
-		TextView textView = new TextView(simulator, 150, 300);
+		TextView textView = new TextView(simulator, 250, 300);
 		
 		screen.getContentPane().removeAll();
 
