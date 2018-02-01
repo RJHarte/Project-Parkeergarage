@@ -87,19 +87,19 @@ public class Controller extends AbstractController implements ActionListener, Ch
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if(e.getSource() == this.minute) {
+		if (e.getSource() == this.minute) {
 			this.simulator.manualTick(1, true);
 		}
 
-		if(e.getSource() == this.hour) {
+		if (e.getSource() == this.hour) {
 			this.simulator.manualTick(60, false);
 		}
 		
-		if(e.getSource() == this.day) {
+		if (e.getSource() == this.day) {
 			this.simulator.manualTick(1440, false);
 		}
 
-		if(e.getSource() == this.start && simulator.running == false) {
+		if (e.getSource() == this.start && simulator.running == false) {
 			this.simulator.start();
 			this.stop.setVisible(true);
 			this.start.setVisible(false);
@@ -108,7 +108,7 @@ public class Controller extends AbstractController implements ActionListener, Ch
 			day.setEnabled(false);
 		}
 
-		if(e.getSource() == this.stop && simulator.running == true) {
+		if (e.getSource() == this.stop && simulator.running == true) {
 			minute.setEnabled(true);
 			hour.setEnabled(true);
 			day.setEnabled(true);
@@ -116,17 +116,17 @@ public class Controller extends AbstractController implements ActionListener, Ch
 			this.stop.setVisible(false);
 			this.start.setVisible(true);
 		}
-		if(e.getSource() == this.maxTickSpeed) {
+		if (e.getSource() == this.maxTickSpeed) {
 			this.simulator.newTickDuration(0);
 			this.normalSpeed.setVisible(true);
 			this.maxTickSpeed.setVisible(false);
 		}
-		if(e.getSource() == this.normalSpeed) {
+		if (e.getSource() == this.normalSpeed) {
 			this.simulator.newTickDuration(100);
 			this.normalSpeed.setVisible(false);
 			this.maxTickSpeed.setVisible(true);
 		}
-		if(e.getSource() == this.reset) {
+		if (e.getSource() == this.reset) {
 			this.simulator.stop();
 			ParkingSimulator.parkingSimulatorOpslag.reset();
 		}
@@ -134,9 +134,9 @@ public class Controller extends AbstractController implements ActionListener, Ch
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-	      JSlider source = (JSlider)e.getSource();
-	        if (!source.getValueIsAdjusting()) {
-	            this.simulator.newTickDuration(200-source.getValue());
-	            }
+		JSlider source = (JSlider)e.getSource();
+		if (!source.getValueIsAdjusting()) {
+			this.simulator.newTickDuration(200-source.getValue());
+		}
 	}
 }

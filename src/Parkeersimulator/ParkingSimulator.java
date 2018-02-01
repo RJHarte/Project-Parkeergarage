@@ -39,8 +39,6 @@ public class ParkingSimulator {
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		reset();
-
-
 	}
 	/**
 	 * draws a ParkingLot and the views it also deletes the old ones if there was one running
@@ -58,7 +56,6 @@ public class ParkingSimulator {
 		TextView textView = new TextView(simulator, 250, 300);
 		
 		screen.getContentPane().removeAll();
-
 
 		screen.getContentPane().add(carParkView);
 		screen.getContentPane().add(occupationPieChartView);
