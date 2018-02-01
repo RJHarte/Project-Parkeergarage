@@ -8,10 +8,19 @@ import javax.swing.JLabel;
 
 import Parkeersimulator.Models.Simulator;
 
+/**
+ * This class puts different information from the simulation into a 
+ * textview that can be displayed
+ * 
+ * @author ruben
+ *
+ */
 public class TextView extends AbstractView {
     private static final long serialVersionUID = 1234L;
 
     private Simulator simulator;
+    
+    //defining the different JLabels
     
 	private JLabel timeL;
 	private JLabel carL;
@@ -53,6 +62,8 @@ public class TextView extends AbstractView {
 		legpassL.setForeground(Color.BLUE);
 		legreservL.setForeground(Color.ORANGE);
 		
+		// setting dimensions
+		
 		timeL.setPreferredSize(new Dimension(width, 13));
 		carL.setPreferredSize(new Dimension(width, 13));
 		adhocL.setPreferredSize(new Dimension(width, 13));
@@ -68,6 +79,7 @@ public class TextView extends AbstractView {
 		legpassL.setPreferredSize(new Dimension(width, 13));
 		legreservL.setPreferredSize(new Dimension(width, 13));
 		
+		//adding the labels
 		
 		add(timeL);
 		add(carL);
@@ -94,14 +106,17 @@ public class TextView extends AbstractView {
         return new Dimension(200, 100);
     }
 
-    	 //Repaint the component, changes the label-contents
-    	
+    /**
+     * Repaint the component, changes the label-contents
+     */	
     public void paintComponent(Graphics g) {
     	g.setColor(new Color(0xee, 0xee, 0xee));
     	g.fillRect(0, 0, width, height);
     	updateLabels();
     }
-
+    /**
+     * updates the view with information
+     */
     public void updateLabels() {
     	int week = this.simulator.getWeek();
     	int day = this.simulator.getDay();
