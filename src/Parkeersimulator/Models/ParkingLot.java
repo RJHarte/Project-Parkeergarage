@@ -27,7 +27,7 @@ public class ParkingLot implements Iterable<Car> {
     private int numberOfOpenPassSpots;
     
     private int numberOfReservePlaces;
-    public int numberOfOpenReserveSpots;
+    //public int numberOfOpenReserveSpots; // Hoeveel groene
     
     private Car[][][] cars;
     private ArrayList<Location> reservedLocations = new ArrayList<Location>();
@@ -40,7 +40,7 @@ public class ParkingLot implements Iterable<Car> {
     	this.numberOfOpenSpots = (numberOfFloors*numberOfRows*numberOfPlaces);
     	
     	this.numberOfReservePlaces = numberOfReservePlaces;
-        this.numberOfOpenReserveSpots = this.reservedLocations.size();
+        //this.numberOfOpenReserveSpots = 0;
         
         this.numberOfPassPlaces = numberOfPassPlaces;
         this.numberOfOpenPassSpots = numberOfPassPlaces;
@@ -121,7 +121,15 @@ public class ParkingLot implements Iterable<Car> {
         }
         else if (isReserved(location)) {
         	//this.numberOfOpenReserveSpots--;
-        	this.numberOfOpenReserveSpots = reservedLocations.size();
+        	this.removeReservedSpot(location);
+        	/*for (int i = 0; i < this.reservedLocations.size(); i++) {
+        		Location loc = this.reservedLocations.get(i);
+        		if (loc.equals(location)) {
+        			System.out.println("Remove loc");
+        			this.reservedLocations.remove(i);
+        		}
+        	}*/
+        	//this.numberOfOpenReserveSpots = reservedLocations.size();
         }
     	this.numberOfOpenSpots--;
         return true;
@@ -153,17 +161,9 @@ public class ParkingLot implements Iterable<Car> {
     	if(isReserved(location)) {
     		this.removeReservedSpot(location);
     		location.setReservedPlace(false);
-    		this.numberOfOpenReserveSpots = this.reservedLocations.size();
-        	//System.out.println("Yeh boii "+this.numberOfOpenReserveSpots);
+    		//.numberOfOpenReserveSpots = this.reservedLocations.size();
     	}
-    	//addRandmReservation, might need another location in code
-    	for (int i=0; this.numberOfOpenReserveSpots < this.numberOfReservePlaces; i++ ) {
-    		this.addRandomReservation();
-    		this.numberOfOpenReserveSpots = this.reservedLocations.size();
-        	//System.out.println("Yeh boii "+this.numberOfOpenReserveSpots);
-    	}
-		
-    	
+    	  	
     	this.numberOfOpenSpots++;
     	return car;
         	
@@ -198,7 +198,7 @@ public class ParkingLot implements Iterable<Car> {
                             return location;
                 		}
                 	} else if(car instanceof ReservedCar) {
-                		if (this.numberOfOpenReserveSpots > 0 ) {
+                		if (this.reservedLocations.size() > 0 ) {
             				if (isReserved && !isPassPlace){
 		                		if (this.getCarAt(location) == null) {
 		                            return location;
@@ -256,8 +256,28 @@ public class ParkingLot implements Iterable<Car> {
                 }
             }
         }
+        
+        System.out.println(this.numberOfReservePlaces + " " + this.reservedLocations.size());
+        
+      //addRandmReservation, might need another location in code
+    	for (int i=0; this.reservedLocations.size() < this.numberOfReservePlaces; i++ ) {
+    		this.addRandomReservation();
+    		//this.numberOfOpenReserveSpots = this.numberOfReservePlaces - this.reservedLocations.size();
+    	}
     }
     
+    public int getNumberOfOpenReserveSpots() {
+    	return this.reservedLocations.size();
+    }
+    
+    public int getNumberOfReservePlaces(int places) {
+    	return this.numberOfReservePlaces;
+    }
+    
+    public void setNumberOfReservePlaces(int places) {
+    	this.numberOfReservePlaces = places;
+
+    }
     /**
      * Calculates total amount of cars
      * @return
@@ -463,7 +483,7 @@ public class ParkingLot implements Iterable<Car> {
 		} else {
 			//System.out.println("Adding reservation to "+location);
 			this.reservedLocations.add(location);
-			this.numberOfOpenReserveSpots= this.reservedLocations.size(); 
+			//this.numberOfOpenReserveSpots= this.reservedLocations.size(); 
 		}
 	}
 	

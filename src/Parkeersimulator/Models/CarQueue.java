@@ -7,6 +7,11 @@ import java.util.Queue;
  */
 public class CarQueue {
     private Queue<Car> queue = new LinkedList<>();
+    
+    public Queue<Car> getQueue()
+    {
+    	return this.queue;
+    }
 
     // Amount this queue can process per minute.
     private int speedPerMinute;
