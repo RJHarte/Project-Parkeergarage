@@ -2,6 +2,7 @@ package Parkeersimulator.controls;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
 
 
 import javax.swing.JButton;
@@ -21,6 +22,10 @@ import Parkeersimulator.Main;
 
 public class Controller extends AbstractController implements ActionListener, ChangeListener {
 
+	private static final Color LIGHT_GRAY = null;
+	private static final Color GRAY = null;
+	private static final Color YELLOW = null;
+
 	public Controller(Simulator sim) {
 		super(sim);
 	}
@@ -39,13 +44,16 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		// Doe eem "this."
 		minute = new JButton("Minute");
 		minute.addActionListener(this);
+		this.minute.setOpaque(true);
 		
 		hour = new JButton("Hour");
 		hour.addActionListener(this);
+		this.hour.setOpaque(true);
 		
 		day = new JButton("Day");
 		day.addActionListener(this);
-
+		this.day.setOpaque(true);
+		
 		start = new JButton("Start");
 		start.addActionListener(this);
 		
@@ -62,7 +70,7 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		this.reset = new JButton("Reset");
 		this.reset.addActionListener(this);
 		
-		ticksPerSecond = new JSlider(JSlider.VERTICAL, 0, 100, 50);
+		ticksPerSecond = new JSlider(JSlider.VERTICAL, 0, 200, 100);
 		ticksPerSecond.addChangeListener(this);
 
 		//Turn on labels at major tick marks.
@@ -71,19 +79,23 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		//ticksPerSecond.setPaintTicks(true);
 		//ticksPerSecond.setPaintLabels(true);
 	}
+	
+	
+	
+	Color DBcolor = new JButton().getBackground();
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if(e.getSource() == this.minute && simulator.running == false) {
+		if(e.getSource() == this.minute) {
 			this.simulator.manualTick(1, true);
 		}
 
-		if(e.getSource() == this.hour && simulator.running == false) {
+		if(e.getSource() == this.hour) {
 			this.simulator.manualTick(60, false);
 		}
 		
-		if(e.getSource() == this.day && simulator.running == false) {
+		if(e.getSource() == this.day) {
 			this.simulator.manualTick(1440, false);
 		}
 
@@ -91,9 +103,15 @@ public class Controller extends AbstractController implements ActionListener, Ch
 			this.simulator.start();
 			this.stop.setVisible(true);
 			this.start.setVisible(false);
+			minute.setEnabled(false);
+			hour.setEnabled(false);
+			day.setEnabled(false);
 		}
 
 		if(e.getSource() == this.stop && simulator.running == true) {
+			minute.setEnabled(true);
+			hour.setEnabled(true);
+			day.setEnabled(true);
 			this.simulator.stop();
 			this.stop.setVisible(false);
 			this.start.setVisible(true);
@@ -118,7 +136,7 @@ public class Controller extends AbstractController implements ActionListener, Ch
 	public void stateChanged(ChangeEvent e) {
 	      JSlider source = (JSlider)e.getSource();
 	        if (!source.getValueIsAdjusting()) {
-	            this.simulator.newTickDuration(100-source.getValue());
+	            this.simulator.newTickDuration(200-source.getValue());
 	            }
 	}
 }

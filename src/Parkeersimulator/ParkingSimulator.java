@@ -43,7 +43,7 @@ public class ParkingSimulator {
 
 	}
 	/**
-	 * 
+	 * draws a ParkingLot and the views it also deletes the old ones if there was one running
 	 */
 	public void reset() {
 		ParkingLot parkingLot = new ParkingLot(3, 6, 30, 90, 90);
