@@ -31,9 +31,9 @@ public class Location {
             Location other = (Location) obj;
             return this.floor == other.getFloor() &&
             		this.row == other.getRow() &&
-            		this.place == other.getPlace() &&
-            		this.passPlace == other.getPassPlace() &&
-            		this.reservedPlace == other.getReservedPlace();
+            		this.place == other.getPlace();// &&
+            		//this.passPlace == other.getPassPlace() &&
+            		//this.reservedPlace == other.getReservedPlace();
         }
         else {
             return false;

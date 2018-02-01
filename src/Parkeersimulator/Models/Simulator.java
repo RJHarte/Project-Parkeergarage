@@ -107,7 +107,7 @@ public class Simulator implements Runnable{
     	this.tickDuration = milliSec;
     	return tickDuration;
     }
-
+    
 
     @Override
     public void run() {
@@ -121,8 +121,10 @@ public class Simulator implements Runnable{
 	            		this.entranceCarQueue.carsInQueue(),
 	            		this.paymentCarQueue.carsInQueue(),
 	            		this.exitCarQueue.carsInQueue());
+	            		System.out.println("Number of open spots: "+this.parkingLot.getNumberOfOpenSpots());
         	}
 			*/
+    		
             tick();
 
             long endTime = System.currentTimeMillis(); // Time in milliseconds.
@@ -280,8 +282,18 @@ public class Simulator implements Runnable{
 
     	numberOfCars = this.getNumberOfCars(arrivalsPass);
     	this.addArrivingCars(numberOfCars, PASS);
+    	
+    	int amountOfReservesInQueue = 0;
+    	for (Car car : this.entranceCarQueue.getQueue()) {
+    		if (car instanceof ReservedCar) {
+    			amountOfReservesInQueue++;
+    		}
+    	}
 
     	numberOfCars = this.getNumberOfCars(arrivalsReserves);
+    	if (numberOfCars > parkingLot.getNumberOfOpenReserveSpots() + amountOfReservesInQueue) {
+    		numberOfCars = parkingLot.getNumberOfOpenReserveSpots() + amountOfReservesInQueue;
+    	}
     	this.addArrivingCars(numberOfCars, RESERVE);
     }
 
