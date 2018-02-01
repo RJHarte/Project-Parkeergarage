@@ -24,8 +24,6 @@ public class Simulator implements Runnable{
     private ParkingLot parkingLot;
 	private DataStore datastore;
 
-	//private ParkingLot parkinglot;
-
     // The current time.
     private int day = 0;
     private int hour = 0;
@@ -131,8 +129,6 @@ public class Simulator implements Runnable{
             long timeTickTook = endTime-startTime; // How long this tick took to calculate
 
             long timeToSleep = this.tickDuration - timeTickTook;
-
-    		// TODO: This sleep should not be done in tick, but in the method that continuely runs tick (which is run()).
 
             if (timeToSleep > 0) {
     	        // Pause.
@@ -320,26 +316,6 @@ public class Simulator implements Runnable{
         	this.parkingLot.setCarAt(freeLocation, car);
         	i++;
         }
-        
-        // Remove car from the front of the queue and assign to a parking space.
-    	/*while (queue.carsInQueue()>0 &&	// Checks if any cars are in queue
-    			this.getNumberOfOpenSpotsForCarType(type) > 0 && // Checks if spots are available
-    			i<this.enterSpeed) {	// Checks if enterspeed is not reached
-            Car car = queue.removeCar();
-<<<<<<< HEAD
-            Location freeLocation = this.parkingLot.getFirstFreeLocation(car);
-            
-            this.parkingLot.setCarAt(freeLocation, car);
-=======
-            try {
-            	Location freeLocation = this.parkingLot.getFirstFreeLocation(car);
-            	this.parkingLot.setCarAt(freeLocation, car);
-            } catch (NullPointerException e) {
-            	System.out.println("Temporary cuz no free free spot (only for special people spot I guess), Thom will fix");
-            }
->>>>>>> dev
-            i++;
-        }*/
     }
     
     /**
@@ -372,7 +348,6 @@ public class Simulator implements Runnable{
     	while (this.paymentCarQueue.carsInQueue() > 0 && // Checks if any cars are in queue
 			i < this.paymentSpeed){ // Checks if enterspeed is not reached
             Car car = this.paymentCarQueue.removeCar();
-            // TODO Handle payment.
             this.carLeavesSpot(car);
             i++;
     	}
@@ -470,24 +445,12 @@ public class Simulator implements Runnable{
      * @param car
      */
     private void carLeavesSpot(Car car){
-
-    	/*//print test
-    	Location carLocation = car.getLocation();
-    	int carPlace = carLocation.getPlace();
-
-        if (this.parkingLot.placeIsPassPlace(carPlace)) {
-        	System.out.println("left from pass spot");
-        }
-        else System.out.println("left from normal spot");
-    	*/
-
     	//print spot type when car leaving
     	this.parkingLot.removeCarAt(car.getLocation());
         this.exitCarQueue.addCar(car);
     }
 
 	public ParkingLot getParkingLot() {
-		//System.out.println("getParkingLot hier: " + this.parkingLot);
 		return this.parkingLot;
 	}
 
