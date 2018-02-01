@@ -113,7 +113,7 @@ public class Simulator implements Runnable{
     	int i = 0;
     	while (running) {
     		long startTime = System.currentTimeMillis(); // Time in milliseconds.
-
+    		/*
         	if (i%5 == 0) {
 	            System.out.printf("Cur: %d %d:%d; Entrance queue: %d; Payment queue: %d; Exit queue: %d\n",
 	            		this.day, this.hour, this.minute,
@@ -121,7 +121,7 @@ public class Simulator implements Runnable{
 	            		this.paymentCarQueue.carsInQueue(),
 	            		this.exitCarQueue.carsInQueue());
         	}
-
+			*/
             tick();
 
             long endTime = System.currentTimeMillis(); // Time in milliseconds.
@@ -415,7 +415,7 @@ public class Simulator implements Runnable{
 
     		if (this.entranceCarQueue.estimateMinutesWaitingTime() > car.maxMinutesToWaitEntrance()) {
     			this.carsNotWantedToQueue[type]++;
-        		System.out.println("Ja daaaag, queue is mie too long");
+        		//System.out.println("Ja daaaag, queue is mie too long");
         		continue;
         	}
 

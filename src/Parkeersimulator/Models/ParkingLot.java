@@ -32,8 +32,6 @@ public class ParkingLot implements Iterable<Car> {
     private Car[][][] cars;
     private ArrayList<Location> reservedLocations = new ArrayList<Location>();
     
-    
-    
     public ParkingLot(int numberOfFloors, int numberOfRows, int numberOfPlaces, int numberOfPassPlaces, int numberOfReservePlaces) {
     	this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
@@ -41,19 +39,14 @@ public class ParkingLot implements Iterable<Car> {
     	this.numberOfOpenSpots = (numberOfFloors*numberOfRows*numberOfPlaces);
     	this.numberOfReservePlaces = numberOfReservePlaces;
         this.numberOfOpenReserveSpots = 0;
-             
-    	for (int i=0; i<10; i++) {
-            addRandomReservation();
-        }
-    	this.numberOfOpenReserveSpots= this.reservedLocations.size(); 
         
+        
+    	
         this.numberOfPassPlaces = numberOfPassPlaces;
         this.numberOfOpenPassSpots = numberOfPassPlaces;
         
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
-        this.views = new ArrayList<AbstractView>();
-        //this.reservedLocations = new ArrayList<>();
-        
+        this.views = new ArrayList<AbstractView>();        
     }
 
 	public void addView(AbstractView view)
@@ -126,7 +119,8 @@ public class ParkingLot implements Iterable<Car> {
         	this.numberOfOpenPassSpots--;
         }
         else if (car instanceof ReservedCar ) {
-        	this.numberOfOpenReserveSpots--;
+        	//this.numberOfOpenReserveSpots--;
+        	this.numberOfOpenReserveSpots = reservedLocations.size();
         }
     	this.numberOfOpenSpots--;
         return true;
@@ -142,7 +136,6 @@ public class ParkingLot implements Iterable<Car> {
         if (!this.locationIsValid(location)) {
             return null;
         }
-
         Car car = getCarAt(location);
         if (car == null) {
             return null;
@@ -152,19 +145,29 @@ public class ParkingLot implements Iterable<Car> {
         car.setLocation(null);
         
         // opens up spots in relation to car type 
-        	if(location.getPassPlace()) {
-        		this.numberOfOpenPassSpots++;
-        		//this.numberOfOpenSpots++;
-        	}
+    	if(location.getPassPlace()) {
+    		this.numberOfOpenPassSpots++;
+    		//this.numberOfOpenSpots++;
+    	}
+    	
+    	if(isReserved(location)) {
+    		//this.numberOfOpenReserveSpots--;
+    		this.removeReservedSpot(location);
+    		location.setReservedPlace(false);
+    		this.numberOfOpenReserveSpots = this.reservedLocations.size();
+        	System.out.println("Yeh boii "+this.numberOfOpenReserveSpots);
+    	}
+    	//addRandmReservation, might need another location in code
+    	if (this.numberOfOpenReserveSpots < this.numberOfReservePlaces ) {
+    		this.addRandomReservation();
+    		this.numberOfOpenReserveSpots = this.reservedLocations.size();
+        	System.out.println("Yeh boii "+this.numberOfOpenReserveSpots);
+    	}
+		
+    	
+    	this.numberOfOpenSpots++;
+    	return car;
         	
-        	else if(location.getReservedPlace()) {
-        		this.numberOfOpenReserveSpots--;
-        		this.removeReservedSpot(location);
-        	}
-        	
-        	this.numberOfOpenSpots++;
-        	return car;
-
     }
 
     /**
@@ -201,7 +204,6 @@ public class ParkingLot implements Iterable<Car> {
                 	
                 	boolean isPassPlace = locationIsPassPlace(location);
                 	boolean isReserved = isReserved(location);
-                	//TODO: misschien per auto opsplitsen?
                 	
                 	if (car instanceof ParkingPassCar) {
                 		if (this.numberOfOpenPassSpots > 0) {
@@ -211,23 +213,20 @@ public class ParkingLot implements Iterable<Car> {
 		                		}
                 			}
 
-	                	} else if (this.getCarAt(location) == null) {
+	                	} else if (!isReserved && this.getCarAt(location) == null) {
                             return location;
                 		}
                 	} else if(car instanceof ReservedCar) {
                 		if (this.numberOfOpenReserveSpots > 0 ) {
-            				if (isReserved){
+            				if (isReserved && !isPassPlace){
 		                		if (this.getCarAt(location) == null) {
 		                            return location;
 		                        }
                 			}                			
-                		} else if (this.getCarAt(location) == null) {
-                            return location;
-                		}
-	
+                		} 
                 	}
                 	
-            		if (!isPassPlace && !isReserved) {
+                	else if(!isPassPlace && !isReserved) {
                 		if (this.getCarAt(location) == null) {
                             return location;
                         }
@@ -249,8 +248,6 @@ public class ParkingLot implements Iterable<Car> {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
                 	Location location = new Location(floor, row, place);
                 	setAllPassPlaces(location,0,this.numberOfPassPlaces/3);
-                	boolean isPassPlace = locationIsPassPlace(location);
-                	boolean isReserved = isReserved(location);
                     Car car = this.getCarAt(location);
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
                         return car;
@@ -271,8 +268,6 @@ public class ParkingLot implements Iterable<Car> {
                 for (int place = 0; place < this.getNumberOfPlaces(); place++) {
                 	Location location = new Location(floor, row, place);
                 	setAllPassPlaces(location,0,this.numberOfPassPlaces/3);
-                	boolean isPassPlace = locationIsPassPlace(location);
-                	boolean isReserved = isReserved(location);
                     Car car = this.getCarAt(location);
                     if (car != null) {
                         car.tick();
@@ -405,17 +400,39 @@ public class ParkingLot implements Iterable<Car> {
 	}
 	
 	public void removeReservedSpot(Location location) {
-		if (location.getReservedPlace()) {
-			this.reservedLocations.remove(location);
+		Iterator<Location> it = reservedLocations.iterator();
+		while (it.hasNext()) {
+			Location loc= it.next();
+			if (location.equals(loc)) {
+				System.out.println("GOT 'EM!");
+				it.remove();
+			}
 		}
 	}
 
+	
+	// sets all pass places
 	public void setAllPassPlaces(Location location, int row, int place) {
 		if (location.getRow() == row && location.getPlace() < place) {
     		location.setPassPlace(true);
     	}
 	}
-
+	
+	//Compares location to reserved locations arrayList
+	public boolean isReserved(Location location) {
+			boolean isRes = false;
+			Iterator<Location> it = reservedLocations.iterator();
+			while (it.hasNext()) {
+				Location loc= it.next();
+				if (location.equals(loc)) {
+					isRes = true;
+					//System.out.println("Isreserved is aangeroepen");
+				}
+			}
+			return isRes;	
+	}
+	
+	/*
 	//Compares location to reserved locations arrayList
 	public boolean isReserved(Location location) {
 		boolean isRes = false;
@@ -427,21 +444,28 @@ public class ParkingLot implements Iterable<Car> {
 		}
 		return isRes;
 	}
-
+	*/
+	
 	public void addRandomReservation() {
 		Random ranGen = new Random();
 		int floor = ranGen.nextInt( this.numberOfFloors);
 		int row = ranGen.nextInt( this.numberOfRows);
-		int place = ranGen.nextInt( this.numberOfPlaces*2);
+		int place = ranGen.nextInt( this.numberOfPlaces);
 		Location location = new Location(floor,row,place);
-		this.reservedLocations.add(location);
+		
+		if (isReserved(location) || locationIsPassPlace(location)){
+			System.out.println(location+ " already reserved,Rerolling");
+			this.addRandomReservation();
+		} else {
+			System.out.println("Adding reservation to "+location);
+			this.reservedLocations.add(location);
+			this.numberOfOpenReserveSpots= this.reservedLocations.size(); 
+		}
 		System.out.println(floor+" - "+row+" - "+place);
 	}
 
 	public void printReservedSpots(){
-
 		System.out.println(reservedLocations);
-
 	}
 
 }
