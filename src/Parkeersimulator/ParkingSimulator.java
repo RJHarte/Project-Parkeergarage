@@ -24,7 +24,7 @@ public class ParkingSimulator {
 	public ParkingSimulator() {
 		// Create components.
 
-		ParkingLot parkingLot = new ParkingLot(3, 6, 30, 90, 10);
+		ParkingLot parkingLot = new ParkingLot(3, 6, 30, 90, 100);
 
         ParkingSimulator.parkingSimulatorOpslag = this;		
 
