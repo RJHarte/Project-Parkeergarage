@@ -115,10 +115,10 @@ public class ParkingLot implements Iterable<Car> {
         this.cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
         car.setLocation(location);
         
-        if (car instanceof ParkingPassCar ) {
+        if (locationIsPassPlace(location)) {
         	this.numberOfOpenPassSpots--;
         }
-        else if (car instanceof ReservedCar ) {
+        else if (isReserved(location)) {
         	//this.numberOfOpenReserveSpots--;
         	this.numberOfOpenReserveSpots = reservedLocations.size();
         }
@@ -145,7 +145,7 @@ public class ParkingLot implements Iterable<Car> {
         car.setLocation(null);
         
         // opens up spots in relation to car type 
-    	if(location.getPassPlace()) {
+    	if(locationIsPassPlace(location)) {
     		this.numberOfOpenPassSpots++;
     		//this.numberOfOpenSpots++;
     	}
