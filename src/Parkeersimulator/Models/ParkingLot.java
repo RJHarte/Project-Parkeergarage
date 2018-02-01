@@ -279,7 +279,8 @@ public class ParkingLot implements Iterable<Car> {
 
     }
     /**
-     * Calculates total amount of cars
+     * Calculates total amount of cars per type.
+     * 
      * @return
      */
     public CarAmount[] calculateAmountOfCars()
@@ -324,6 +325,10 @@ public class ParkingLot implements Iterable<Car> {
 		return new ParkingLotSpotIterator();
 	}
 
+	/**
+	 * CarAmount is a struct like class that holds name and colour
+	 * information on a car, and the amount of cars that qualify for that name/colour.
+	 */
     public class CarAmount
     {
     	public String carName;
@@ -331,6 +336,11 @@ public class ParkingLot implements Iterable<Car> {
     	public int amount;
     }
 
+    /**
+     * ParkingLotSpotIterator allows to iterator over all parking spots,
+     * without having to take into account that there are multiple floors and rows.
+     *
+     */
 	public class ParkingLotSpotIterator implements Iterator<Car>
 	{
 		private int curFloor = 0;

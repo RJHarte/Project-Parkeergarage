@@ -79,7 +79,7 @@ public class OccupationPieChartView extends AbstractView {
 		for (int i = 0; i < amounts.length; i++) {
 			total += amounts[i].amount;
 		}
-
+		
 		double curValue = 0;
 		int startAngle = 0;
 		for (int i = 0; i < amounts.length; i++) {
@@ -94,5 +94,10 @@ public class OccupationPieChartView extends AbstractView {
 			graphics.fillArc(0, 0, (int)this.getSize().getWidth(), (int)this.getSize().getHeight(), startAngle, arcAngle);
 			curValue += amounts[i].amount;
 		}
+		
+
+		graphics.setColor(Color.white);
+		graphics.fillArc(35, 35, 30, 30, 0, 360);
+
     }
 }
