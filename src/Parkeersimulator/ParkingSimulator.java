@@ -42,6 +42,9 @@ public class ParkingSimulator {
 
 
 	}
+	/**
+	 * 
+	 */
 	public void reset() {
 		ParkingLot parkingLot = new ParkingLot(3, 6, 30, 90, 90);
 
@@ -67,7 +70,9 @@ public class ParkingSimulator {
 		occupationLineGraphView.setBounds(0, carParkView.getHeight()+occupationPieChartView.getHeight(), occupationLineGraphView.getWidth(), occupationLineGraphView.getHeight());
 		textView.setBounds(700, 0, textView.getWidth(), textView.getHeight());
 
-		//opmaak van de buttons
+		/**
+		 * method get contentpane is used to get information of the specified objects so it can draw these later on 
+		 */
 		Controller controller = new Controller(simulator);
 		controller.makeControl();
 		screen.getContentPane().add(controller.minute);
@@ -79,35 +84,23 @@ public class ParkingSimulator {
 		screen.getContentPane().add(controller.normalSpeed);
 		screen.getContentPane().add(controller.ticksPerSecond);
 		screen.getContentPane().add(controller.reset);
-
+		
+		/**
+		 *  sets the location and the size of the buttons and the slider
+		 */
 		controller.minute.setBounds(120, carParkView.getHeight(), 100, 25);
 		controller.hour.setBounds(120, carParkView.getHeight()+25, 100, 25);
 		controller.day.setBounds(120, carParkView.getHeight()+50, 100, 25);
 		controller.start.setBounds(220, carParkView.getHeight(), 100, 25);
-		controller.stop.setBounds(220, carParkView.getHeight()+25, 100, 25);
+		controller.stop.setBounds(220, carParkView.getHeight(), 100, 25);
 		controller.maxTickSpeed.setBounds(320, carParkView.getHeight()+25, 100, 25);
 		controller.normalSpeed.setBounds(320, carParkView.getHeight(), 100, 25);
 		controller.ticksPerSecond.setBounds(120, carParkView.getHeight()+82, 200, 40);
-		controller.reset.setBounds(220, carParkView.getHeight()+50, 100, 25);
-		
-		controller.minute.setBounds(120, carParkView.getHeight(), 100, 25);
-		controller.hour.setBounds(120, carParkView.getHeight()+25, 100, 25);
-		controller.day.setBounds(120, carParkView.getHeight()+50, 100, 25);
-		controller.start.setBounds(220, carParkView.getHeight(), 100, 25);
-		controller.stop.setBounds(220, carParkView.getHeight()+25, 100, 25);
-		controller.maxTickSpeed.setBounds(320, carParkView.getHeight()+25, 100, 25);
-		controller.normalSpeed.setBounds(320, carParkView.getHeight(), 100, 25);
-		controller.ticksPerSecond.setBounds(120, carParkView.getHeight()+82, 200, 40);
-		controller.reset.setBounds(220, carParkView.getHeight()+50, 100, 25);
+		controller.reset.setBounds(220, carParkView.getHeight()+25, 100, 25);
 
-		carParkView.setBounds(0, 0, carParkView.getWidth(), carParkView.getHeight());
-		occupationPieChartView.setBounds(0, carParkView.getHeight(), occupationPieChartView.getWidth(), occupationPieChartView.getHeight());
-		occupationLineGraphView.setBounds(0, carParkView.getHeight()+occupationPieChartView.getHeight(), occupationLineGraphView.getWidth(), occupationLineGraphView.getHeight());
-		textView.setBounds(500, carParkView.getHeight(), textView.getWidth(), textView.getHeight());
-
-		
-		
-		
+		/**
+		 * this draws the parkingLot
+		 */
 		parkingLot.updateView();
 	}
 }
