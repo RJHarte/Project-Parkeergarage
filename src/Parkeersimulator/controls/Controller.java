@@ -51,6 +51,7 @@ public class Controller extends AbstractController implements ActionListener, Ch
 		
 		stop = new JButton("Stop");
 		stop.addActionListener(this);
+		stop.setVisible(false);
 
 		this.maxTickSpeed = new JButton("Turbo");
 		maxTickSpeed.addActionListener(this);
@@ -86,12 +87,16 @@ public class Controller extends AbstractController implements ActionListener, Ch
 			this.simulator.manualTick(1440, false);
 		}
 
-		if(e.getSource() == this.start) {
+		if(e.getSource() == this.start && simulator.running == false) {
 			this.simulator.start();
+			this.stop.setVisible(true);
+			this.start.setVisible(false);
 		}
 
-		if(e.getSource() == this.stop) {
+		if(e.getSource() == this.stop && simulator.running == true) {
 			this.simulator.stop();
+			this.stop.setVisible(false);
+			this.start.setVisible(true);
 		}
 		if(e.getSource() == this.maxTickSpeed) {
 			this.simulator.newTickDuration(0);
